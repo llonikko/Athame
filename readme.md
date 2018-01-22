@@ -27,14 +27,34 @@ There are hundreds of music streaming services out there, so I'll mainly focus o
 No. The purpose of that tag is to remind people that Athame is a tool for **saving music from streaming services for personal use only**, and not a tool
 for illegal distribution of music.
 
+### Why can't I add an artist?
+This is a feature being worked on in the newer version. The issue is that currently there is no way to determine what an artist URL definitely points to - the user
+may want the artist's top tracks, or the artist's discography. Even with a UI where the user can decide what they want, there is still the issue where duplicate tracks
+from singles are added, or the artist has a lot of albums the user will have to manually delete. In the newer version, artists will be displayed with top tracks and albums.
+The user can then manually select which album or tracks they want to download.
+
+### Why is Tidal Master Quality audio not really that different to Hi-Fi (FLAC) quality?
+Tidal Master albums are stored in a format called [MQA](https://en.wikipedia.org/wiki/Master_Quality_Authenticated). MQA is basically a fancy FLAC file that has the
+higher frequencies encoded in the standard FLAC stream, meaning that it can still be played back on players that don't support it directly. Unfortunately MQA is more of an
+"exclusive" format that at the moment requires specialised software and/or to enjoy its full benefits. The MQA files downloaded by Athame are provided more as an experiment for anyone
+wanting to dissect them and perhaps one day build a proper decoder.
+
+### Why do some Tidal lossless files look like they've been transcoded from lossy?
+### Why does Tidal return a 96kbps MP3/AAC when I have my quality setting on High, etc, etc?
+Athame and the Tidal plugin don't do any post-processing on the audio file, apart from setting tags. A few albums don't have a lossless version, and some are in MP3 format for some reason
+too. Either way the plugin retrieves audio streams the same way that the web and mobile players retrieve them, so as far as I know this is entirely to do with Tidal. Some FLAC tracks,
+when put into a spectrum analyzer, also seem to cut off around 20Hz like a lossy file would.
+
 
 Plugins
 -------
 ### [Tidal](https://github.com/svbnet/AthamePlugin.Tidal/releases) and [Google Play Music](https://github.com/svbnet/AthamePlugin.GooglePlayMusic/releases)
 These are included by default
 
-### [Deezer](https://github.com/TripleFrequency/AthamePlugin.Deezer)
-A plugin written by [TripleFrequency](http://www.triplefrequency.com/), which works great and is available to download [here](https://github.com/TripleFrequency/AthamePlugin.Deezer/releases).
+### Deezer
+~~A plugin written by [TripleFrequency](http://www.triplefrequency.com/), which works great and is available to download [here](https://github.com/TripleFrequency/AthamePlugin.Deezer/releases).~~
+The plugin above has been removed by Deezer/GitHub since they seem to have a pretty stringent DMCA policy. I would advise that nobody publicly release an Athame Deezer plugin, as it will most likely
+get taken down within a short amount of time.
 
 ### Spotify
 Currently, I have no plans to work on a Spotify plugin. A similar thing called [librespot](https://github.com/plietar/librespot) exists, so

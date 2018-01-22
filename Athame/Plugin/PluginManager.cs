@@ -94,9 +94,9 @@ namespace Athame.Plugin
                 instance.Assembly.GetReferencedAssemblies()
                     .FirstOrDefault(name => name.Name == PluginApiAssemblyName.Name)) != null)
             {
-                if (pluginApiName.FullName != PluginApiAssemblyName.FullName)
+                if (pluginApiName.Version.Major != PluginApiAssemblyName.Version.Major)
                 {
-                    throw new PluginIncompatibleException($"Wrong version of Athame.PluginAPI referenced: expected {PluginApiAssemblyName}, found {pluginApiName}");
+                    throw new PluginIncompatibleException($"Wrong major version of Athame.PluginAPI referenced: expected {PluginApiAssemblyName}, found {pluginApiName}");
                 }
             }
             else

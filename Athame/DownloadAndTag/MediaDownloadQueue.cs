@@ -145,7 +145,7 @@ namespace Athame.DownloadAndTag
             {
                 var eventArgs = gEventArgs = new TrackDownloadEventArgs
                 {
-                    CurrentItemIndex = (tracksCollectionLength - tracksQueue.Count) - 1,
+                    CurrentItemIndex = (tracksCollectionLength - tracksQueue.Count),
                     PercentCompleted = 0M,
                     State = DownloadState.PreProcess,
                     TotalItems = tracksCollectionLength,

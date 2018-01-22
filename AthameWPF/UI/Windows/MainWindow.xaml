@@ -27,12 +27,8 @@
                     <Setter Property="Foreground" Value="{StaticResource MainNavForegroundBrush}" />
                 </Style>
             </Grid.Resources>
-            <Grid.Effect>
-                <DropShadowEffect Opacity="0.25" Direction="270" ShadowDepth="2"/>
-            </Grid.Effect>
             <DockPanel HorizontalAlignment="Left">
-                <controls:PathButton Text="Add" PathData="{StaticResource AddIcon}" Command="{Binding AddCommand}" />
-                <controls:PathButton Text="Start" IsEnabled="False" PathData="{StaticResource StartIcon}" />
+                
             </DockPanel>
             <DockPanel HorizontalAlignment="Right">
                 <controls:PathButton
@@ -46,7 +42,33 @@
             </DockPanel>
         </Grid>
         <StackPanel Orientation="Vertical" Grid.Row="1" Margin="10">
-            <TextBlock Style="{StaticResource HeadingText}" Text="Download queue" />
+            <Grid>
+                <Grid.Resources>
+                    <Style TargetType="controls:PathButton">
+                        <Setter Property="PathRenderSize" Value="24" />
+                        <Setter Property="FontSize" Value="18" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="Foreground" Value="{StaticResource MainNavForegroundBrush}" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
+                    <controls:PathButton Text="Add by search" PathData="{StaticResource AddIcon}" Margin="0,0,10,0" Command="{Binding AddCommand}" />
+                    <controls:PathButton Text="Paste link" PathData="{StaticResource PasteIcon}" Command="{Binding AddCommand}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" VerticalAlignment="Center">
+                    <TextBlock Style="{StaticResource HeadingText}"  Text="Download queue" />
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="2">
+
+                    <controls:PathButton Text="Start" IsEnabled="False" PathData="{StaticResource StartIcon}"  />
+                </StackPanel>
+            </Grid>
             <ListView>
                 
             </ListView>

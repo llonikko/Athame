@@ -146,7 +146,7 @@ namespace Athame.UI
         private void MediaDownloadQueue_TrackDequeued(object sender, TrackDownloadEventArgs e)
         {
             // this'll bite me in the ass someday
-            var itemIndex = e.CurrentItemIndex + 1;
+            var itemIndex = e.CurrentItemIndex;
             currentlyDownloadingItem = queueListView.Groups[currentCollection.CurrentCollectionIndex].Items[itemIndex * 2];
         }
 
