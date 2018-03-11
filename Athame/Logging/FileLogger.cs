@@ -11,6 +11,7 @@ namespace Athame.Logging
         private string logFileName = String.Empty;
         private FileStream logFile;
         private StreamWriter writer;
+        private string formattedName;
 
         public FileLogger(string logDirectory)
         {
@@ -26,12 +27,12 @@ namespace Athame.Logging
         private void EnsureLog()
         {
             var temp = new Dictionary<string, object> { { "FileDate", DateTime.Now.ToString("yyyyMMdd") } };
-            var formattedName = Named.Format(FilenameFormat, temp);
+            formattedName = Named.Format(FilenameFormat, temp);
             if (logFileName != formattedName)
             {
                 logFile?.Dispose();
                 writer?.Dispose();
-                logFile = File.Open(Path.Combine(logDirectory, formattedName), FileMode.Append, FileAccess.Write, FileShare.Read);
+                logFile = File.Open(Path.Combine(logDirectory, formattedName), FileMode.Append, FileAccess.Write);
                 logFileName = formattedName;
                 writer = new StreamWriter(logFile) { AutoFlush = true };
             }

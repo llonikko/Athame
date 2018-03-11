@@ -18,7 +18,7 @@ namespace Athame.Utils
         public static string GetBasicPath(this Track track, string pathFormat, IMediaCollection collection)
         {
             // Hacky method to clean the file path
-            var formatStrComponents = pathFormat.Split(Path.DirectorySeparatorChar);
+            var formatStrComponents = PathHelpers.SplitPathFormat(pathFormat);
             var newFormat = String.Join("\0", formatStrComponents);
             var vars = Dictify.ObjectToDictionary(track);
             vars["PlaylistName"] = collection.Title;

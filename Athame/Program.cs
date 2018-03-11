@@ -31,15 +31,25 @@ namespace Athame
             // Create app instance config
             DefaultApp = new AthameApplication
             {
-                IsWindowed = true,
-#if DEBUG
-                UserDataPath = Path.Combine(Directory.GetCurrentDirectory(), "UserDataDebug")
-#else
-                UserDataPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    "Athame")
-#endif
+                IsWindowed = true
             };
+
+            var dataDir = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Athame");
+            var userDataDirArgIndex = Array.IndexOf(args, "--user-data-dir");
+
+            if (userDataDirArgIndex != -1 
+                && args.Length <= userDataDirArgIndex + 2)
+            {
+                var dir = args[userDataDirArgIndex + 1];
+                if (Directory.Exists(dir))
+                {
+                    dataDir = Path.Combine(dir, "Athame Data");
+                }
+            }
+            DefaultApp.UserDataPath = dataDir;
+
 
             // Install logging
             LogDir = DefaultApp.UserDataPathOf("Logs");

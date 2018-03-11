@@ -59,5 +59,12 @@ namespace Athame.Utils
             var longPathsEnabled = (int)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem", "LongPathsEnabled", 0);
             return longPathsEnabled != 0;
         }
+
+        public static string[] SplitPathFormat(string path)
+        {
+            path = path.Replace('/', '\\');
+            return path.Split('\\');
+
+        }
     }
 }

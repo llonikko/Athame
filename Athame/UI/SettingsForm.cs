@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Athame.Plugin;
 using Athame.PluginAPI.Service;
 using Athame.Settings;
+using Athame.Utils;
 
 namespace Athame.UI
 {
@@ -13,6 +14,9 @@ namespace Athame.UI
     {
         private readonly AthameSettings defaults = Program.DefaultSettings.Settings;
         private readonly List<PluginInstance> services;
+        private readonly RandomWords randomWords = new RandomWords();
+        private readonly Album pathFormatSampleAlbum;
+        private readonly Playlist pathFormatSamplePlaylist;
 
         public SettingsForm()
         {
@@ -61,6 +65,49 @@ namespace Athame.UI
                 }
             }
             if (servicesListBox.Items.Count > 0) servicesListBox.SelectedIndex = 0;
+
+            pathFormatSampleAlbum = new Album
+            {
+                Artist = new Artist { Name = randomWords.NewArtistName() },
+                Title = randomWords.NewTitle(),
+                Tracks = new List<Track>()
+            };
+            var track = new Track
+            {
+                Album = pathFormatSampleAlbum,
+                Artist = pathFormatSampleAlbum.Artist,
+                DiscNumber = 1,
+                TrackNumber = 1,
+                Genre = "Genre",
+                Composer = randomWords.NewFullName(),
+                Title = randomWords.NewTitle(),
+                Year = DateTime.Now.Year
+            };
+            pathFormatSampleAlbum.Tracks.Add(track);
+
+            pathFormatSamplePlaylist = new Playlist
+            {
+                Title = randomWords.NewVerbNounTitle(),
+                Tracks = new List<Track>()
+            };
+
+            var plTrack = new Track
+            {
+                DiscNumber = 1,
+                TrackNumber = 1,
+                Genre = "Genre",
+                Composer = randomWords.NewFullName(),
+                Title = randomWords.NewTitle(),
+                Year = DateTime.Now.Year
+            };
+            plTrack.Album = new Album {
+                Artist = new Artist {Name = randomWords.NewArtistName()},
+                Title = randomWords.NewTitle(),
+                Tracks = new List<Track>()
+            };
+            plTrack.Artist = plTrack.Album.Artist;
+            plTrack.Album.Tracks.Add(plTrack);
+            pathFormatSamplePlaylist.Tracks.Add(plTrack);
         }
 
 
@@ -75,6 +122,7 @@ namespace Athame.UI
 
         private void pathFormatTextBox_TextChanged(object sender, EventArgs e)
         {
+            ValidateTrackFormat();
             defaults.GeneralSavePreference.SaveFormat = pathFormatTextBox.Text;
         }
 
@@ -103,6 +151,7 @@ namespace Athame.UI
 
         private void pldPathFormatTextBox_TextChanged(object sender, EventArgs e)
         {
+            ValidatePlaylistFormat();
             defaults.PlaylistSavePreference.SaveFormat = pldPathFormatTextBox.Text;
         }
 
@@ -149,6 +198,7 @@ namespace Athame.UI
             serviceDescriptionLabel.Text = selectedService.Info.Description;
             serviceAuthorLabel.Text = selectedService.Info.Author;
             serviceWebsiteLabel.Text = selectedService.Info.Website.ToString();
+            serviceVersionLabel.Text = selectedInstance.Assembly.GetName().Version.ToString();
         }
 
         private void formatHelpButton_Click(object sender, EventArgs e)
@@ -207,6 +257,46 @@ namespace Athame.UI
         private void ignoreAlbumArtworkCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             defaults.IgnoreSaveArtworkWithPlaylist = confirmExitCheckBox.Checked;
+        }
+
+        private void ValidateTrackFormat()
+        {
+            ValidateFormat(pathFormatSampleAlbum, pathFormatTextBox.Text, compiledPathFormatLabel);
+        }
+
+        private void ValidatePlaylistFormat()
+        {
+            ValidateFormat(pathFormatSamplePlaylist, pldPathFormatTextBox.Text, compiledPlaylistPathFormatLabel);
+        }
+
+        private void ValidateFormat(IMediaCollection collection, string format, Label label)
+        {
+            label.ForeColor = Color.Red;
+            try
+            {
+                label.ForeColor = Color.Black;
+                label.Text = collection.Tracks[0].GetBasicPath(format, collection) + ".ext";
+            }
+            catch (FormatException)
+            {
+                label.Text = "Improperly formed format string - did you forget a { or }?";
+            }
+            catch (NullReferenceException)
+            {
+                label.Text =
+                    "Undefined variable referenced - click the \"Help with path formats\" button to learn more.";
+            }
+            catch (Exception ex)
+            {
+                label.Text =
+                    $"Unknown error ({ex.GetType().Name})";
+            }
+        }
+
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            ValidateTrackFormat();
+            ValidatePlaylistFormat();
         }
     }
 }

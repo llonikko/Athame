@@ -2,6 +2,8 @@
 ======
 <a href='https://ko-fi.com/A0343RZ9' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
+Bitcoin: `3BTjhi5pCUJcqxSgKDnJF4ct4LYwmX2Wa7`
+
 Athame is a program for downloading music from music streaming and sharing services.
 It is intended for educational and private use only, and **not** as a tool for pirating and distributing music.
 Above all else, remember that the artists and studios put a lot of work into making music -- if you can, purchase

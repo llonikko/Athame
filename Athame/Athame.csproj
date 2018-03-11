@@ -37,26 +37,6 @@
   <PropertyGroup>
     <ApplicationIcon>AthameIcon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CLIDebug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\CLIDebug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'CLIRelease|AnyCPU'">
-    <OutputPath>bin\CLIRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CenterCLR.NamingFormatter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=08a63ca5aab14733, processorArchitecture=MSIL">
       <HintPath>..\packages\CenterCLR.NamingFormatter.1.1.0\lib\net35\CenterCLR.NamingFormatter.dll</HintPath>
@@ -134,6 +114,7 @@
     <Compile Include="Utils\MediaCollectionExtensions.cs" />
     <Compile Include="Utils\NullableExtensions.cs" />
     <Compile Include="Utils\PlaylistWriter.cs" />
+    <Compile Include="Utils\RandomWords.cs" />
     <Compile Include="Utils\StringObjectFormatter.cs" />
     <Compile Include="UI\AboutForm.cs">
       <SubType>Form</SubType>
@@ -249,6 +230,22 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+  </Target>
+
+  <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
+
+  <Target Name="ZipForRelease" BeforeTargets="AfterBuild" Condition="$(Configuration) == 'Release'">
+    <PropertyGroup>
+      <OutputDir>C:\Athame\AppRel\</OutputDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <ReleaseFiles Include="$(OutputPath)\**\*.*" Exclude="$(OutputPath)\**\*.pdb;$(OutputPath)\**\*.vshost.exe*;$(OutputPath)\**\*.xml" />
+    </ItemGroup>
+    <GetAssemblyIdentity AssemblyFiles="$(OutputPath)\Athame.exe">
+      <Output TaskParameter="Assemblies" ItemName="AthameInfo" />
+    </GetAssemblyIdentity>
+    <Zip Files="@(ReleaseFiles)" WorkingDirectory="$(OutputPath)" ZipFileName="$(OutputDir)Athame-%(AthameInfo.Version).zip" ZipLevel="9" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

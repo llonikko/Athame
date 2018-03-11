@@ -112,6 +112,10 @@ namespace Athame.DownloadAndTag
                     CurrentCollectionIndex = (Count - queueView.Count) - 1,
                     TotalNumberOfCollections = Count
                 });
+                if (!(currentItem.MediaCollection is Playlist))
+                {
+                    playlistSetting = SavePlaylistSetting.DontSave;
+                }
                 if (await DownloadCollectionAsync(currentItem, playlistSetting)) continue;
                 if (skip == ExceptionSkip.Fail)
                 {

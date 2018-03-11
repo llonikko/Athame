@@ -27,6 +27,11 @@ namespace Athame.Logging
             return loggers[name];
         }
 
+        public static T GetLogger<T>(string name) where T : ILogger
+        {
+            return (T) GetLogger(name);
+        }
+
         public static Level Filter { get; set; }
 
         public static void Write(Level level, string tag, string message)
