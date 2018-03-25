@@ -54,8 +54,7 @@ Plugins
 These are included by default
 
 ### Deezer
-~~A plugin written by [TripleFrequency](http://www.triplefrequency.com/), which works great and is available to download [here](https://github.com/TripleFrequency/AthamePlugin.Deezer/releases).~~
-The plugin above has been removed by Deezer/GitHub since they seem to have a pretty stringent DMCA policy. I would advise that nobody publicly release an Athame Deezer plugin, as it will most likely
+A Deezer plugin was created at some point, but it's since been taken down by Deezer/GitHub since they seem to have a pretty stringent DMCA policy. I would advise that nobody publicly release an Athame Deezer plugin, as it will most likely
 get taken down within a short amount of time.
 
 ### Spotify
