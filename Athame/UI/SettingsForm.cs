@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+using Athame.DownloadAndTag;
 using Athame.Plugin;
 using Athame.PluginAPI.Service;
 using Athame.Settings;

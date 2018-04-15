@@ -49,8 +49,8 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell">
       <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="policy.2.0.taglib-sharp">
@@ -101,6 +101,8 @@
     <Compile Include="Plugin\PluginManager.cs" />
     <Compile Include="Plugin\PluginLoadException.cs" />
     <Compile Include="Plugin\ServiceCastExtensions.cs" />
+    <Compile Include="DownloadAndTag\AlbumArtworkSaveFormat.cs" />
+    <Compile Include="DownloadAndTag\SavePlaylistSetting.cs" />
     <Compile Include="Settings\SettingsFile.cs" />
     <Compile Include="Settings\AthameSettings.cs" />
     <Compile Include="UI\LocalisableAccountNameFormat.cs" />
@@ -112,10 +114,8 @@
     </Compile>
     <Compile Include="Utils\Dictify.cs" />
     <Compile Include="Utils\MediaCollectionExtensions.cs" />
-    <Compile Include="Utils\NullableExtensions.cs" />
     <Compile Include="Utils\PlaylistWriter.cs" />
     <Compile Include="Utils\RandomWords.cs" />
-    <Compile Include="Utils\StringObjectFormatter.cs" />
     <Compile Include="UI\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -217,6 +217,10 @@
     <None Include="Resources\exclamation-red.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Athame.Core\Athame.Core.csproj">
+      <Project>{2556b1c5-7379-4712-82ac-16a170ed2824}</Project>
+      <Name>Athame.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Athame.PluginAPI\Athame.PluginAPI.csproj">
       <Project>{e10cc6e7-7100-4616-84bc-413a91e668b8}</Project>
       <Name>Athame.PluginAPI</Name>
@@ -232,9 +236,7 @@
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
     <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
   </Target>
-
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
-
   <Target Name="ZipForRelease" BeforeTargets="AfterBuild" Condition="$(Configuration) == 'Release'">
     <PropertyGroup>
       <OutputDir>C:\Athame\AppRel\</OutputDir>

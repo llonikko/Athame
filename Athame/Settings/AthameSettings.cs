@@ -2,23 +2,10 @@
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Athame.DownloadAndTag;
 
 namespace Athame.Settings
 {
-    public enum AlbumArtworkSaveFormat
-    {
-        DontSave,
-        AsCover,
-        AsArtistAlbum
-    }
-
-    public enum SavePlaylistSetting
-    {
-        DontSave,
-        M3U,
-        PLS
-    }
-
     public class MediaTypeSavePreference
     {
         public string SaveDirectory { get; set; }
