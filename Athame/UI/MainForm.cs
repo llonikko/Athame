@@ -9,15 +9,16 @@ using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Athame.DownloadAndTag;
-using Athame.Logging;
-using Athame.Plugin;
+using Athame.Core.DownloadAndTag;
+using Athame.Core.Logging;
+using Athame.Core.Plugin;
+using Athame.Core.Settings;
+using Athame.Core.Utils;
 using Athame.PluginAPI.Downloader;
 using Athame.PluginAPI.Service;
 using Athame.Properties;
 using Athame.Settings;
 using Athame.UI.Win32;
-using Athame.Utils;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Microsoft.WindowsAPICodePack.Taskbar;
 
@@ -708,7 +709,7 @@ namespace Athame.UI
 
                 LockUi();
                 totalStatusLabel.Text = "Warming up...";
-                await mediaDownloadQueue.StartDownloadAsync(Program.DefaultSettings.Settings.SavePlaylist);
+                await mediaDownloadQueue.StartDownloadAsync(Program.DefaultSettings.Settings.SavePlaylist, Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, Program.DefaultSettings.Settings.AlbumArtworkSaveFormat);
                 totalStatusLabel.Text = "All downloads completed";
                 collectionStatusLabel.Text = GetCompletionMessage();
                 currentlyDownloadingItem = null;
@@ -792,7 +793,7 @@ namespace Athame.UI
         private void LoadAndInitPlugins()
         {
             Program.DefaultPluginManager.LoadAll();
-            Program.DefaultPluginManager.InitAll();
+            Program.DefaultPluginManager.InitAll(Program.DefaultApp);
             if (pluginLoadExceptions.Count > 0)
             {
                 TaskDialogHelper.CreateMessageDialog("Plugin load error",

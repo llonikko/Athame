@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using Athame.Logging;
-using Athame.Plugin;
+using Athame.Core.Logging;
+using Athame.Core.Plugin;
+using Athame.Core.Settings;
 using Athame.PluginAPI;
 using Athame.Settings;
 using Athame.UI;
@@ -75,7 +76,7 @@ namespace Athame
             DefaultSettings.Load();
 
             // Create plugin manager instance
-            DefaultPluginManager = new PluginManager(Path.Combine(Directory.GetCurrentDirectory(), PluginManager.PluginDir));
+            DefaultPluginManager = new PluginManager(Path.Combine(Directory.GetCurrentDirectory(), PluginManager.PluginDir), DefaultApp.UserDataPath);
             
             Log.Debug(Tag, "Ready to begin main form loop");
             // Begin main form

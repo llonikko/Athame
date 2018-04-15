@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using Athame.Logging;
 using Athame.Properties;
 
 namespace Athame.UI

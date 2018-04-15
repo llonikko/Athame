@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using Athame.DownloadAndTag;
-using Athame.Plugin;
+using Athame.Core.DownloadAndTag;
+using Athame.Core.Plugin;
+using Athame.Core.Settings;
+using Athame.Core.Utils;
 using Athame.PluginAPI.Service;
 using Athame.Settings;
-using Athame.Utils;
 
 namespace Athame.UI
 {
