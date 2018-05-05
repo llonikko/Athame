@@ -72,6 +72,8 @@
     <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Plugin\AuthenticationManager.cs" />
+    <Compile Include="Plugin\AuthenticationResult.cs" />
     <Compile Include="Plugin\PluginIncompatibleException.cs" />
     <Compile Include="Plugin\PluginInstance.cs" />
     <Compile Include="Plugin\PluginLoadException.cs" />

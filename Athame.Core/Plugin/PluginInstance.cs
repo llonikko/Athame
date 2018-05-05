@@ -17,5 +17,6 @@ namespace Athame.Core.Plugin
         public Version AssemblyFileVersion { get; set; }
         public SettingsFile SettingsFile { get; set; }
         public MusicService Service => Plugin as MusicService;
+
     }
 }

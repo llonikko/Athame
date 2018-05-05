@@ -125,7 +125,6 @@
     <Compile Include="UI\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\SplitStringParser.cs" />
     <Compile Include="UI\TaskDialogHelper.cs" />
     <EmbeddedResource Include="UI\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>

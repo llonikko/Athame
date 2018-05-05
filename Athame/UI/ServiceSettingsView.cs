@@ -2,13 +2,13 @@
 using System.Windows.Forms;
 using Athame.Core.Plugin;
 using Athame.PluginAPI.Service;
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace Athame.UI
 {
     public partial class ServiceSettingsView : UserControl
     {
 
-        private readonly SplitStringParser sspSignInStatus, sspSignInButton;
         private readonly MusicService service;
         private readonly PluginInstance servicePlugin;
         private readonly IAuthenticatable authenticatable;
@@ -18,26 +18,43 @@ namespace Athame.UI
             this.servicePlugin = servicePlugin;
             service = servicePlugin.Service;
             authenticatable = service.AsAuthenticatable();
+            InitializeComponent();
             if (authenticatable == null)
             {
-                throw new ArgumentException("Service instance passed must implement IAuthenticatable", nameof(service));
-            }
-            InitializeComponent();
-            sspSignInStatus = new SplitStringParser(signInStatusLabel);
-            sspSignInButton = new SplitStringParser(signInButton);
-            if (authenticatable.IsAuthenticated)
-            {
-                signInStatusLabel.Text = String.Format(sspSignInStatus.Get(authenticatable.IsAuthenticated),
-                    LocalisableAccountNameFormat.GetFormattedName(authenticatable.Account));
+                authPanel.Visible = false;
             }
             else
             {
-                sspSignInStatus.Update(false);
+                UpdateLabels();
             }
-            sspSignInButton.Update(authenticatable.IsAuthenticated);
             var control = service.GetSettingsControl();
             control.Dock = DockStyle.Fill;
             servicePanel.Controls.Add(control);
+        }
+
+        private void SetSignedOutState()
+        {
+            signInStatusLabel.Text = "Signed out";
+            signInButton.Text = "Sign in";
+        }
+
+        private void SetSignedInState()
+        {
+            signInStatusLabel.Text = "Signed in as " +
+                                     LocalisableAccountNameFormat.GetFormattedName(authenticatable.Account);
+            signInButton.Text = "Sign out";
+        }
+
+        private void UpdateLabels()
+        {
+            if (authenticatable.IsAuthenticated)
+            {
+                SetSignedInState();
+            }
+            else
+            {
+                SetSignedOutState();
+            }
         }
 
         private async void signInButton_Click(object sender, EventArgs e)
@@ -49,22 +66,18 @@ namespace Athame.UI
                 {
                     var dlg = new CredentialsForm(service);
                     dlg.ShowDialog();
-                    servicePlugin.SettingsFile.Save();
                 }
                 else
                 {
                     await authenticatableAsync.AuthenticateAsync();
                 }
-                signInStatusLabel.Text = String.Format(sspSignInStatus.Get(authenticatable.IsAuthenticated),
-                    LocalisableAccountNameFormat.GetFormattedName(authenticatable.Account));
-                sspSignInButton.Update(authenticatable.IsAuthenticated);
             }
             else
             {
                 authenticatable.Reset();
-                sspSignInStatus.Update(false);
-                sspSignInButton.Update(false);
             }
+            UpdateLabels();
+            servicePlugin.SettingsFile.Save();
 
         }
     }

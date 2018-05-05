@@ -374,10 +374,14 @@ namespace Athame.UI
 
         private void RestoreServices()
         {
+            var am = Program.DefaultAuthenticationManager;
+            var taskList = Program.DefaultPluginManager.ServicesEnumerable()
+                .Where(am.CanRestore).Select(service => am.Restore(service));
             var td = TaskDialogHelper.CreateWaitDialog(null, Handle);
             var openCt = new CancellationTokenSource();
             td.Opened += async (o, args) =>
             {
+
                 await Task.Factory.StartNew(async () =>
                 {
                     foreach (var service in Program.DefaultPluginManager.ServicesEnumerable())

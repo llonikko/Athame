@@ -21,6 +21,7 @@ namespace Athame
         public static AthameApplication DefaultApp;
         public static PluginManager DefaultPluginManager;
         public static SettingsFile<AthameSettings> DefaultSettings;
+        public static AuthenticationManager DefaultAuthenticationManager = new AuthenticationManager();
 
         /// <summary>
         /// The main entry point for the application.
