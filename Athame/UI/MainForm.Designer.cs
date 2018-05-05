@@ -43,7 +43,6 @@ namespace Athame.UI
             this.albumCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.locCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.queueImageList = new System.Windows.Forms.ImageList(this.components);
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.collectionProgressBar = new System.Windows.Forms.ProgressBar();
             this.collectionStatusLabel = new System.Windows.Forms.Label();
@@ -100,7 +99,6 @@ namespace Athame.UI
             this.locCol});
             this.queueListView.FullRowSelect = true;
             this.queueListView.Name = "queueListView";
-            this.queueListView.SmallImageList = this.queueImageList;
             this.queueListView.UseCompatibleStateImageBehavior = false;
             this.queueListView.View = System.Windows.Forms.View.Details;
             this.queueListView.SelectedIndexChanged += new System.EventHandler(this.queueListView_SelectedIndexChanged);
@@ -136,28 +134,6 @@ namespace Athame.UI
             // locCol
             // 
             resources.ApplyResources(this.locCol, "locCol");
-            // 
-            // queueImageList
-            // 
-            this.queueImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("queueImageList.ImageStream")));
-            this.queueImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.queueImageList.Images.SetKeyName(0, "not_downloadable");
-            this.queueImageList.Images.SetKeyName(1, "ready");
-            this.queueImageList.Images.SetKeyName(2, "done");
-            this.queueImageList.Images.SetKeyName(3, "warning");
-            this.queueImageList.Images.SetKeyName(4, "loading1.png");
-            this.queueImageList.Images.SetKeyName(5, "loading2.png");
-            this.queueImageList.Images.SetKeyName(6, "loading3.png");
-            this.queueImageList.Images.SetKeyName(7, "loading4.png");
-            this.queueImageList.Images.SetKeyName(8, "loading5.png");
-            this.queueImageList.Images.SetKeyName(9, "loading6.png");
-            this.queueImageList.Images.SetKeyName(10, "loading7.png");
-            this.queueImageList.Images.SetKeyName(11, "loading8.png");
-            this.queueImageList.Images.SetKeyName(12, "loading9.png");
-            this.queueImageList.Images.SetKeyName(13, "loading10.png");
-            this.queueImageList.Images.SetKeyName(14, "loading11.png");
-            this.queueImageList.Images.SetKeyName(15, "loading12.png");
-            this.queueImageList.Images.SetKeyName(16, "error");
             // 
             // groupBox2
             // 
@@ -338,7 +314,6 @@ namespace Athame.UI
         private System.Windows.Forms.LinkLabel pasteButton;
         private System.Windows.Forms.LinkLabel urlValidStateLabel;
         private System.Windows.Forms.Button startDownloadButton;
-        private System.Windows.Forms.ImageList queueImageList;
         private System.Windows.Forms.ToolStripMenuItem removeGroupToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip mMenu;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;

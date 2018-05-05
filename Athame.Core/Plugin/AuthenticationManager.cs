@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Athame.Core.Logging;
 using Athame.PluginAPI.Service;
 
 // ReSharper disable SuspiciousTypeConversion.Global
@@ -11,6 +12,9 @@ namespace Athame.Core.Plugin
 {
     public class AuthenticationManager
     {
+        private const string Tag = nameof(AuthenticationManager);
+
+        private readonly object lockObject = new object();
         private readonly HashSet<MusicService> authenticatingServices = new HashSet<MusicService>();
 
         private void EnsureNotAuthenticating(MusicService service)
@@ -23,18 +27,20 @@ namespace Athame.Core.Plugin
 
         private void ServiceBeginAuthenticating(MusicService service)
         {
-            EnsureNotAuthenticating(service);
-            lock (authenticatingServices)
+            lock (lockObject)
             {
-                authenticatingServices.Add(service);
+                EnsureNotAuthenticating(service);
+                var r = authenticatingServices.Add(service);
+                Log.Debug(Tag, $"ServiceBeginAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
             }
         }
 
         private void ServiceEndAuthenticating(MusicService service)
         {
-            lock (authenticatingServices)
+            lock (lockObject)
             {
-                authenticatingServices.Remove(service);
+                var r = authenticatingServices.Remove(service);
+                Log.Debug(Tag, $"ServiceEndAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
             }
         }
 
@@ -45,16 +51,19 @@ namespace Athame.Core.Plugin
 
         public bool CanRestore(MusicService service)
         {
+            if (IsAuthenticating(service)) return false;
             var ias = service.AsAuthenticatable();
             if (ias == null) return false;
-            return ias.HasSavedSession && !ias.IsAuthenticated && !IsAuthenticating(service);
+            return ias.HasSavedSession && !ias.IsAuthenticated && ias.Account != null;
         }
 
         public bool IsAuthenticating(MusicService service)
         {
-            lock (authenticatingServices)
+            lock (lockObject)
             {
-                return authenticatingServices.Contains(service);
+                var r = authenticatingServices.Contains(service);
+                Log.Debug(Tag, $"IsAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
+                return r;
             }
         }
 
@@ -63,7 +72,11 @@ namespace Athame.Core.Plugin
             ServiceBeginAuthenticating(service);
             try
             {
-                return new AuthenticationResult(service, await service.AsAuthenticatableAsync().AuthenticateAsync());
+                return new AuthenticationResult(service, await service.AsAuthenticatableAsync().AuthenticateAsync(), null);
+            }
+            catch (Exception ex)
+            {
+                return new AuthenticationResult(service, false, ex);
             }
             finally
             {
@@ -77,7 +90,12 @@ namespace Athame.Core.Plugin
             try
             {
                 return
-                    new AuthenticationResult(service, await service.AsUsernamePasswordAuthenticatable().AuthenticateAsync(username, password, rememberMe));
+                    new AuthenticationResult(service,
+                    await service.AsUsernamePasswordAuthenticatable().AuthenticateAsync(username, password, rememberMe), null);
+            }
+            catch (Exception ex)
+            {
+                return new AuthenticationResult(service, false, ex);
             }
             finally
             {
@@ -90,7 +108,11 @@ namespace Athame.Core.Plugin
             ServiceBeginAuthenticating(service);
             try
             {
-                return new AuthenticationResult(service, await service.AsAuthenticatable().RestoreAsync());
+                return new AuthenticationResult(service, await service.AsAuthenticatable().RestoreAsync(), null);
+            }
+            catch (Exception ex)
+            {
+                return new AuthenticationResult(service, false, ex);
             }
             finally
             {
@@ -98,7 +120,7 @@ namespace Athame.Core.Plugin
             }
         }
 
-        
+
 
 
 

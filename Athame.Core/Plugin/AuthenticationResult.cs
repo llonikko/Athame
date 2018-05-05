@@ -13,10 +13,18 @@ namespace Athame.Core.Plugin
 
         public bool Result { get; internal set; }
 
-        internal AuthenticationResult(MusicService service, bool result)
+        public Exception Exception { get; internal set; }
+
+        internal AuthenticationResult(MusicService service, bool result, Exception exception)
         {
             Service = service;
             Result = result;
+            Exception = exception;
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(Service)}: {Service}, {nameof(Result)}: {Result}";
         }
     }
 }

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.authPanel = new System.Windows.Forms.Panel();
+            this.restoreButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.signInStatusLabel = new System.Windows.Forms.Label();
             this.signInButton = new System.Windows.Forms.Button();
@@ -38,6 +39,7 @@
             // 
             // authPanel
             // 
+            this.authPanel.Controls.Add(this.restoreButton);
             this.authPanel.Controls.Add(this.panel2);
             this.authPanel.Controls.Add(this.signInStatusLabel);
             this.authPanel.Controls.Add(this.signInButton);
@@ -46,6 +48,17 @@
             this.authPanel.Name = "authPanel";
             this.authPanel.Size = new System.Drawing.Size(631, 47);
             this.authPanel.TabIndex = 1;
+            // 
+            // restoreButton
+            // 
+            this.restoreButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.restoreButton.Location = new System.Drawing.Point(447, 3);
+            this.restoreButton.Name = "restoreButton";
+            this.restoreButton.Size = new System.Drawing.Size(87, 27);
+            this.restoreButton.TabIndex = 3;
+            this.restoreButton.Text = "Restore";
+            this.restoreButton.UseVisualStyleBackColor = true;
+            this.restoreButton.Click += new System.EventHandler(this.restoreButton_Click);
             // 
             // panel2
             // 
@@ -59,13 +72,12 @@
             // 
             // signInStatusLabel
             // 
-            this.signInStatusLabel.AutoSize = true;
-            this.signInStatusLabel.Location = new System.Drawing.Point(3, 9);
+            this.signInStatusLabel.Location = new System.Drawing.Point(3, 3);
             this.signInStatusLabel.Name = "signInStatusLabel";
-            this.signInStatusLabel.Size = new System.Drawing.Size(147, 15);
+            this.signInStatusLabel.Size = new System.Drawing.Size(354, 35);
             this.signInStatusLabel.TabIndex = 1;
-            this.signInStatusLabel.Text = "Signed in as {0}|Signed out";
-            this.signInStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.signInStatusLabel.Text = "Sign in status goes here";
+            this.signInStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // signInButton
             // 
@@ -74,7 +86,7 @@
             this.signInButton.Name = "signInButton";
             this.signInButton.Size = new System.Drawing.Size(87, 27);
             this.signInButton.TabIndex = 0;
-            this.signInButton.Text = "Sign out|Sign in";
+            this.signInButton.Text = "Sign in/out";
             this.signInButton.UseVisualStyleBackColor = true;
             this.signInButton.Click += new System.EventHandler(this.signInButton_Click);
             // 
@@ -96,7 +108,6 @@
             this.Name = "ServiceSettingsView";
             this.Size = new System.Drawing.Size(631, 362);
             this.authPanel.ResumeLayout(false);
-            this.authPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -108,5 +119,6 @@
         private System.Windows.Forms.Button signInButton;
         private System.Windows.Forms.Panel servicePanel;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button restoreButton;
     }
 }

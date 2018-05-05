@@ -101,6 +101,9 @@
     <Compile Include="UI\AuthProgressForm.Designer.cs">
       <DependentUpon>AuthProgressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\GlobalImageList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\ListViewItemAnimator.cs" />
     <Compile Include="UI\LocalisableAccountNameFormat.cs" />
     <Compile Include="UI\PathFormatHelpForm.cs">
@@ -160,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CredentialsForm.resx">
       <DependentUpon>CredentialsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GlobalImageList.resx">
+      <DependentUpon>GlobalImageList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

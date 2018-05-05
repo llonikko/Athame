@@ -63,6 +63,7 @@ namespace Athame.UI
         public MainForm()
         {
             InitializeComponent();
+            queueListView.SmallImageList = GlobalImageList.Instance.ImageList;
             resolver = new UrlResolver(Program.DefaultPluginManager);
             UnlockUi();
             // The formula (1 / x) * 1000 where x = FPS will give us our timer interval in regards
@@ -374,41 +375,7 @@ namespace Athame.UI
 
         private void RestoreServices()
         {
-            var am = Program.DefaultAuthenticationManager;
-            var taskList = Program.DefaultPluginManager.ServicesEnumerable()
-                .Where(am.CanRestore).Select(service => am.Restore(service));
-            var td = TaskDialogHelper.CreateWaitDialog(null, Handle);
-            var openCt = new CancellationTokenSource();
-            td.Opened += async (o, args) =>
-            {
-
-                await Task.Factory.StartNew(async () =>
-                {
-                    foreach (var service in Program.DefaultPluginManager.ServicesEnumerable())
-                    {
-                        var restorable = service.AsAuthenticatable();
-                        if (restorable == null || !restorable.HasSavedSession) continue;
-
-                        var result = false;
-                        td.InstructionText = $"Signing into {service.Info.Name}...";
-                        td.Text = $"Signing in as {LocalisableAccountNameFormat.GetFormattedName(restorable.Account)}";
-                        openCt.Token.ThrowIfCancellationRequested();
-                        result = await restorable.RestoreAsync();
-                        if (!result)
-                        {
-                            Log.Error(Tag, $"Failed to sign into {service.Info.Name}");
-                            TaskDialogHelper.ShowMessage(owner: Handle, caption: $"Failed to sign in to {service.Info.Name}",
-                                message: null, icon: TaskDialogStandardIcon.Error, buttons: TaskDialogStandardButtons.Ok);
-                        }
-                    }
-                    td.Close();
-                }, openCt.Token);
-
-            };
-            if (td.Show() == TaskDialogResult.Cancel)
-            {
-                openCt.Cancel(true);
-            }
+            new AuthProgressForm(Program.DefaultPluginManager.ServicesEnumerable()).Show(this);
         }
 
         #region Validation for URL
