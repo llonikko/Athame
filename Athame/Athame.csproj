@@ -83,6 +83,24 @@
   <ItemGroup>
     <Compile Include="Settings\AthameSettings.cs" />
     <Compile Include="UI\AnimatedControl.cs" />
+    <Compile Include="UI\AthameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AthameDialog.Designer.cs">
+      <DependentUpon>AthameDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AthameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AthameForm.Designer.cs">
+      <DependentUpon>AthameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\AuthProgressForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AuthProgressForm.Designer.cs">
+      <DependentUpon>AuthProgressForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ListViewItemAnimator.cs" />
     <Compile Include="UI\LocalisableAccountNameFormat.cs" />
     <Compile Include="UI\PathFormatHelpForm.cs">
@@ -130,6 +148,15 @@
     <Compile Include="UI\TaskDialogHelper.cs" />
     <EmbeddedResource Include="UI\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AthameDialog.resx">
+      <DependentUpon>AthameDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AthameForm.resx">
+      <DependentUpon>AthameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AuthProgressForm.resx">
+      <DependentUpon>AuthProgressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CredentialsForm.resx">
       <DependentUpon>CredentialsForm.cs</DependentUpon>

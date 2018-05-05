@@ -60,6 +60,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
             this.serviceAuthorLabel = new System.Windows.Forms.Label();
             this.serviceDescriptionLabel = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.serviceNameLabel = new System.Windows.Forms.Label();
             this.serviceWebsiteLabel = new System.Windows.Forms.LinkLabel();
+            this.serviceVersionLabel = new System.Windows.Forms.Label();
             this.openPluginDirButton = new System.Windows.Forms.Button();
             this.serviceUiPanel = new System.Windows.Forms.Panel();
             this.servicesListBox = new System.Windows.Forms.ListBox();
@@ -75,8 +77,6 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.mFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.label7 = new System.Windows.Forms.Label();
-            this.serviceVersionLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.pldOptionsGroupBox.SuspendLayout();
@@ -473,6 +473,17 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(517, 134);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label7.Location = new System.Drawing.Point(3, 112);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(88, 22);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Version:";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // serviceAuthorLabel
             // 
             this.serviceAuthorLabel.AutoSize = true;
@@ -558,6 +569,15 @@
             this.serviceWebsiteLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.serviceWebsiteLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.serviceWebsiteLabel_LinkClicked);
             // 
+            // serviceVersionLabel
+            // 
+            this.serviceVersionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.serviceVersionLabel.Location = new System.Drawing.Point(97, 112);
+            this.serviceVersionLabel.Name = "serviceVersionLabel";
+            this.serviceVersionLabel.Size = new System.Drawing.Size(417, 22);
+            this.serviceVersionLabel.TabIndex = 12;
+            this.serviceVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // openPluginDirButton
             // 
             this.openPluginDirButton.Location = new System.Drawing.Point(6, 449);
@@ -618,40 +638,15 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label7.Location = new System.Drawing.Point(3, 112);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(88, 22);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Version:";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // serviceVersionLabel
-            // 
-            this.serviceVersionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.serviceVersionLabel.Location = new System.Drawing.Point(97, 112);
-            this.serviceVersionLabel.Name = "serviceVersionLabel";
-            this.serviceVersionLabel.Size = new System.Drawing.Size(417, 22);
-            this.serviceVersionLabel.TabIndex = 12;
-            this.serviceVersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(744, 618);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.tabControl1);
-            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "SettingsForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.tabControl1.ResumeLayout(false);

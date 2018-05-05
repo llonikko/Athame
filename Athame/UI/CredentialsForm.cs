@@ -8,7 +8,7 @@ using Athame.PluginAPI.Service;
 namespace Athame.UI
 {
 
-    public partial class CredentialsForm : Form
+    public partial class CredentialsForm : AthameDialog
     {
         private readonly MusicService svc;
         private readonly IUsernamePasswordAuthenticationAsync usernamePasswordService;

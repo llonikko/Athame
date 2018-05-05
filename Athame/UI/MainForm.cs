@@ -25,7 +25,7 @@ using Microsoft.WindowsAPICodePack.Taskbar;
 
 namespace Athame.UI
 {
-    public partial class MainForm : Form
+    public partial class MainForm : AthameForm
     {
         /// <summary>
         /// Internal class for keeping track of an individual listitem's relation

@@ -302,7 +302,6 @@ namespace Athame.UI
             this.Controls.Add(this.dlButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.idTextBox);
-            this.Icon = global::Athame.Properties.Resources.AthameIcon;
             this.Name = "MainForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);

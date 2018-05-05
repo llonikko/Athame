@@ -6,7 +6,7 @@ using Athame.Properties;
 
 namespace Athame.UI
 {
-    public partial class AboutForm : Form
+    public partial class AboutForm : AthameDialog
     {
         public AboutForm()
         {

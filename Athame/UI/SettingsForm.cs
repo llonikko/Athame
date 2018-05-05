@@ -12,7 +12,7 @@ using Athame.Settings;
 
 namespace Athame.UI
 {
-    public partial class SettingsForm : Form
+    public partial class SettingsForm : AthameDialog
     {
         private readonly AthameSettings defaults = Program.DefaultSettings.Settings;
         private readonly List<PluginInstance> services;
