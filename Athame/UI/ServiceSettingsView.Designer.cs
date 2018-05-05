@@ -46,7 +46,7 @@
             this.authPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.authPanel.Location = new System.Drawing.Point(0, 0);
             this.authPanel.Name = "authPanel";
-            this.authPanel.Size = new System.Drawing.Size(631, 47);
+            this.authPanel.Size = new System.Drawing.Size(631, 43);
             this.authPanel.TabIndex = 1;
             // 
             // restoreButton
@@ -93,9 +93,9 @@
             // servicePanel
             // 
             this.servicePanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.servicePanel.Location = new System.Drawing.Point(0, 47);
+            this.servicePanel.Location = new System.Drawing.Point(0, 43);
             this.servicePanel.Name = "servicePanel";
-            this.servicePanel.Size = new System.Drawing.Size(631, 315);
+            this.servicePanel.Size = new System.Drawing.Size(631, 319);
             this.servicePanel.TabIndex = 2;
             // 
             // ServiceSettingsView

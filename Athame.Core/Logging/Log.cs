@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Athame.Core.Utils;
 
 namespace Athame.Core.Logging
 {
@@ -51,7 +52,7 @@ namespace Athame.Core.Logging
             var messageToWrite = (message ?? "Unhandled exception") + "\n";
             if (ex != null)
             {
-                messageToWrite += $"{ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}";
+                messageToWrite += ex.ToString();
             }
             else
             {

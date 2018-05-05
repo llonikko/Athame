@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Athame.Core.Logging;
 using Athame.Core.Plugin;
+using Athame.Core.Utils;
 using Athame.PluginAPI.Service;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -11,6 +12,7 @@ namespace Athame.UI
 {
     public partial class ServiceSettingsView : UserControl
     {
+        private const string Tag = nameof(ServiceSettingsView);
 
         private readonly MusicService service;
         private readonly PluginInstance servicePlugin;
@@ -31,9 +33,25 @@ namespace Athame.UI
             {
                 UpdateViews();
             }
-            var control = service.GetSettingsControl();
-            control.Dock = DockStyle.Fill;
-            servicePanel.Controls.Add(control);
+            try
+            {
+                var control = service.GetSettingsControl();
+                control.Dock = DockStyle.Fill;
+                servicePanel.Controls.Add(control);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteException(Level.Error, Tag, ex, "service.GetSettingsControl()");
+                var text = "An error occurred while trying to display the service's settings panel.\n\n" + ex;
+                var label = new Label
+                {
+                    AutoSize = false,
+                    Dock = DockStyle.Fill,
+                    Padding = new Padding(10),
+                    Text = text
+                };
+                servicePanel.Controls.Add(label);
+            }
         }
 
         private void SetSignedOutState()
