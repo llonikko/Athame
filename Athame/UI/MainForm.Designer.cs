@@ -287,10 +287,6 @@ namespace Athame.UI
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // queueImageAnimationTimer
-            // 
-            this.queueImageAnimationTimer.Tick += new System.EventHandler(this.queueImageAnimationTimer_Tick);
-            // 
             // MainForm
             // 
             this.AcceptButton = this.dlButton;

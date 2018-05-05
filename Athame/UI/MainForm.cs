@@ -48,6 +48,7 @@ namespace Athame.UI
         // Read-only instance vars
         private readonly TaskbarManager mTaskbarManager = TaskbarManager.Instance;
         private readonly MediaDownloadQueue mediaDownloadQueue = new MediaDownloadQueue(true);
+        private readonly ListViewItemAnimator animator = new ListViewItemAnimator(4, 15);
 
         // Instance vars
         private UrlResolver resolver;
@@ -117,7 +118,6 @@ namespace Athame.UI
             switch (e.State)
             {
                 case DownloadState.PreProcess:
-                    StartAnimation(currentlyDownloadingItem);
                     currentlyDownloadingItem.Text = "Downloading...";
                     collectionStatusLabel.Text = "Pre-processing...";
                     break;
@@ -141,7 +141,7 @@ namespace Athame.UI
         private void MediaDownloadQueue_TrackDownloadCompleted(object sender, TrackDownloadEventArgs e)
         {
             collectionStatusLabel.Text = "Completed";
-            StopAnimation();
+            animator.Remove(currentlyDownloadingItem);
             currentlyDownloadingItem.ImageKey = "done";
             currentlyDownloadingItem.Text = "Completed";
         }
@@ -151,6 +151,7 @@ namespace Athame.UI
             // this'll bite me in the ass someday
             var itemIndex = e.CurrentItemIndex;
             currentlyDownloadingItem = queueListView.Groups[currentCollection.CurrentCollectionIndex].Items[itemIndex * 2];
+            animator.Add(currentlyDownloadingItem);
         }
 
         private void MediaDownloadQueue_CollectionDequeued(object sender, CollectionDownloadEventArgs e)
@@ -168,7 +169,6 @@ namespace Athame.UI
                 Log.Error(Tag, "MDQ exception handler: currently downloading LV item tag is null!");
                 throw e.Exception;
             }
-            StopAnimation();
             currentlyDownloadingItem.ImageKey = "error";
             currentlyDownloadingItem.Text = "Error occurred while downloading";
             tag.Exception = e.Exception;
@@ -671,7 +671,6 @@ namespace Athame.UI
 
         private async Task StartDownload()
         {
-            isListViewDirty = true;
             if (mediaDownloadQueue.Count == 0)
             {
                 TaskDialogHelper.ShowMessage(owner: Handle, icon: TaskDialogStandardIcon.Error, buttons: TaskDialogStandardButtons.Ok, 
@@ -680,13 +679,14 @@ namespace Athame.UI
                     "You can add tracks by copying the URL to an album, artist, track, or playlist and pasting it into Athame.");
                 return;
             }
-
+            isListViewDirty = true;
             try
             {
-
+                animator.Start();
                 LockUi();
                 totalStatusLabel.Text = "Warming up...";
-                await mediaDownloadQueue.StartDownloadAsync(Program.DefaultSettings.Settings.SavePlaylist, Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, Program.DefaultSettings.Settings.AlbumArtworkSaveFormat);
+                await mediaDownloadQueue.StartDownloadAsync(Program.DefaultSettings.Settings.SavePlaylist, 
+                    Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, Program.DefaultSettings.Settings.AlbumArtworkSaveFormat);
                 totalStatusLabel.Text = "All downloads completed";
                 collectionStatusLabel.Text = GetCompletionMessage();
                 currentlyDownloadingItem = null;
@@ -703,6 +703,7 @@ namespace Athame.UI
             finally
             {
                 UnlockUi();
+                animator.Stop();
             }
         }
 
@@ -821,28 +822,28 @@ namespace Athame.UI
         }
         #endregion
 
-        private const int ImageListAnimStartIndex = 4;
-        private const int ImageListAnimEndIndex = 15;
-        private int currentFrame = ImageListAnimStartIndex;
-        private ListViewItem currentAnimatingItem;
-
-        private void queueImageAnimationTimer_Tick(object sender, EventArgs e)
-        {
-            currentFrame = ++currentFrame > ImageListAnimEndIndex ? ImageListAnimStartIndex : currentFrame;
-            currentAnimatingItem.ImageIndex = currentFrame;
-        }
-
-        private void StartAnimation(ListViewItem item)
-        {
-            currentAnimatingItem = item;
-            queueImageAnimationTimer.Start();
-        }
-
-        private void StopAnimation()
-        {
-            currentAnimatingItem = null;
-            queueImageAnimationTimer.Stop();
-        }
+//        private const int ImageListAnimStartIndex = 4;
+//        private const int ImageListAnimEndIndex = 15;
+//        private int currentFrame = ImageListAnimStartIndex;
+//        private ListViewItem currentAnimatingItem;
+//
+//        private void queueImageAnimationTimer_Tick(object sender, EventArgs e)
+//        {
+//            currentFrame = ++currentFrame > ImageListAnimEndIndex ? ImageListAnimStartIndex : currentFrame;
+//            currentAnimatingItem.ImageIndex = currentFrame;
+//        }
+//
+//        private void StartAnimation(ListViewItem item)
+//        {
+//            currentAnimatingItem = item;
+//            queueImageAnimationTimer.Start();
+//        }
+//
+//        private void StopAnimation()
+//        {
+//            currentAnimatingItem = null;
+//            queueImageAnimationTimer.Stop();
+//        }
 
         private string GetCurrentlySelectedItemDir()
         {

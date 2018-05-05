@@ -82,6 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Settings\AthameSettings.cs" />
+    <Compile Include="UI\AnimatedControl.cs" />
+    <Compile Include="UI\ListViewItemAnimator.cs" />
     <Compile Include="UI\LocalisableAccountNameFormat.cs" />
     <Compile Include="UI\PathFormatHelpForm.cs">
       <SubType>Form</SubType>
