@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using Athame.Core.DownloadAndTag;
 using Athame.Core.Logging;
 using Athame.Core.Plugin;
+using Athame.Core.Search;
 using Athame.Core.Settings;
 using Athame.Core.Utils;
 using Athame.PluginAPI.Downloader;
@@ -49,8 +50,8 @@ namespace Athame.UI
         private readonly MediaDownloadQueue mediaDownloadQueue = new MediaDownloadQueue(true);
 
         // Instance vars
-        private UrlParseResult mResult;
-        private MusicService mService;
+        private UrlResolver resolver;
+
         private ListViewItem mCurrentlySelectedQueueItem;
         private ListViewItem currentlyDownloadingItem;
         private CollectionDownloadEventArgs currentCollection;
@@ -61,6 +62,7 @@ namespace Athame.UI
         public MainForm()
         {
             InitializeComponent();
+            resolver = new UrlResolver(Program.DefaultPluginManager);
             UnlockUi();
             // The formula (1 / x) * 1000 where x = FPS will give us our timer interval in regards
             // to how fast we want the animation to show in FPS
@@ -413,58 +415,48 @@ namespace Athame.UI
         private const string UrlNotParseable = "The URL does not point to a valid track, album, artist or playlist.";
         private const string UrlValidParseResult = "{0} from {1}";
 
-        private bool ValidateEnteredUrl()
+        private void ValidateEnteredUrl()
         {
             urlValidStateLabel.ResetText();
             urlValidStateLabel.Links.Clear();
             urlValidStateLabel.Image = Resources.error;
-            dlButton.Enabled = false;
-
-            // Hide on empty
-            if (String.IsNullOrWhiteSpace(idTextBox.Text))
-            {
-                urlValidStateLabel.Visible = false;
-                return false;
-            }
             urlValidStateLabel.Visible = true;
+            dlButton.Enabled = false;
+            
+            switch (resolver.Parse(idTextBox.Text))
+            {
+                case UrlParseState.NullOrEmptyString:
+                    urlValidStateLabel.Visible = false;
+                    break;
 
-            Uri url;
-            // Invalid URL
-            if (!Uri.TryCreate(idTextBox.Text, UriKind.Absolute, out url))
-            {
-                urlValidStateLabel.Text = UrlInvalid;
-                return false;
+                case UrlParseState.InvalidUrl:
+                    urlValidStateLabel.Text = UrlInvalid;
+                    break;
+
+                case UrlParseState.NoServiceFound:
+                    urlValidStateLabel.Text = UrlNoService;
+                    break;
+
+                case UrlParseState.ServiceNotAuthenticated:
+                    var service = resolver.Service;
+                    urlValidStateLabel.Text = String.Format(UrlNeedsAuthentication, service.Info.Name);
+                    var linkIndex = urlValidStateLabel.Text.LastIndexOf(UrlNeedsAuthenticationLink1, StringComparison.Ordinal);
+                    urlValidStateLabel.Links.Add(linkIndex, urlValidStateLabel.Text.Length, service);
+                    break;
+
+                case UrlParseState.NoMedia:
+                    urlValidStateLabel.Text = UrlNotParseable;
+                    break;
+
+                case UrlParseState.Success:
+                    urlValidStateLabel.Image = Resources.done;
+                    urlValidStateLabel.Text = String.Format(UrlValidParseResult, resolver.ParseResult.Type, resolver.Service.Info.Name);
+                    dlButton.Enabled = true;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            var service = Program.DefaultPluginManager.GetServiceByBaseUri(url);
-            // No service associated with host
-            if (service == null)
-            {
-                urlValidStateLabel.Text = UrlNoService;
-                return false;
-            }
-            // Not authenticated
-            var authenticatable = service.AsAuthenticatable();
-            if (!authenticatable.IsAuthenticated)
-            {
-                urlValidStateLabel.Text = String.Format(UrlNeedsAuthentication, service.Info.Name);
-                var linkIndex = urlValidStateLabel.Text.LastIndexOf(UrlNeedsAuthenticationLink1, StringComparison.Ordinal);
-                urlValidStateLabel.Links.Add(linkIndex, urlValidStateLabel.Text.Length, service);
-                return false;
-            }
-            // URL doesn't point to media
-            var result = service.ParseUrl(url);
-            if (result == null)
-            {
-                urlValidStateLabel.Text = UrlNotParseable;
-                return false;
-            }
-            // Success
-            urlValidStateLabel.Image = Resources.done;
-            urlValidStateLabel.Text = String.Format(UrlValidParseResult, result.Type, service.Info.Name);
-            dlButton.Enabled = true;
-            mResult = result;
-            mService = service;
-            return true;
         }
         #endregion
 
@@ -502,6 +494,10 @@ namespace Athame.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (!resolver.HasParsedUrl)
+            {
+                return;
+            }
             if (isListViewDirty)
             {
                 CleanQueueListView();
@@ -511,7 +507,7 @@ namespace Athame.UI
             {
 #endif
             // Don't add if the item is already enqueued.
-            var isAlreadyInQueue = mediaDownloadQueue.ItemById(mResult.Id) != null;
+            var isAlreadyInQueue = mediaDownloadQueue.ItemById(resolver.ParseResult.Id) != null;
             if (isAlreadyInQueue)
             {
                 TaskDialogHelper.ShowMessage(owner: Handle, icon: TaskDialogStandardIcon.Error,
@@ -521,7 +517,7 @@ namespace Athame.UI
             }
 
             // Ask for the location if required before we begin retrieval
-            var prefType = PreferenceForType(mResult.Type);
+            var prefType = PreferenceForType(resolver.ParseResult.Type);
             var saveDir = prefType.SaveDirectory;
             if (prefType.AskForLocation)
             {
@@ -538,22 +534,13 @@ namespace Athame.UI
                 }
             }
 
-            // Filter out types we can't process right now
-            if (mResult.Type != MediaType.Album && mResult.Type != MediaType.Playlist &&
-                mResult.Type != MediaType.Track)
-            {
-                TaskDialogHelper.ShowMessage(owner: Handle, icon: TaskDialogStandardIcon.Warning, buttons: TaskDialogStandardButtons.Ok,
-                    caption: $"'{mResult.Type}' is not supported yet.",
-                    message: "You may be able to download it in a later release.");
-            }
-
             // Build wait dialog
             var retrievalWaitTaskDialog = new TaskDialog
             {
                 Cancelable = false,
                 Caption = "Athame",
-                InstructionText = $"Getting {mResult.Type.ToString().ToLower()} details...",
-                Text = $"{mService.Info.Name}: {mResult.Id}",
+                InstructionText = $"Getting {resolver.ParseResult.Type.ToString().ToLower()} details...",
+                Text = $"{resolver.Service.Info.Name}: {resolver.ParseResult.Id}",
                 StandardButtons = TaskDialogStandardButtons.Cancel,
                 OwnerWindowHandle = Handle,
                 ProgressBar = new TaskDialogProgressBar { State = TaskDialogProgressBarState.Marquee }
@@ -565,36 +552,21 @@ namespace Athame.UI
                 var pathFormat = prefType.GetPlatformSaveFormat();
                 try
                 {
-                    switch (mResult.Type)
-                    {
-                        case MediaType.Album:
-                                // Get album and display it in listview
-                                var album = await mService.GetAlbumAsync(mResult.Id, true);
-                            AddToQueue(mService, album, saveDir, pathFormat);
-                            break;
-
-                        case MediaType.Playlist:
-                                // Get playlist and display it in listview
-                                var playlist = await mService.GetPlaylistAsync(mResult.Id);
-                            if (playlist.Tracks == null)
-                            {
-                                var items = mService.GetPlaylistItems(mResult.Id, 100);
-                                await items.LoadAllPagesAsync();
-                                playlist.Tracks = items.AllItems;
-                            }
-                            AddToQueue(mService, playlist, saveDir, pathFormat);
-                            break;
-
-                        case MediaType.Track:
-                            var track = await mService.GetTrackAsync(mResult.Id);
-                            AddToQueue(mService, track.AsCollection(), saveDir, pathFormat);
-                            break;
-                    }
+                    var media = await resolver.Resolve();
+                    AddToQueue(resolver.Service, media, saveDir, pathFormat);
                 }
                 catch (ResourceNotFoundException)
                 {
                     TaskDialogHelper.ShowMessage(caption: "This media does not exist.",
-                        message: "Ensure the provided URL is valid, and try again", owner: Handle, buttons: TaskDialogStandardButtons.Ok, icon: TaskDialogStandardIcon.Information);
+                        message: "Ensure the provided URL is valid, and try again", owner: Handle,
+                        buttons: TaskDialogStandardButtons.Ok, icon: TaskDialogStandardIcon.Information);
+                }
+                catch (NotImplementedException)
+                {
+                    TaskDialogHelper.ShowMessage(
+                        owner: Handle, icon: TaskDialogStandardIcon.Warning, buttons: TaskDialogStandardButtons.Ok,
+                    caption: $"'{resolver.ParseResult.Type}' is not supported yet.",
+                    message: "You may be able to download it in a later release.");
                 }
                 catch (Exception ex)
                 {
@@ -602,6 +574,7 @@ namespace Athame.UI
                         "An error occurred while trying to retrieve information for this media.",
                         "The provided URL may be invalid or unsupported.", Handle);
                 }
+
                 idTextBox.Clear();
                 UnlockUi();
                 retrievalWaitTaskDialog.Close();

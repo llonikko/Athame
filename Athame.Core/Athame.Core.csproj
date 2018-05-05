@@ -79,6 +79,7 @@
     <Compile Include="Plugin\PluginManager.cs" />
     <Compile Include="Plugin\ServiceCastExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\UrlResolver.cs" />
     <Compile Include="Settings\SettingsFile.cs" />
     <Compile Include="Utils\Dictify.cs" />
     <Compile Include="Utils\MediaCollectionExtensions.cs" />
