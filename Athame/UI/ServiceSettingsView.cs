@@ -111,7 +111,22 @@ namespace Athame.UI
                 }
                 else
                 {
-                    await authenticatableAsync.AuthenticateAsync();
+                    var result = await am.Authenticate(service);
+                    if (result.Result) return;
+                    if (result.Exception != null)
+                    {
+                        Log.WriteException(Level.Error, Tag, result.Exception, "AM custom auth");
+                        TaskDialogHelper.ShowExceptionDialog(result.Exception,
+                            "An error occurred while attempting to sign in.", 
+                            "Make sure you have entered the correct credentials and your device has an active internet connection.\n\n" +
+                            "The information below may be useful to the plugin's author.", Handle);
+                    }
+                    else
+                    {
+                        TaskDialogHelper.ShowMessage("An error occurred while attempting to sign in.",
+                            "Make sure you have entered the correct credentials and your device has an active internet connection.", 
+                            TaskDialogStandardButtons.Ok, TaskDialogStandardIcon.Error, Handle);
+                    }
                 }
             }
             else

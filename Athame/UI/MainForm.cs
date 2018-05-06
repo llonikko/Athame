@@ -541,6 +541,7 @@ namespace Athame.UI
                 }
                 catch (Exception ex)
                 {
+                    Log.WriteException(Level.Error, Tag, ex, "While attempting to resolve media");
                     TaskDialogHelper.ShowExceptionDialog(ex,
                         "An error occurred while trying to retrieve information for this media.",
                         "The provided URL may be invalid or unsupported.", Handle);
@@ -748,15 +749,9 @@ namespace Athame.UI
             }
             if (!Program.DefaultPluginManager.AreAnyLoaded)
             {
-#if DEBUG
-                // https://youtu.be/Ki5cvEPu_e0?t=161
-                var buttons = TaskDialogStandardButtons.Ok | TaskDialogStandardButtons.No;
-#else
-                var buttons = TaskDialogStandardButtons.Ok;
-#endif
                 if (TaskDialogHelper.CreateMessageDialog("No plugins installed",
                     "No plugins could be found. If you have attempted to install a plugin, it may not be installed properly.",
-                    buttons, TaskDialogStandardIcon.Error, Handle).Show() != TaskDialogResult.No)
+                    TaskDialogStandardButtons.Ok, TaskDialogStandardIcon.Error, Handle).Show() != TaskDialogResult.No)
                 {
                     Application.Exit();
                 }
@@ -788,29 +783,6 @@ namespace Athame.UI
             }
         }
         #endregion
-
-//        private const int ImageListAnimStartIndex = 4;
-//        private const int ImageListAnimEndIndex = 15;
-//        private int currentFrame = ImageListAnimStartIndex;
-//        private ListViewItem currentAnimatingItem;
-//
-//        private void queueImageAnimationTimer_Tick(object sender, EventArgs e)
-//        {
-//            currentFrame = ++currentFrame > ImageListAnimEndIndex ? ImageListAnimStartIndex : currentFrame;
-//            currentAnimatingItem.ImageIndex = currentFrame;
-//        }
-//
-//        private void StartAnimation(ListViewItem item)
-//        {
-//            currentAnimatingItem = item;
-//            queueImageAnimationTimer.Start();
-//        }
-//
-//        private void StopAnimation()
-//        {
-//            currentAnimatingItem = null;
-//            queueImageAnimationTimer.Stop();
-//        }
 
         private string GetCurrentlySelectedItemDir()
         {

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Media;
 using System.Windows.Forms;
+using Athame.Core.Logging;
 using Athame.Core.Plugin;
 using Athame.PluginAPI.Service;
 
@@ -10,8 +11,11 @@ namespace Athame.UI
 
     public partial class CredentialsForm : AthameDialog
     {
+        private const string Tag = nameof(CredentialsForm);
+
         private readonly MusicService svc;
         private readonly IUsernamePasswordAuthenticationAsync usernamePasswordService;
+        private readonly AuthenticationManager am = Program.DefaultAuthenticationManager;
 
         public CredentialsForm(MusicService service)
         {
@@ -48,17 +52,21 @@ namespace Athame.UI
         {
             var waitForm = TaskDialogHelper.CreateWaitDialog($"Signing into {svc.Info.Name}...", Handle);
             waitForm.Opened += async (o, args) => {
-                var result = await usernamePasswordService.AuthenticateAsync(emailTextBox.Text, passwordTextBox.Text, true);
+                var result = await am.Authenticate(svc, emailTextBox.Text, passwordTextBox.Text, true);
                 waitForm.Close();
-                if (result)
+                if (result.Result)
                 {
                     DialogResult = DialogResult.OK;
+                    return;
                 }
-                else
+                if (result.Exception != null)
                 {
-                    errorLabel.Text = "An error occurred while signing in. Please check your credentials and try again.";
-                    SystemSounds.Hand.Play();
+                    Log.WriteException(Level.Error, Tag, result.Exception, "AM credential auth");
                 }
+                
+                errorLabel.Text = "An error occurred while signing in. Please check your credentials and try again.";
+                SystemSounds.Hand.Play();
+                
             };
             waitForm.Show();
         }
