@@ -133,7 +133,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\Win32\Native.cs" />
     <Compile Include="UI\Win32\ProgressBarExtensions.cs" />
     <Compile Include="UI\ServiceSettingsView.cs">
       <SubType>UserControl</SubType>

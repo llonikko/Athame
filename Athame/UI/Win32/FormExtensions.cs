@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Athame.Core.Platform.Win32;
 
 namespace Athame.UI.Win32
 {
@@ -18,28 +19,14 @@ namespace Athame.UI.Win32
 
     public static class FormExtensions
     {
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct FLASHWINFO
-        {
-            public uint cbSize;
-            public IntPtr hwnd;
-            public uint dwFlags;
-            public uint uCount;
-            public uint dwTimeout;
-        }
 
-        [DllImport(Native.User32)]
-        private static extern bool ReleaseCapture();
-
-        [DllImport(Native.User32)]
-        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
 
         public static void DragMove(this Form form)
         {
-            ReleaseCapture();
+            Native.ReleaseCapture();
             Native.SendMessage(form.Handle, WM_NCLBUTTONDOWN, new IntPtr(HT_CAPTION), IntPtr.Zero);
         }
 
@@ -53,7 +40,7 @@ namespace Athame.UI.Win32
                 dwTimeout = (uint)rate
             };
             fInfo.cbSize = (uint)Marshal.SizeOf(fInfo);
-            FlashWindowEx(ref fInfo);
+            Native.FlashWindowEx(ref fInfo);
         }
 
 

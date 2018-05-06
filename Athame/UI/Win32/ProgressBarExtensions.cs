@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Athame.Core.Platform.Win32;
 
 // ReSharper disable InconsistentNaming
 
