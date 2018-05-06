@@ -11,7 +11,7 @@ namespace Athame.UI
 
     public partial class CredentialsForm : AthameDialog
     {
-        private const string Tag = nameof(CredentialsForm);
+        private const string Lag = nameof(CredentialsForm);
 
         private readonly MusicService svc;
         private readonly IUsernamePasswordAuthenticationAsync usernamePasswordService;
@@ -61,7 +61,7 @@ namespace Athame.UI
                 }
                 if (result.Exception != null)
                 {
-                    Log.WriteException(Level.Error, Tag, result.Exception, "AM credential auth");
+                    Log.WriteException(Level.Error, Lag, result.Exception, "AM credential auth");
                 }
                 
                 errorLabel.Text = "An error occurred while signing in. Please check your credentials and try again.";

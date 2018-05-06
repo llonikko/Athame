@@ -1,18 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Athame.Core.Logging;
 using Athame.PluginAPI.Service;
 
 namespace Athame.Core.DownloadAndTag
 {
     public class ImageCache
     {
+        private const string Tag = nameof(ImageCache);
+
         public static readonly ImageCache Instance = new ImageCache();
 
         private readonly Dictionary<string, ImageCacheEntry> items = new Dictionary<string, ImageCacheEntry>();
 
         public async Task AddByDownload(string smid, Picture picture)
         {
+            if (picture.FileType == null)
+            {
+                Log.Warning(Tag, "AddByDownload(): The picture's FileType is null.");
+            }
             var data = await picture.GetLargestVersionAsync();
 
             items.Add(smid, new ImageCacheEntry

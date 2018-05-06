@@ -12,7 +12,7 @@ namespace Athame.UI
 {
     public partial class ServiceSettingsView : UserControl
     {
-        private const string Tag = nameof(ServiceSettingsView);
+        private const string Lag = nameof(ServiceSettingsView);
 
         private readonly MusicService service;
         private readonly PluginInstance servicePlugin;
@@ -41,7 +41,7 @@ namespace Athame.UI
             }
             catch (Exception ex)
             {
-                Log.WriteException(Level.Error, Tag, ex, "service.GetSettingsControl()");
+                Log.WriteException(Level.Error, Lag, ex, "service.GetSettingsControl()");
                 var text = "An error occurred while trying to display the service's settings panel.\n\n" + ex;
                 var label = new Label
                 {
@@ -115,7 +115,7 @@ namespace Athame.UI
                     if (result.Result) return;
                     if (result.Exception != null)
                     {
-                        Log.WriteException(Level.Error, Tag, result.Exception, "AM custom auth");
+                        Log.WriteException(Level.Error, Lag, result.Exception, "AM custom auth");
                         TaskDialogHelper.ShowExceptionDialog(result.Exception,
                             "An error occurred while attempting to sign in.", 
                             "Make sure you have entered the correct credentials and your device has an active internet connection.\n\n" +

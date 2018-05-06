@@ -69,6 +69,8 @@ namespace Athame.Settings
             SavePlaylist = SavePlaylistSetting.DontSave;
             ConfirmExit = true;
             IgnoreSaveArtworkWithPlaylist = true;
+            KeepSystemAwake = false;
+            WriteWatermarkTags = true;
         }
 
         public AlbumArtworkSaveFormat AlbumArtworkSaveFormat { get; set; }
@@ -80,5 +82,9 @@ namespace Athame.Settings
 
         public bool ConfirmExit { get; set; }
         public bool IgnoreSaveArtworkWithPlaylist { get; set; }
+
+        public bool KeepSystemAwake { get; set; }
+
+        public bool WriteWatermarkTags { get; set; }
     }
 }

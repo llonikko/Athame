@@ -19,6 +19,8 @@ namespace Athame.Core.DownloadAndTag
 
         private readonly bool useTempFile;
 
+        private bool _writeWatermarkTags = true;
+
         public MediaDownloadQueue(bool useTempFile)
         {
             this.useTempFile = useTempFile;
@@ -100,8 +102,9 @@ namespace Athame.Core.DownloadAndTag
         private ExceptionSkip skip;
 
         public async Task StartDownloadAsync(SavePlaylistSetting playlistSetting, bool ignoreSaveArtworkWithPlaylist,
-            AlbumArtworkSaveFormat albumArtworkSaveFormat)
+            AlbumArtworkSaveFormat albumArtworkSaveFormat, bool writeWatermarkTags)
         {
+            _writeWatermarkTags = writeWatermarkTags;
             var queueView = new Queue<EnqueuedCollection>(this);
             while (queueView.Count > 0)
             {
@@ -225,7 +228,7 @@ namespace Athame.Core.DownloadAndTag
                     {
                         setting = AlbumArtworkSaveFormat.DontSave;
                     }
-                    TrackTagger.Write(collection.Service.Info.Name, currentItem, eventArgs.TrackFile, setting, tempPath);
+                    TrackTagger.Write(collection.Service.Info.Name, currentItem, eventArgs.TrackFile, setting, tempPath, _writeWatermarkTags);
 
                     // Rename to proper path
                     if (useTempFile)

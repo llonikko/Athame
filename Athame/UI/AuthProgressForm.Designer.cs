@@ -91,7 +91,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Sign in - Athame";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AuthProgressForm_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AuthProgressForm_FormClosed);
             this.Shown += new System.EventHandler(this.AuthProgressForm_Shown);
+            this.VisibleChanged += new System.EventHandler(this.AuthProgressForm_VisibleChanged);
             this.ResumeLayout(false);
 
         }

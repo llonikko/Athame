@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Athame.Core.Utils;
 using Athame.PluginAPI.Downloader;
 using Athame.PluginAPI.Service;
@@ -11,7 +12,7 @@ namespace Athame.Core.DownloadAndTag
 {
     public class TrackTagger
     {
-        private const string CopyrightText = "Respect the artists! Pay for music when you can! Downloaded with Athame";
+        private static readonly string WatermarkText = $"Downloaded with Athame {Assembly.GetEntryAssembly().GetName().Version}.";
 
         private static void WriteArtworkFile(string directory, AlbumArtworkSaveFormat saveFormat, Track track, ImageCacheEntry albumArtwork)
         {
@@ -37,7 +38,7 @@ namespace Athame.Core.DownloadAndTag
             SysFile.WriteAllBytes(Path.Combine(directory, fileName), albumArtwork.Data);
         }
 
-        public static void Write(string serviceName, Track completedTrack, TrackFile trackFile, AlbumArtworkSaveFormat saveFormat, string path)
+        public static void Write(string serviceName, Track completedTrack, TrackFile trackFile, AlbumArtworkSaveFormat saveFormat, string path, bool writeWatermarkTags)
         {
             // Get album artwork from cache
             ImageCacheEntry albumArtwork = null;
@@ -68,8 +69,10 @@ namespace Athame.Core.DownloadAndTag
                 file.Tag.Disc = (uint)track.DiscNumber;
                 file.Tag.DiscCount = (uint)(track.Album.GetTotalDiscs() ?? 0);
                 file.Tag.Year = (uint)track.Year;
-                file.Tag.Copyright = CopyrightText;
-                file.Tag.Comment = CopyrightText;
+                if (writeWatermarkTags)
+                {
+                    file.Tag.Comment = WatermarkText;
+                }
                 if (albumArtwork != null)
                 {
                     file.Tag.Pictures = new IPicture[] { new TagLib.Picture(new ByteVector(albumArtwork.Data)) };

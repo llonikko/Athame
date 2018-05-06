@@ -38,7 +38,11 @@ namespace Athame.Core.Search
         /// <summary>
         /// The URL points to a downloadable media collection.
         /// </summary>
-        Success
+        Success,
+        /// <summary>
+        /// An exception occurred at some point. See <see cref="UrlResolver.Exception"/>.
+        /// </summary>
+        Exception
     }
 
     /// <summary>
@@ -57,6 +61,11 @@ namespace Athame.Core.Search
         /// The media type and ID parsed from the URL.
         /// </summary>
         public UrlParseResult ParseResult { get; private set; }
+
+        /// <summary>
+        /// The exception thrown by the service.
+        /// </summary>
+        public Exception Exception { get; private set; }
 
         /// <summary>
         /// If a URL has been parsed yet.
@@ -99,14 +108,23 @@ namespace Athame.Core.Search
                 return UrlParseState.NoServiceFound;
             }
 
-            if (!Service.AsAuthenticatable().IsAuthenticated)
+            var authService = Service.AsAuthenticatable();
+            if (authService != null && !authService.IsAuthenticated)
             {
                 return UrlParseState.ServiceNotAuthenticated;
             }
 
-            if ((ParseResult = Service.ParseUrl(actualUrl)) == null || ParseResult?.Type == MediaType.Unknown)
+            try
             {
-                return UrlParseState.NoMedia;
+                if ((ParseResult = Service.ParseUrl(actualUrl)) == null || ParseResult?.Type == MediaType.Unknown)
+                {
+                    return UrlParseState.NoMedia;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception = ex;
+                return UrlParseState.Exception;
             }
 
             return UrlParseState.Success;

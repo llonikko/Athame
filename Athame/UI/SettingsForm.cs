@@ -31,6 +31,8 @@ namespace Athame.UI
             savePlaylistAsComboBox.SelectedIndex = (int)defaults.SavePlaylist;
             confirmExitCheckBox.Checked = defaults.ConfirmExit;
             ignoreAlbumArtworkCheckBox.Checked = defaults.IgnoreSaveArtworkWithPlaylist;
+            preventSleepCheckBox.Checked = defaults.KeepSystemAwake;
+            watermarkTagsCheckBox.Checked = defaults.WriteWatermarkTags;
 
             // Inherit checkbox
             pldSameAsAlbumTrack.Checked = defaults.PlaylistSavePreferenceUsesGeneral;
@@ -299,6 +301,16 @@ namespace Athame.UI
         {
             ValidateTrackFormat();
             ValidatePlaylistFormat();
+        }
+
+        private void preventSleepCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            defaults.KeepSystemAwake = preventSleepCheckBox.Checked;
+        }
+
+        private void watermarkTagsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            defaults.WriteWatermarkTags = watermarkTagsCheckBox.Checked;
         }
     }
 }

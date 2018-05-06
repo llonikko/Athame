@@ -170,6 +170,7 @@ namespace Athame.UI
                 Log.Error(Tag, "MDQ exception handler: currently downloading LV item tag is null!");
                 throw e.Exception;
             }
+            animator.Remove(currentlyDownloadingItem);
             currentlyDownloadingItem.ImageKey = "error";
             currentlyDownloadingItem.Text = "Error occurred while downloading";
             tag.Exception = e.Exception;
@@ -375,7 +376,10 @@ namespace Athame.UI
 
         private void RestoreServices()
         {
-            new AuthProgressForm(Program.DefaultPluginManager.ServicesEnumerable()).Show(this);
+            LockUi();
+            var form = new AuthProgressForm(Program.DefaultPluginManager.ServicesEnumerable());
+            form.HiddenOrClosed += (sender, args) => UnlockUi();
+            form.Show(this);
         }
 
         #region Validation for URL
@@ -423,6 +427,11 @@ namespace Athame.UI
                     urlValidStateLabel.Image = Resources.done;
                     urlValidStateLabel.Text = String.Format(UrlValidParseResult, resolver.ParseResult.Type, resolver.Service.Info.Name);
                     dlButton.Enabled = true;
+                    break;
+
+                case UrlParseState.Exception:
+                    Log.WriteException(Level.Error, Tag, resolver.Exception, "ValidateEnteredUrl()");
+                    urlValidStateLabel.Text = "An exception occurred while trying to parse the URL.";
                     break;
 
                 default:
@@ -653,8 +662,11 @@ namespace Athame.UI
                 animator.Start();
                 LockUi();
                 totalStatusLabel.Text = "Warming up...";
-                await mediaDownloadQueue.StartDownloadAsync(Program.DefaultSettings.Settings.SavePlaylist, 
-                    Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, Program.DefaultSettings.Settings.AlbumArtworkSaveFormat);
+                await mediaDownloadQueue.StartDownloadAsync(
+                    Program.DefaultSettings.Settings.SavePlaylist, 
+                    Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, 
+                    Program.DefaultSettings.Settings.AlbumArtworkSaveFormat,
+                    Program.DefaultSettings.Settings.WriteWatermarkTags);
                 totalStatusLabel.Text = "All downloads completed";
                 collectionStatusLabel.Text = GetCompletionMessage();
                 currentlyDownloadingItem = null;
@@ -764,7 +776,6 @@ namespace Athame.UI
             LockUi();
             LoadAndInitPlugins();
             RestoreServices();
-            UnlockUi();
         }
 
         private void queueListView_KeyDown(object sender, KeyEventArgs e)

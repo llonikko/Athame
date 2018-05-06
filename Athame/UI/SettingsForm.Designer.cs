@@ -30,10 +30,19 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.generalTab = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.confirmExitCheckBox = new System.Windows.Forms.CheckBox();
+            this.preventSleepCheckBox = new System.Windows.Forms.CheckBox();
+            this.watermarkTagsCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.artworkSaveAsFileRadioButton = new System.Windows.Forms.RadioButton();
+            this.artworkSaveAsFormattedFileRadioButton = new System.Windows.Forms.RadioButton();
+            this.artworkDontSaveRadioButton = new System.Windows.Forms.RadioButton();
             this.pldSameAsAlbumTrack = new System.Windows.Forms.CheckBox();
-            this.formatHelpButton = new System.Windows.Forms.Button();
             this.pldOptionsGroupBox = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.compiledPlaylistPathFormatLabel = new System.Windows.Forms.Label();
             this.ignoreAlbumArtworkCheckBox = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -47,16 +56,12 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.compiledPathFormatLabel = new System.Windows.Forms.Label();
             this.askWhereToSaveRadioButton = new System.Windows.Forms.RadioButton();
+            this.formatHelpButton = new System.Windows.Forms.Button();
             this.saveToRadioButton = new System.Windows.Forms.RadioButton();
             this.saveLocLabel = new System.Windows.Forms.Label();
             this.pathFormatTextBox = new System.Windows.Forms.TextBox();
             this.saveLocBrowseButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.artworkSaveAsFileRadioButton = new System.Windows.Forms.RadioButton();
-            this.artworkSaveAsFormattedFileRadioButton = new System.Windows.Forms.RadioButton();
-            this.artworkDontSaveRadioButton = new System.Windows.Forms.RadioButton();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -79,9 +84,12 @@
             this.mFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.tabControl1.SuspendLayout();
             this.generalTab.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.pldOptionsGroupBox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -95,36 +103,136 @@
             this.tabControl1.Location = new System.Drawing.Point(14, 16);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(716, 554);
+            this.tabControl1.Size = new System.Drawing.Size(716, 600);
             this.tabControl1.TabIndex = 0;
             // 
             // generalTab
             // 
-            this.generalTab.Controls.Add(this.confirmExitCheckBox);
+            this.generalTab.Controls.Add(this.groupBox3);
+            this.generalTab.Controls.Add(this.groupBox2);
             this.generalTab.Controls.Add(this.pldSameAsAlbumTrack);
-            this.generalTab.Controls.Add(this.formatHelpButton);
             this.generalTab.Controls.Add(this.pldOptionsGroupBox);
             this.generalTab.Controls.Add(this.groupBox1);
-            this.generalTab.Controls.Add(this.label4);
-            this.generalTab.Controls.Add(this.flowLayoutPanel2);
             this.generalTab.Location = new System.Drawing.Point(4, 24);
             this.generalTab.Name = "generalTab";
             this.generalTab.Padding = new System.Windows.Forms.Padding(3);
-            this.generalTab.Size = new System.Drawing.Size(708, 526);
+            this.generalTab.Size = new System.Drawing.Size(708, 572);
             this.generalTab.TabIndex = 0;
             this.generalTab.Text = "General";
             this.generalTab.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.flowLayoutPanel3);
+            this.groupBox3.Location = new System.Drawing.Point(195, 382);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(507, 100);
+            this.groupBox3.TabIndex = 16;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Misc";
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.confirmExitCheckBox);
+            this.flowLayoutPanel3.Controls.Add(this.preventSleepCheckBox);
+            this.flowLayoutPanel3.Controls.Add(this.watermarkTagsCheckBox);
+            this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 19);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(501, 78);
+            this.flowLayoutPanel3.TabIndex = 17;
+            // 
             // confirmExitCheckBox
             // 
             this.confirmExitCheckBox.AutoSize = true;
-            this.confirmExitCheckBox.Location = new System.Drawing.Point(6, 385);
+            this.confirmExitCheckBox.Location = new System.Drawing.Point(3, 3);
             this.confirmExitCheckBox.Name = "confirmExitCheckBox";
             this.confirmExitCheckBox.Size = new System.Drawing.Size(280, 19);
             this.confirmExitCheckBox.TabIndex = 2;
             this.confirmExitCheckBox.Text = "Ask before exiting if there are items in the queue";
             this.confirmExitCheckBox.UseVisualStyleBackColor = true;
             this.confirmExitCheckBox.CheckedChanged += new System.EventHandler(this.confirmExitCheckBox_CheckedChanged);
+            // 
+            // preventSleepCheckBox
+            // 
+            this.preventSleepCheckBox.AutoSize = true;
+            this.preventSleepCheckBox.Location = new System.Drawing.Point(3, 28);
+            this.preventSleepCheckBox.Name = "preventSleepCheckBox";
+            this.preventSleepCheckBox.Size = new System.Drawing.Size(332, 19);
+            this.preventSleepCheckBox.TabIndex = 3;
+            this.preventSleepCheckBox.Text = "Prevent computer from going to sleep while downloading";
+            this.preventSleepCheckBox.UseVisualStyleBackColor = true;
+            this.preventSleepCheckBox.CheckedChanged += new System.EventHandler(this.preventSleepCheckBox_CheckedChanged);
+            // 
+            // watermarkTagsCheckBox
+            // 
+            this.watermarkTagsCheckBox.AutoSize = true;
+            this.watermarkTagsCheckBox.Location = new System.Drawing.Point(3, 53);
+            this.watermarkTagsCheckBox.Name = "watermarkTagsCheckBox";
+            this.watermarkTagsCheckBox.Size = new System.Drawing.Size(220, 19);
+            this.watermarkTagsCheckBox.TabIndex = 4;
+            this.watermarkTagsCheckBox.Text = "Write \"Downloaded by Athame\" tags";
+            this.watermarkTagsCheckBox.UseVisualStyleBackColor = true;
+            this.watermarkTagsCheckBox.CheckedChanged += new System.EventHandler(this.watermarkTagsCheckBox_CheckedChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.flowLayoutPanel2);
+            this.groupBox2.Location = new System.Drawing.Point(6, 382);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(183, 100);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Save album artwork as file";
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.artworkSaveAsFileRadioButton);
+            this.flowLayoutPanel2.Controls.Add(this.artworkSaveAsFormattedFileRadioButton);
+            this.flowLayoutPanel2.Controls.Add(this.artworkDontSaveRadioButton);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 19);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(177, 78);
+            this.flowLayoutPanel2.TabIndex = 16;
+            // 
+            // artworkSaveAsFileRadioButton
+            // 
+            this.artworkSaveAsFileRadioButton.AutoSize = true;
+            this.artworkSaveAsFileRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.artworkSaveAsFileRadioButton.Name = "artworkSaveAsFileRadioButton";
+            this.artworkSaveAsFileRadioButton.Size = new System.Drawing.Size(98, 19);
+            this.artworkSaveAsFileRadioButton.TabIndex = 0;
+            this.artworkSaveAsFileRadioButton.TabStop = true;
+            this.artworkSaveAsFileRadioButton.Text = "As \"cover.ext\"";
+            this.artworkSaveAsFileRadioButton.UseVisualStyleBackColor = true;
+            this.artworkSaveAsFileRadioButton.CheckedChanged += new System.EventHandler(this.artworkSaveAsFileRadioButton_CheckedChanged);
+            // 
+            // artworkSaveAsFormattedFileRadioButton
+            // 
+            this.artworkSaveAsFormattedFileRadioButton.AutoSize = true;
+            this.artworkSaveAsFormattedFileRadioButton.Location = new System.Drawing.Point(3, 28);
+            this.artworkSaveAsFormattedFileRadioButton.Name = "artworkSaveAsFormattedFileRadioButton";
+            this.artworkSaveAsFormattedFileRadioButton.Size = new System.Drawing.Size(160, 19);
+            this.artworkSaveAsFormattedFileRadioButton.TabIndex = 1;
+            this.artworkSaveAsFormattedFileRadioButton.TabStop = true;
+            this.artworkSaveAsFormattedFileRadioButton.Text = "As \"{Artist} - {Album}.ext\"";
+            this.artworkSaveAsFormattedFileRadioButton.UseVisualStyleBackColor = true;
+            this.artworkSaveAsFormattedFileRadioButton.CheckedChanged += new System.EventHandler(this.artworkSaveAsFormattedFileRadioButton_CheckedChanged);
+            // 
+            // artworkDontSaveRadioButton
+            // 
+            this.artworkDontSaveRadioButton.AutoSize = true;
+            this.artworkDontSaveRadioButton.Location = new System.Drawing.Point(3, 53);
+            this.artworkDontSaveRadioButton.Name = "artworkDontSaveRadioButton";
+            this.artworkDontSaveRadioButton.Size = new System.Drawing.Size(80, 19);
+            this.artworkDontSaveRadioButton.TabIndex = 2;
+            this.artworkDontSaveRadioButton.TabStop = true;
+            this.artworkDontSaveRadioButton.Text = "Don\'t save";
+            this.artworkDontSaveRadioButton.UseVisualStyleBackColor = true;
+            this.artworkDontSaveRadioButton.CheckedChanged += new System.EventHandler(this.artworkDontSaveRadioButton_CheckedChanged);
             // 
             // pldSameAsAlbumTrack
             // 
@@ -139,18 +247,9 @@
             this.pldSameAsAlbumTrack.UseVisualStyleBackColor = false;
             this.pldSameAsAlbumTrack.CheckedChanged += new System.EventHandler(this.pldSameAsAlbumTrack_CheckedChanged);
             // 
-            // formatHelpButton
-            // 
-            this.formatHelpButton.Location = new System.Drawing.Point(542, 382);
-            this.formatHelpButton.Name = "formatHelpButton";
-            this.formatHelpButton.Size = new System.Drawing.Size(160, 23);
-            this.formatHelpButton.TabIndex = 14;
-            this.formatHelpButton.Text = "Help with path formats...";
-            this.formatHelpButton.UseVisualStyleBackColor = true;
-            this.formatHelpButton.Click += new System.EventHandler(this.formatHelpButton_Click);
-            // 
             // pldOptionsGroupBox
             // 
+            this.pldOptionsGroupBox.Controls.Add(this.button1);
             this.pldOptionsGroupBox.Controls.Add(this.compiledPlaylistPathFormatLabel);
             this.pldOptionsGroupBox.Controls.Add(this.ignoreAlbumArtworkCheckBox);
             this.pldOptionsGroupBox.Controls.Add(this.label3);
@@ -167,6 +266,16 @@
             this.pldOptionsGroupBox.TabIndex = 13;
             this.pldOptionsGroupBox.TabStop = false;
             this.pldOptionsGroupBox.Text = "Playlist download options";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(530, 122);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(160, 23);
+            this.button1.TabIndex = 15;
+            this.button1.Text = "Help with path formats...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.formatHelpButton_Click);
             // 
             // compiledPlaylistPathFormatLabel
             // 
@@ -281,6 +390,7 @@
             // 
             this.groupBox1.Controls.Add(this.compiledPathFormatLabel);
             this.groupBox1.Controls.Add(this.askWhereToSaveRadioButton);
+            this.groupBox1.Controls.Add(this.formatHelpButton);
             this.groupBox1.Controls.Add(this.saveToRadioButton);
             this.groupBox1.Controls.Add(this.saveLocLabel);
             this.groupBox1.Controls.Add(this.pathFormatTextBox);
@@ -313,6 +423,16 @@
             this.askWhereToSaveRadioButton.Text = "Ask me every time";
             this.askWhereToSaveRadioButton.UseVisualStyleBackColor = true;
             this.askWhereToSaveRadioButton.CheckedChanged += new System.EventHandler(this.askWhereToSaveRadioButton_CheckedChanged);
+            // 
+            // formatHelpButton
+            // 
+            this.formatHelpButton.Location = new System.Drawing.Point(530, 114);
+            this.formatHelpButton.Name = "formatHelpButton";
+            this.formatHelpButton.Size = new System.Drawing.Size(160, 23);
+            this.formatHelpButton.TabIndex = 14;
+            this.formatHelpButton.Text = "Help with path formats...";
+            this.formatHelpButton.UseVisualStyleBackColor = true;
+            this.formatHelpButton.Click += new System.EventHandler(this.formatHelpButton_Click);
             // 
             // saveToRadioButton
             // 
@@ -368,61 +488,6 @@
             this.label5.TabIndex = 9;
             this.label5.Text = "Path format:";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 418);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 15);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Save album artwork:";
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.artworkSaveAsFileRadioButton);
-            this.flowLayoutPanel2.Controls.Add(this.artworkSaveAsFormattedFileRadioButton);
-            this.flowLayoutPanel2.Controls.Add(this.artworkDontSaveRadioButton);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(126, 418);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(200, 100);
-            this.flowLayoutPanel2.TabIndex = 3;
-            // 
-            // artworkSaveAsFileRadioButton
-            // 
-            this.artworkSaveAsFileRadioButton.AutoSize = true;
-            this.artworkSaveAsFileRadioButton.Location = new System.Drawing.Point(3, 3);
-            this.artworkSaveAsFileRadioButton.Name = "artworkSaveAsFileRadioButton";
-            this.artworkSaveAsFileRadioButton.Size = new System.Drawing.Size(98, 19);
-            this.artworkSaveAsFileRadioButton.TabIndex = 0;
-            this.artworkSaveAsFileRadioButton.TabStop = true;
-            this.artworkSaveAsFileRadioButton.Text = "As \"cover.ext\"";
-            this.artworkSaveAsFileRadioButton.UseVisualStyleBackColor = true;
-            this.artworkSaveAsFileRadioButton.CheckedChanged += new System.EventHandler(this.artworkSaveAsFileRadioButton_CheckedChanged);
-            // 
-            // artworkSaveAsFormattedFileRadioButton
-            // 
-            this.artworkSaveAsFormattedFileRadioButton.AutoSize = true;
-            this.artworkSaveAsFormattedFileRadioButton.Location = new System.Drawing.Point(3, 28);
-            this.artworkSaveAsFormattedFileRadioButton.Name = "artworkSaveAsFormattedFileRadioButton";
-            this.artworkSaveAsFormattedFileRadioButton.Size = new System.Drawing.Size(160, 19);
-            this.artworkSaveAsFormattedFileRadioButton.TabIndex = 1;
-            this.artworkSaveAsFormattedFileRadioButton.TabStop = true;
-            this.artworkSaveAsFormattedFileRadioButton.Text = "As \"{Artist} - {Album}.ext\"";
-            this.artworkSaveAsFormattedFileRadioButton.UseVisualStyleBackColor = true;
-            this.artworkSaveAsFormattedFileRadioButton.CheckedChanged += new System.EventHandler(this.artworkSaveAsFormattedFileRadioButton_CheckedChanged);
-            // 
-            // artworkDontSaveRadioButton
-            // 
-            this.artworkDontSaveRadioButton.AutoSize = true;
-            this.artworkDontSaveRadioButton.Location = new System.Drawing.Point(3, 53);
-            this.artworkDontSaveRadioButton.Name = "artworkDontSaveRadioButton";
-            this.artworkDontSaveRadioButton.Size = new System.Drawing.Size(80, 19);
-            this.artworkDontSaveRadioButton.TabIndex = 2;
-            this.artworkDontSaveRadioButton.TabStop = true;
-            this.artworkDontSaveRadioButton.Text = "Don\'t save";
-            this.artworkDontSaveRadioButton.UseVisualStyleBackColor = true;
-            this.artworkDontSaveRadioButton.CheckedChanged += new System.EventHandler(this.artworkDontSaveRadioButton_CheckedChanged);
-            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.panel1);
@@ -432,7 +497,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(708, 526);
+            this.tabPage1.Size = new System.Drawing.Size(708, 572);
             this.tabPage1.TabIndex = 1;
             this.tabPage1.Text = "Plugins and Services";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -613,7 +678,7 @@
             this.flowLayoutPanel1.Controls.Add(this.saveButton);
             this.flowLayoutPanel1.Controls.Add(this.cancelButton);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(546, 573);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(546, 622);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(186, 33);
             this.flowLayoutPanel1.TabIndex = 1;
@@ -643,7 +708,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(744, 618);
+            this.ClientSize = new System.Drawing.Size(744, 667);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.tabControl1);
             this.Name = "SettingsForm";
@@ -652,12 +717,16 @@
             this.tabControl1.ResumeLayout(false);
             this.generalTab.ResumeLayout(false);
             this.generalTab.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.pldOptionsGroupBox.ResumeLayout(false);
             this.pldOptionsGroupBox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
-            this.flowLayoutPanel2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -683,8 +752,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.ListBox servicesListBox;
         private System.Windows.Forms.Panel serviceUiPanel;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.RadioButton artworkSaveAsFileRadioButton;
         private System.Windows.Forms.RadioButton artworkSaveAsFormattedFileRadioButton;
         private System.Windows.Forms.RadioButton artworkDontSaveRadioButton;
@@ -719,5 +786,12 @@
         private System.Windows.Forms.Label compiledPlaylistPathFormatLabel;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label serviceVersionLabel;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox preventSleepCheckBox;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
+        private System.Windows.Forms.CheckBox watermarkTagsCheckBox;
     }
 }

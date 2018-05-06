@@ -24,6 +24,8 @@ namespace Athame.UI
         private IEnumerable<MusicService> services;
         private bool isWorking = true;
 
+        public event EventHandler HiddenOrClosed;
+
         private void Init(IEnumerable<MusicService> _services)
         {
             services = _services.Where(am.CanRestore);
@@ -137,6 +139,19 @@ namespace Athame.UI
         private void hideButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void AuthProgressForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            HiddenOrClosed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void AuthProgressForm_VisibleChanged(object sender, EventArgs e)
+        {
+            if (!Visible)
+            {
+                HiddenOrClosed?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
 }
