@@ -95,6 +95,7 @@
     <Compile Include="UI\AthameForm.Designer.cs">
       <DependentUpon>AthameForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\AuthenticationUi.cs" />
     <Compile Include="UI\AuthProgressForm.cs">
       <SubType>Form</SubType>
     </Compile>

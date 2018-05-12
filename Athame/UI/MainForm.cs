@@ -50,6 +50,7 @@ namespace Athame.UI
         private readonly TaskbarManager mTaskbarManager = TaskbarManager.Instance;
         private readonly MediaDownloadQueue mediaDownloadQueue;
         private readonly ListViewItemAnimator animator = new ListViewItemAnimator(4, 15);
+        private readonly AuthenticationUi aui;
 
         // Instance vars
         private UrlResolver resolver;
@@ -73,6 +74,7 @@ namespace Athame.UI
             InitializeComponent();
             queueListView.SmallImageList = GlobalImageList.Instance.ImageList;
             resolver = new UrlResolver(Program.DefaultPluginManager);
+            aui = new AuthenticationUi(this);
             UnlockUi();
 
             // Add event handlers for MDQ
@@ -659,16 +661,28 @@ namespace Athame.UI
             idTextBox.Paste();
         }
 
-        private void urlValidStateLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private async void urlValidStateLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var svc = (MusicService)e.Link.LinkData;
-            using (var cf = new CredentialsForm(svc))
+            var auth = svc.AsAuthenticatable();
+            if (auth.IsAuthenticated)
             {
-                var res = cf.ShowDialog(this);
-                if (res != DialogResult.OK) return;
+                ValidateEnteredUrl();
+                return;
+            }
+            if (auth.HasSavedSession)
+            {
+                var f = aui.RestoreSingle(svc);
+                if (f != null)
+                {
+                    f.Closed += (o, args) => ValidateEnteredUrl();
+                }
+            }
+            else
+            {
+                await aui.Authenticate(svc);
                 ValidateEnteredUrl();
             }
-
         }
 
         private async Task StartDownload()

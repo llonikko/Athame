@@ -18,6 +18,7 @@ namespace Athame.UI
         private readonly PluginInstance servicePlugin;
         private readonly IAuthenticatable authenticatable;
         private readonly AuthenticationManager am = Program.DefaultAuthenticationManager;
+        private readonly AuthenticationUi aui;
 
         public ServiceSettingsView(PluginInstance servicePlugin)
         {
@@ -25,6 +26,7 @@ namespace Athame.UI
             service = servicePlugin.Service;
             authenticatable = service.AsAuthenticatable();
             InitializeComponent();
+            aui = new AuthenticationUi(ParentForm);
             if (authenticatable == null)
             {
                 authPanel.Visible = false;
@@ -96,38 +98,7 @@ namespace Athame.UI
         {
             if (!authenticatable.IsAuthenticated)
             {
-                if (!am.CanAuthenticate(service))
-                {
-                    TaskDialogHelper.ShowMessage(caption: "Cannot authenticate this service right now.", 
-                        message: "The service is already being authenticated in the background. Please try again in a moment.", 
-                        icon: TaskDialogStandardIcon.Error, buttons: TaskDialogStandardButtons.Ok, owner: Handle);
-                    return;
-                }
-                var authenticatableAsync = service.AsAuthenticatableAsync();
-                if (authenticatableAsync == null)
-                {
-                    var dlg = new CredentialsForm(service);
-                    dlg.ShowDialog();
-                }
-                else
-                {
-                    var result = await am.Authenticate(service);
-                    if (result.Result) return;
-                    if (result.Exception != null)
-                    {
-                        Log.WriteException(Level.Error, Lag, result.Exception, "AM custom auth");
-                        TaskDialogHelper.ShowExceptionDialog(result.Exception,
-                            "An error occurred while attempting to sign in.", 
-                            "Make sure you have entered the correct credentials and your device has an active internet connection.\n\n" +
-                            "The information below may be useful to the plugin's author.", Handle);
-                    }
-                    else
-                    {
-                        TaskDialogHelper.ShowMessage("An error occurred while attempting to sign in.",
-                            "Make sure you have entered the correct credentials and your device has an active internet connection.", 
-                            TaskDialogStandardButtons.Ok, TaskDialogStandardIcon.Error, Handle);
-                    }
-                }
+                await aui.Authenticate(service);
             }
             else
             {
@@ -140,20 +111,13 @@ namespace Athame.UI
 
         private void restoreButton_Click(object sender, EventArgs e)
         {
-            if (!am.CanRestore(service))
-            {
-                TaskDialogHelper.ShowMessage(caption: "Cannot restore this service right now.",
-                    message: "The service is already being restored in the background. Please try again in a moment.",
-                    icon: TaskDialogStandardIcon.Error, buttons: TaskDialogStandardButtons.Ok, owner: Handle);
-                return;
-            }
-            var form = new AuthProgressForm(new[] {service});
+            var form = aui.RestoreSingle(service);
+            if (form == null) return;
             form.Closed += (o, args) =>
             {
                 UpdateViews();
                 servicePlugin.SettingsFile.Save();
             };
-            form.Show(this);
         }
     }
 }
