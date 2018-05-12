@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Athame.Core.DownloadAndTag;
 using Athame.Core.Logging;
+using Athame.Core.Platform;
 using Athame.Core.Plugin;
 using Athame.Core.Search;
 using Athame.Core.Settings;
@@ -66,9 +67,6 @@ namespace Athame.UI
             queueListView.SmallImageList = GlobalImageList.Instance.ImageList;
             resolver = new UrlResolver(Program.DefaultPluginManager);
             UnlockUi();
-            // The formula (1 / x) * 1000 where x = FPS will give us our timer interval in regards
-            // to how fast we want the animation to show in FPS
-            queueImageAnimationTimer.Interval = (int)(((double)1 / 12) * 1000);
 
             // Add event handlers for MDQ
             mediaDownloadQueue.Exception += MediaDownloadQueue_Exception;
@@ -657,8 +655,14 @@ namespace Athame.UI
                 return;
             }
             isListViewDirty = true;
+
+            KeepAwakeContext pwrCtx = null;
             try
             {
+                if (Program.DefaultSettings.Settings.KeepSystemAwake)
+                {
+                    pwrCtx = KeepAwakeContext.Create(KeepAwakeRequirement.System);
+                }
                 animator.Start();
                 LockUi();
                 totalStatusLabel.Text = "Warming up...";
@@ -678,10 +682,10 @@ namespace Athame.UI
             catch (Exception ex)
             {
                 PresentException(ex);
-
             }
             finally
             {
+                pwrCtx?.SetKeepAwakeRequirement(KeepAwakeRequirement.Clear);
                 UnlockUi();
                 animator.Stop();
             }

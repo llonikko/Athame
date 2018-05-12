@@ -72,7 +72,9 @@
     <Compile Include="Logging\FileLogger.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Platform\KeepAwakeContext.cs" />
     <Compile Include="Platform\Win32\Native.cs" />
+    <Compile Include="Platform\Win32\Win32KeepAwakeContext.cs" />
     <Compile Include="Plugin\AuthenticationManager.cs" />
     <Compile Include="Plugin\AuthenticationResult.cs" />
     <Compile Include="Plugin\PluginIncompatibleException.cs" />

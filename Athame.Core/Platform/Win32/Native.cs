@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Athame.Core.Platform.Win32
 {
     [Flags]
-    public enum EXECUTION_STATE : uint
+    internal enum EXECUTION_STATE : uint
     {
         ES_AWAYMODE_REQUIRED = 0x00000040,
         ES_CONTINUOUS = 0x80000000,
@@ -25,12 +25,12 @@ namespace Athame.Core.Platform.Win32
         public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
 
         [DllImport(Kernel32, CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern uint SetThreadExecutionState(EXECUTION_STATE esFlags);
+        internal static extern uint SetThreadExecutionState(EXECUTION_STATE esFlags);
 
-        [DllImport(Native.User32)]
+        [DllImport(User32)]
         public static extern bool ReleaseCapture();
 
-        [DllImport(Native.User32)]
+        [DllImport(User32)]
         public static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
     }
 
