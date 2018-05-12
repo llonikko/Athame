@@ -14,7 +14,7 @@ namespace Athame.UI
 {
     public partial class SettingsForm : AthameDialog
     {
-        private readonly AthameSettings defaults = Program.DefaultSettings.Settings;
+        private readonly AthameSettings defaults = (AthameSettings)Program.DefaultSettings.Settings.Clone();
         private readonly List<PluginInstance> services;
         private readonly RandomWords randomWords = new RandomWords();
         private readonly Album pathFormatSampleAlbum;
@@ -176,6 +176,7 @@ namespace Athame.UI
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+            Program.DefaultSettings.Settings = defaults;
             Program.DefaultSettings.Save();
             selectedInstance?.SettingsFile.Save();
             DialogResult = DialogResult.OK;
@@ -189,15 +190,8 @@ namespace Athame.UI
             selectedInstance = services[servicesListBox.SelectedIndex];
             selectedService = selectedInstance.Service;
             serviceUiPanel.Controls.Clear();
-            if (selectedService.AsAuthenticatable() != null)
-            {
-                var ssv = new ServiceSettingsView(selectedInstance) {Dock = DockStyle.Fill};
-                serviceUiPanel.Controls.Add(ssv);
-            }
-            else
-            {
-                serviceUiPanel.Controls.Add(selectedService.GetSettingsControl());
-            }
+            var ssv = new ServiceSettingsView(selectedInstance) {Dock = DockStyle.Fill};
+            serviceUiPanel.Controls.Add(ssv);
             serviceNameLabel.Text = selectedService.Info.Name;
             serviceDescriptionLabel.Text = selectedService.Info.Description;
             serviceAuthorLabel.Text = selectedService.Info.Author;

@@ -14,10 +14,16 @@ namespace Athame.Core.DownloadAndTag
     {
         private static readonly string WatermarkText = $"Downloaded with Athame {Assembly.GetEntryAssembly().GetName().Version}.";
 
-        private static void WriteArtworkFile(string directory, AlbumArtworkSaveFormat saveFormat, Track track, ImageCacheEntry albumArtwork)
+        public AlbumArtworkSaveFormat AlbumArtworkSaveFormat { get; set; }
+
+        public bool IgnoreSaveArtworkWithPlaylist { get; set; }
+
+        public bool WriteWatermarkTags { get; set; }
+
+        private void WriteArtworkFile(string directory, Track track, ImageCacheEntry albumArtwork)
         {
             string fileName = null;
-            switch (saveFormat)
+            switch (AlbumArtworkSaveFormat)
             {
                 case AlbumArtworkSaveFormat.DontSave:
                     break;
@@ -38,8 +44,16 @@ namespace Athame.Core.DownloadAndTag
             SysFile.WriteAllBytes(Path.Combine(directory, fileName), albumArtwork.Data);
         }
 
-        public static void Write(string serviceName, Track completedTrack, TrackFile trackFile, AlbumArtworkSaveFormat saveFormat, string path, bool writeWatermarkTags)
+        public void Write(EnqueuedCollection collection, Track completedTrack, TrackFile trackFile, string path)
         {
+            var serviceName = collection.Service.Info.Name;
+
+            var setting = AlbumArtworkSaveFormat;
+            if (IgnoreSaveArtworkWithPlaylist && collection.Type == MediaType.Playlist)
+            {
+                setting = AlbumArtworkSaveFormat.DontSave;
+            }
+
             // Get album artwork from cache
             ImageCacheEntry albumArtwork = null;
             var smid = completedTrack.Album.GetSmid(serviceName).ToString();
@@ -47,7 +61,7 @@ namespace Athame.Core.DownloadAndTag
             {
                 albumArtwork = ImageCache.Instance.Get(smid);
             }
-
+            
             // Write track tags
             var track = completedTrack;
             using (var file = File.Create(new File.LocalFileAbstraction(path),
@@ -69,7 +83,7 @@ namespace Athame.Core.DownloadAndTag
                 file.Tag.Disc = (uint)track.DiscNumber;
                 file.Tag.DiscCount = (uint)(track.Album.GetTotalDiscs() ?? 0);
                 file.Tag.Year = (uint)track.Year;
-                if (writeWatermarkTags)
+                if (WriteWatermarkTags)
                 {
                     file.Tag.Comment = WatermarkText;
                 }
@@ -84,10 +98,10 @@ namespace Athame.Core.DownloadAndTag
             // Write album artwork to file if requested
             if (albumArtwork == null) return;
             string parentDirectory;
-            if (saveFormat != AlbumArtworkSaveFormat.DontSave &&
+            if (setting != AlbumArtworkSaveFormat.DontSave &&
                 (parentDirectory = Path.GetDirectoryName(path)) != null)
             {
-                WriteArtworkFile(parentDirectory, saveFormat, track, albumArtwork);
+                WriteArtworkFile(parentDirectory, track, albumArtwork);
             }
         }
     }

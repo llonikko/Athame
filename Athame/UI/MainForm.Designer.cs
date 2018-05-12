@@ -62,7 +62,6 @@ namespace Athame.UI
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.queueImageAnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox2.SuspendLayout();
             this.queueMenu.SuspendLayout();
             this.mMenu.SuspendLayout();
@@ -322,7 +321,6 @@ namespace Athame.UI
         private System.Windows.Forms.ToolStripMenuItem removeTrackToolStripMenuItem;
         private System.Windows.Forms.ColumnHeader statusCol;
         private System.Windows.Forms.ToolStripMenuItem showCollectionInFileBrowserToolStripMenuItem;
-        private System.Windows.Forms.Timer queueImageAnimationTimer;
         private System.Windows.Forms.ColumnHeader locCol;
         private System.Windows.Forms.ProgressBar collectionProgressBar;
         private System.Windows.Forms.ColumnHeader columnHeader1;

@@ -15,16 +15,10 @@ namespace Athame.Core.DownloadAndTag
     {
         private const string Tag = nameof(MediaDownloadQueue);
 
-        public CancellationTokenSource CancellationTokenSource { get; set; }
+        public bool UseTempFile { get; set; }
+        public TrackTagger Tagger { get; set; }
 
-        private readonly bool useTempFile;
-
-        private bool _writeWatermarkTags = true;
-
-        public MediaDownloadQueue(bool useTempFile)
-        {
-            this.useTempFile = useTempFile;
-        }
+        public SavePlaylistSetting SavePlaylist { get; set; }
 
         public EnqueuedCollection Enqueue(MusicService service, IMediaCollection collection, string destination, string pathFormat)
         {
@@ -101,10 +95,8 @@ namespace Athame.Core.DownloadAndTag
 
         private ExceptionSkip skip;
 
-        public async Task StartDownloadAsync(SavePlaylistSetting playlistSetting, bool ignoreSaveArtworkWithPlaylist,
-            AlbumArtworkSaveFormat albumArtworkSaveFormat, bool writeWatermarkTags)
+        public async Task StartDownloadAsync()
         {
-            _writeWatermarkTags = writeWatermarkTags;
             var queueView = new Queue<EnqueuedCollection>(this);
             while (queueView.Count > 0)
             {
@@ -115,11 +107,7 @@ namespace Athame.Core.DownloadAndTag
                     CurrentCollectionIndex = (Count - queueView.Count) - 1,
                     TotalNumberOfCollections = Count
                 });
-                if (!(currentItem.MediaCollection is Playlist))
-                {
-                    playlistSetting = SavePlaylistSetting.DontSave;
-                }
-                if (await DownloadCollectionAsync(currentItem, playlistSetting, ignoreSaveArtworkWithPlaylist, albumArtworkSaveFormat)) continue;
+                if (await DownloadCollectionAsync(currentItem)) continue;
                 if (skip == ExceptionSkip.Fail)
                 {
                     return;
@@ -142,8 +130,7 @@ namespace Athame.Core.DownloadAndTag
             Directory.CreateDirectory(parentPath);
         }
 
-        private async Task<bool> DownloadCollectionAsync(EnqueuedCollection collection, SavePlaylistSetting savePlaylistSetting, bool ignoreSaveArtworkWithPlaylist,
-            AlbumArtworkSaveFormat albumArtworkSaveFormat)
+        private async Task<bool> DownloadCollectionAsync(EnqueuedCollection collection)
         {
             var tracksCollectionLength = collection.MediaCollection.Tracks.Count;
             var tracksQueue = new Queue<Track>(collection.MediaCollection.Tracks);
@@ -207,7 +194,7 @@ namespace Athame.Core.DownloadAndTag
                     // Generate the path
                     var path = collection.GetPath(eventArgs.TrackFile);
                     var tempPath = path;
-                    if (useTempFile) tempPath += "-temp";
+                    if (UseTempFile) tempPath += "-temp";
                     EnsureParentDirectories(tempPath);
                     eventArgs.State = DownloadState.Downloading;
 
@@ -223,15 +210,10 @@ namespace Athame.Core.DownloadAndTag
                     // Write the tag
                     eventArgs.State = DownloadState.WritingTags;
                     OnTrackDownloadProgress(eventArgs);
-                    var setting = albumArtworkSaveFormat;
-                    if (ignoreSaveArtworkWithPlaylist && collection.Type == MediaType.Playlist)
-                    {
-                        setting = AlbumArtworkSaveFormat.DontSave;
-                    }
-                    TrackTagger.Write(collection.Service.Info.Name, currentItem, eventArgs.TrackFile, setting, tempPath, _writeWatermarkTags);
+                    Tagger.Write(collection, currentItem, eventArgs.TrackFile, tempPath);
 
                     // Rename to proper path
-                    if (useTempFile)
+                    if (UseTempFile)
                     {
                         if (File.Exists(path))
                         {
@@ -271,7 +253,7 @@ namespace Athame.Core.DownloadAndTag
             try
             {
                 var writer = new PlaylistWriter(collection, trackFiles);
-                switch (savePlaylistSetting)
+                switch (SavePlaylist)
                 {
                     case SavePlaylistSetting.DontSave:
                         break;
@@ -282,7 +264,7 @@ namespace Athame.Core.DownloadAndTag
                         writer.WritePLS();
                         break;
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(savePlaylistSetting), savePlaylistSetting, null);
+                        throw new ArgumentOutOfRangeException();
                 }
             }
             catch (Exception ex)

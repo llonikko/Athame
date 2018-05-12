@@ -48,7 +48,7 @@ namespace Athame.UI
 
         // Read-only instance vars
         private readonly TaskbarManager mTaskbarManager = TaskbarManager.Instance;
-        private readonly MediaDownloadQueue mediaDownloadQueue = new MediaDownloadQueue(true);
+        private readonly MediaDownloadQueue mediaDownloadQueue;
         private readonly ListViewItemAnimator animator = new ListViewItemAnimator(4, 15);
 
         // Instance vars
@@ -63,6 +63,13 @@ namespace Athame.UI
 
         public MainForm()
         {
+            mediaDownloadQueue = new MediaDownloadQueue
+            {
+                Tagger = new TrackTagger(),
+                UseTempFile = true
+            };
+            ApplySettings();
+
             InitializeComponent();
             queueListView.SmallImageList = GlobalImageList.Instance.ImageList;
             resolver = new UrlResolver(Program.DefaultPluginManager);
@@ -376,7 +383,7 @@ namespace Athame.UI
             {
                 return Program.DefaultSettings.Settings.PlaylistSavePreference;
             }
-            return Program.DefaultSettings.Settings.GeneralSavePreference.Clone();
+            return (MediaTypeSavePreference)Program.DefaultSettings.Settings.GeneralSavePreference.Clone();
         }
         private static bool IsWithinVisibleBounds(Point topLeft)
         {
@@ -601,6 +608,12 @@ namespace Athame.UI
                 Program.DefaultSettings.Settings.MainWindowPreference.Size = savedSize = MinimumSize;
             }
             Size = savedSize;
+
+            if (Program.DefaultSettings.Settings.MainWindowPreference.FormWindowState == FormWindowState.Minimized)
+            {
+                return;
+            }
+            WindowState = Program.DefaultSettings.Settings.MainWindowPreference.FormWindowState;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -680,11 +693,7 @@ namespace Athame.UI
                 animator.Start();
                 LockUi();
                 totalStatusLabel.Text = "Warming up...";
-                await mediaDownloadQueue.StartDownloadAsync(
-                    Program.DefaultSettings.Settings.SavePlaylist, 
-                    Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist, 
-                    Program.DefaultSettings.Settings.AlbumArtworkSaveFormat,
-                    Program.DefaultSettings.Settings.WriteWatermarkTags);
+                await mediaDownloadQueue.StartDownloadAsync();
                 totalStatusLabel.Text = "All downloads completed";
                 collectionStatusLabel.Text = GetCompletionMessage();
                 currentlyDownloadingItem = null;
@@ -746,10 +755,28 @@ namespace Athame.UI
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new SettingsForm().ShowDialog(this);
+            ShowSettings();
         }
 
+        private void ShowSettings()
+        {
+            var form = new SettingsForm();
+            if (form.ShowDialog(this) != DialogResult.OK)
+            {
+                return;
+            }
+            ApplySettings();
+        }
 
+        private void ApplySettings()
+        {
+            mediaDownloadQueue.SavePlaylist = Program.DefaultSettings.Settings.SavePlaylist;
+            mediaDownloadQueue.Tagger.AlbumArtworkSaveFormat = Program.DefaultSettings.Settings.AlbumArtworkSaveFormat;
+            mediaDownloadQueue.Tagger.IgnoreSaveArtworkWithPlaylist =
+                Program.DefaultSettings.Settings.IgnoreSaveArtworkWithPlaylist;
+            mediaDownloadQueue.Tagger.WriteWatermarkTags = Program.DefaultSettings.Settings.WriteWatermarkTags;
+
+        }
 
         private void removeTrackToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -764,6 +791,7 @@ namespace Athame.UI
         private void MainForm_ResizeEnd(object sender, EventArgs e)
         {
             Program.DefaultSettings.Settings.MainWindowPreference.Size = Size;
+            Program.DefaultSettings.Settings.MainWindowPreference.FormWindowState = WindowState;
         }
 
         private void LoadAndInitPlugins()

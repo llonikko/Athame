@@ -6,7 +6,7 @@ using Athame.Core.DownloadAndTag;
 
 namespace Athame.Settings
 {
-    public class MediaTypeSavePreference
+    public class MediaTypeSavePreference : ICloneable
     {
         public string SaveDirectory { get; set; }
         public string SaveFormat { get; set; }
@@ -17,36 +17,35 @@ namespace Athame.Settings
             return Path.DirectorySeparatorChar == '/' ? SaveFormat : SaveFormat.Replace('/', Path.DirectorySeparatorChar);
         }
 
-        public MediaTypeSavePreference Clone()
+        public object Clone()
         {
             return new MediaTypeSavePreference
             {
                 AskForLocation = AskForLocation,
-                SaveDirectory = SaveDirectory,
-                SaveFormat = SaveFormat
+                SaveDirectory = String.Copy(SaveDirectory),
+                SaveFormat = String.Copy(SaveFormat)
             };
         }
     }
 
-    public class WindowPreference
+    public class WindowPreference : ICloneable
     {
         public Point Location { get; set; }
         public Size Size { get; set; }
+        public FormWindowState FormWindowState { get; set; }
 
-        public void CopyFrom(Form form)
+        public object Clone()
         {
-            Location = form.Location;
-            Size = form.Size;
-        }
-
-        public void CopyTo(Form form)
-        {
-            form.Location = Location;
-            form.Size = Size;
+            return new WindowPreference
+            {
+                Location = Location,
+                Size = Size,
+                FormWindowState = FormWindowState
+            };
         }
     }
 
-    public class AthameSettings
+    public class AthameSettings : ICloneable
     {
         // Defaults
         public AthameSettings()
@@ -86,5 +85,22 @@ namespace Athame.Settings
         public bool KeepSystemAwake { get; set; }
 
         public bool WriteWatermarkTags { get; set; }
+
+        public object Clone()
+        {
+            return new AthameSettings
+            {
+                PlaylistSavePreference = (MediaTypeSavePreference)PlaylistSavePreference.Clone(),
+                GeneralSavePreference = (MediaTypeSavePreference)GeneralSavePreference.Clone(),
+                AlbumArtworkSaveFormat = AlbumArtworkSaveFormat,
+                IgnoreSaveArtworkWithPlaylist = IgnoreSaveArtworkWithPlaylist,
+                SavePlaylist = SavePlaylist,
+                WriteWatermarkTags = WriteWatermarkTags,
+                PlaylistSavePreferenceUsesGeneral = PlaylistSavePreferenceUsesGeneral,
+                KeepSystemAwake = KeepSystemAwake,
+                ConfirmExit = ConfirmExit,
+                MainWindowPreference = (WindowPreference)MainWindowPreference.Clone()
+            };
+        }
     }
 }
