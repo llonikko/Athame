@@ -112,25 +112,27 @@ namespace Athame.UI
             collectionProgressBar.Value = PercentToInt(e.TotalProgress);
             totalProgressBar.Value +=
                 PercentToInt(((decimal)(e.TotalProgress + currentCollection.CurrentCollectionIndex) /
-                              currentCollection.TotalNumberOfCollections)) - totalProgressBar.Value;           
+                              currentCollection.TotalNumberOfCollections)) - totalProgressBar.Value;
+            UpdateTotalStatusText();     
             SetGlobalProgress(totalProgressBar.Value);
+            
             switch (e.State)
             {
                 case DownloadState.PreProcess:
                     currentlyDownloadingItem.Text = "Downloading...";
-                    collectionStatusLabel.Text = "Pre-processing...";
+                    UpdateCollectionStatusText("Pre-processing...");
                     break;
                 case DownloadState.DownloadingAlbumArtwork:
-                    collectionStatusLabel.Text = "Downloading album artwork...";
+                    UpdateCollectionStatusText("Downloading album artwork...");
                     break;
                 case DownloadState.Downloading:
-                    collectionStatusLabel.Text = $"[{totalProgressBar.Value}%] Downloading track...";
+                    UpdateCollectionStatusText("Downloading track...");
                     break;
                 case DownloadState.PostProcess:
-                    collectionStatusLabel.Text = "Post-processing...";
+                    UpdateCollectionStatusText("Post-processing...");
                     break;
                 case DownloadState.WritingTags:
-                    collectionStatusLabel.Text = "Writing tags...";
+                    UpdateCollectionStatusText("Writing tags...");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -156,7 +158,19 @@ namespace Athame.UI
         private void MediaDownloadQueue_CollectionDequeued(object sender, CollectionDownloadEventArgs e)
         {
             currentCollection = e;
-            totalStatusLabel.Text = $"{e.CurrentCollectionIndex + 1}/{e.TotalNumberOfCollections}: {e.Collection.Type} \"{e.Collection.MediaCollection.Title}\"";
+            UpdateTotalStatusText();
+        }
+
+        private void UpdateTotalStatusText()
+        {
+            totalStatusLabel.Text =
+                $"[{totalProgressBar.Value}%] {currentCollection.CurrentCollectionIndex + 1}/{currentCollection.TotalNumberOfCollections}: " +
+                $"{currentCollection.Collection.Type} \"{currentCollection.Collection.MediaCollection.Title}\"";
+        }
+
+        private void UpdateCollectionStatusText(string state)
+        {
+            collectionStatusLabel.Text = $"[{collectionProgressBar.Value}%] {state}";
         }
 
         private void MediaDownloadQueue_Exception(object sender, ExceptionEventArgs e)

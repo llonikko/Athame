@@ -87,6 +87,7 @@
     <Compile Include="Search\UrlResolver.cs" />
     <Compile Include="Settings\SettingsFile.cs" />
     <Compile Include="Utils\Dictify.cs" />
+    <Compile Include="Utils\HumanReadable.cs" />
     <Compile Include="Utils\MediaCollectionExtensions.cs" />
     <Compile Include="Utils\PathHelpers.cs" />
     <Compile Include="Utils\PlaylistWriter.cs" />
