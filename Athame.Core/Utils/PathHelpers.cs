@@ -11,8 +11,7 @@ namespace Athame.Core.Utils
     /// </summary>
     public static class PathHelpers
     {
-        private const int MaxPathLength = 260;
-
+        
         /// <summary>
         /// The character invalid path characters are replaced with.
         /// </summary>
@@ -46,17 +45,6 @@ namespace Athame.Core.Utils
                 cleanComponents[i] = CleanFilename(components[i]);
             }
             return String.Join(Path.DirectorySeparatorChar.ToString(), cleanComponents);
-        }
-
-        public static bool IsPathTooLong(string pathName)
-        {
-            if (pathName.Length < MaxPathLength)
-            {
-                return false;
-            }
-            // Check if the Windows 10 LongPathsEnabled registry key is set
-            var longPathsEnabled = (int)Registry.GetValue(@"HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem", "LongPathsEnabled", 0);
-            return longPathsEnabled != 0;
         }
 
         public static string[] SplitPathFormat(string path)
