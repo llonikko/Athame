@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Athame.Core.Logging;
 using Athame.PluginAPI.Service;
-using AthameWPF.Caching;
-using AthameWPF.Logging;
-using AthameWPF.UI.Controls;
-using AthameWPF.Utils;
 
 namespace AthameWPF.UI
 {

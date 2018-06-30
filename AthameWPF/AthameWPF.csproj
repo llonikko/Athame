@@ -89,29 +89,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppInstance.cs" />
-    <Compile Include="Caching\PictureCache.cs" />
-    <Compile Include="Caching\PictureCacheEntry.cs" />
-    <Compile Include="Downloader\EnqueuedAlbum.cs" />
-    <Compile Include="Downloader\EnqueuedCollection.cs" />
-    <Compile Include="Downloader\EnqueuedPlaylist.cs" />
-    <Compile Include="Logging\FileLogger.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Plugin\PluginAssembly.cs" />
-    <Compile Include="Plugin\PluginIncompatibleException.cs" />
-    <Compile Include="Plugin\PluginInstance.cs" />
-    <Compile Include="Plugin\PluginLoadException.cs" />
-    <Compile Include="Plugin\PluginLoadExceptionEventArgs.cs" />
-    <Compile Include="Plugin\PluginManager.cs" />
-    <Compile Include="Plugin\ServiceCastExtensions.cs" />
     <Compile Include="UI\CacheImageSource.cs" />
     <Compile Include="UI\Controls\PathButton.xaml.cs">
       <DependentUpon>PathButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Models\IndependentArtist.cs" />
-    <Compile Include="UI\Pages\SearchPage.xaml.cs">
-      <DependentUpon>SearchPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\TaskDialogHelper.cs" />
     <Compile Include="UI\ViewModelCommand.cs" />
     <Compile Include="UI\ViewModels\MainWindowViewModel.cs" />
@@ -125,15 +107,11 @@
     <Compile Include="UI\Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ResourceUriHelper.cs" />
     <Compile Include="Settings\AthameSettings.cs" />
     <Compile Include="Settings\SettingsFile.cs" />
-    <Compile Include="Utils\StringObjectFormatter.cs" />
-    <Compile Include="Tagging\TrackTagger.cs" />
     <Compile Include="UI\Controls\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Downloader\EnqueuedTrack.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Controls\PlaylistView.xaml.cs">
       <DependentUpon>PlaylistView.xaml</DependentUpon>
@@ -164,10 +142,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\LightTheme.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Pages\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,6 +201,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Athame.Core\Athame.Core.csproj">
+      <Project>{2556b1c5-7379-4712-82ac-16a170ed2824}</Project>
+      <Name>Athame.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Athame.PluginAPI\Athame.PluginAPI.csproj">
       <Project>{e10cc6e7-7100-4616-84bc-413a91e668b8}</Project>
       <Name>Athame.PluginAPI</Name>

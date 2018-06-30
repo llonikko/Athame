@@ -8,8 +8,19 @@ namespace Athame.Core.Plugin
 {
     public class PluginInstance
     {
+        private IPlugin plugin;
         public PluginInfo Info { get; set; }
-        public IPlugin Plugin { get; set; }
+
+        public IPlugin Plugin
+        {
+            get { return plugin; }
+            set
+            {
+                PluginType = value.GetType();
+                plugin = value;
+            }
+        }
+
         public PluginContext Context { get; set; }
         public Assembly Assembly { get; set; }
         public string AssemblyDirectory { get; set; }
@@ -17,6 +28,7 @@ namespace Athame.Core.Plugin
         public Version AssemblyFileVersion { get; set; }
         public SettingsFile SettingsFile { get; set; }
         public MusicService Service => Plugin as MusicService;
+        public Type PluginType { get; private set; }
 
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Athame.Core.Logging;
+using Athame.Core.Plugin;
 using Athame.PluginAPI;
-using AthameWPF.Logging;
-using AthameWPF.Plugin;
 using AthameWPF.Settings;
 
 namespace AthameWPF
