@@ -163,7 +163,7 @@ namespace Athame.UI
         {
             if (mFolderBrowserDialog.ShowDialog() != DialogResult.OK) return;
             defaults.PlaylistSavePreference.SaveDirectory = mFolderBrowserDialog.SelectedPath;
-            saveLocLabel.Text = defaults.PlaylistSavePreference.SaveDirectory;
+            pldSaveLocLabel.Text = defaults.PlaylistSavePreference.SaveDirectory;
         }
 
         #endregion
