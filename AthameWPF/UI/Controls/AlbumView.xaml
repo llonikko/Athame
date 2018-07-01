@@ -6,10 +6,9 @@
              xmlns:local="clr-namespace:AthameWPF"
              xmlns:controls="clr-namespace:AthameWPF.UI.Controls"
              xmlns:model="clr-namespace:Athame.PluginAPI.Service;assembly=Athame.PluginAPI"
-             xmlns:dl="clr-namespace:AthameWPF.Downloader"
              xmlns:ui="clr-namespace:AthameWPF.UI"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="589" d:DataContext="{d:DesignInstance dl:EnqueuedAlbum}">
+             d:DesignHeight="300" d:DesignWidth="589">
     <Grid.Background>White</Grid.Background>
     <StackPanel Orientation="Vertical">
 

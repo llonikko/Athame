@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using AthameWPF.Logging;
+using Athame.Core.Logging;
 using Newtonsoft.Json;
 
 namespace AthameWPF.Settings

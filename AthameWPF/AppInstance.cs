@@ -60,7 +60,7 @@ namespace AthameWPF
             InitLogging();
             var settingsPath = UserDataPathOf(SettingsFilename);
             settingsFile = new SettingsFile<AthameSettings>(settingsPath);
-            PluginManager = new PluginManager(Path.Combine(Directory.GetCurrentDirectory(), PluginManager.PluginDir));
+            PluginManager = new PluginManager(Path.Combine(Directory.GetCurrentDirectory(), PluginManager.PluginDir), UserDataPath);
             settingsFile.Load();
             Log.Debug(Tag, "Necessary setup is done");
         }

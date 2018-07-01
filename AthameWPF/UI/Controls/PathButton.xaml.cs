@@ -26,7 +26,16 @@ namespace AthameWPF.UI.Controls
         }
 
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            "Text", typeof(string), typeof(PathButton), new PropertyMetadata(default(string)));
+            "Text", typeof(string), typeof(PathButton), new PropertyMetadata(default(string), TextChanged));
+
+        private static void TextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = (PathButton) d;
+            var newValue = (string) e.NewValue;
+            var c = (TextBlock)self.FindName("ButtonText");
+            if (c == null) return;
+            c.Visibility = string.IsNullOrEmpty(newValue) ? Visibility.Collapsed : Visibility.Visible;
+        }
 
         public string Text
         {
@@ -50,6 +59,15 @@ namespace AthameWPF.UI.Controls
         {
             get { return (double) GetValue(PathRenderSizeProperty); }
             set { SetValue(PathRenderSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextPathPositioningProperty = DependencyProperty.Register(
+            "TextPathPositioning", typeof(Orientation), typeof(PathButton), new PropertyMetadata(Orientation.Horizontal));
+
+        public Orientation TextPathPositioning
+        {
+            get { return (Orientation) GetValue(TextPathPositioningProperty); }
+            set { SetValue(TextPathPositioningProperty, value); }
         }
     }
 }

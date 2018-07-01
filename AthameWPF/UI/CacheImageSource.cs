@@ -19,34 +19,34 @@ namespace AthameWPF.UI
 
         private async void GetCachedBitmapAsync()
         {
-            isWaiting = true;
-            WaitCompleted?.Invoke(this, EventArgs.Empty);
-
-            var s = mediaId.ToString();
-            if (PictureCache.HasPicture(s))
-            {
-                var entry = PictureCache.GetPicture(s);
-
-                if (Thumbnail && entry.OriginalPicture.IsThumbnailAvailable)
-                {
-                    await entry.GetThumbnailAsync();
-                    Image = entry.XamlThumbnailBitmap;
-                }
-                else
-                {
-                    await entry.GetFullSizeAsync();
-                    Image = entry.XamlFullSizeBitmap;
-                }
-
-            }
-            else
-            {
-                Image = new BitmapImage(ResourceUriHelper.BuildUri("DefaultArtwork.png"));
-                Log.Warning(nameof(CacheImageSource), $"No picture cache entry for {s}");
-            }
-
-            isWaiting = false;
-            WaitCompleted?.Invoke(this, EventArgs.Empty);
+//            isWaiting = true;
+//            WaitCompleted?.Invoke(this, EventArgs.Empty);
+//
+//            var s = mediaId.ToString();
+//            if (PictureCache.HasPicture(s))
+//            {
+//                var entry = PictureCache.GetPicture(s);
+//
+//                if (Thumbnail && entry.OriginalPicture.IsThumbnailAvailable)
+//                {
+//                    await entry.GetThumbnailAsync();
+//                    Image = entry.XamlThumbnailBitmap;
+//                }
+//                else
+//                {
+//                    await entry.GetFullSizeAsync();
+//                    Image = entry.XamlFullSizeBitmap;
+//                }
+//
+//            }
+//            else
+//            {
+//                Image = new BitmapImage(ResourceUriHelper.BuildUri("DefaultArtwork.png"));
+//                Log.Warning(nameof(CacheImageSource), $"No picture cache entry for {s}");
+//            }
+//
+//            isWaiting = false;
+//            WaitCompleted?.Invoke(this, EventArgs.Empty);
         }
 
 

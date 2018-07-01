@@ -12,29 +12,69 @@
     <Window.DataContext>
         <viewModel:MainWindowViewModel />
     </Window.DataContext>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" MaxWidth="275" />
-            <ColumnDefinition Width="7*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <DockPanel Grid.Column="0" Grid.Row="0" Background="{StaticResource SecNavBackgroundBrush}">
+        <DockPanel Grid.Row="0" Background="{StaticResource SecNavBackgroundBrush}">
             <DockPanel.Resources>
                 <Style TargetType="controls:PathButton">
                     <Setter Property="PathRenderSize" Value="24" />
                     <Setter Property="FontSize" Value="14" />
                     <Setter Property="Padding" Value="10" />
                     <Setter Property="Foreground" Value="{StaticResource SecNavForegroundBrush}" />
+                    <Setter Property="TextPathPositioning" Value="Vertical" />
                 </Style>
             </DockPanel.Resources>
-            <!-- Account selector at bottom -->
+
+            <Border MinWidth="250" VerticalAlignment="Center" HorizontalAlignment="Stretch" CornerRadius="5" Background="White" BorderBrush="WhiteSmoke" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect Direction="270" Opacity=".25" BlurRadius="5" ShadowDepth="3" RenderingBias="Quality"/>
+                </Border.Effect>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <TextBlock Visibility="{Binding ElementName=PrimaryInputTextBox, Path=Text.IsEmpty, 
+                            Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="16" Margin="5,2">Enter a search term or URL</TextBlock>
+                        <TextBox x:Name="PrimaryInputTextBox" 
+                             TextWrapping="Wrap" Background="Transparent" FontSize="16" />
+                    </Grid>
+                    <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
+                        <controls:PathButton x:Name="PasteButton" PathData="{StaticResource PasteIcon}" Foreground="Black" Padding="10,5" />
+                        <Button x:Name="ClearButton" Style="{DynamicResource FlatButton}" Content="Clear" Padding="10,5" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="Black" />
+            <controls:PathButton x:Name="PlaylistsSecMenuOption"
+                                 DockPanel.Dock="Left"
+                                 PathData="{StaticResource PlaylistIcon}"
+                                 Text="Playlists" />
+
+            <controls:PathButton x:Name="AlbumsSecMenuOption"
+                                 DockPanel.Dock="Left"
+                                 PathData="{StaticResource AlbumIcon}"
+                                 Text="Albums" />
+
+            <controls:PathButton x:Name="TracksSecMenuOption"
+                                 DockPanel.Dock="Left"
+                                 PathData="{StaticResource TrackIcon}"
+                                 Text="Tracks" />
+
+            <controls:PathButton x:Name="SettingsSecMenuOption"
+                                 DockPanel.Dock="Right"
+                                 PathData="{StaticResource SettingsIcon}"
+                                 Text="Settings"/>
             <ComboBox x:Name="AccountSelectorComboBox" 
-                              DockPanel.Dock="Top" 
-                              Padding="5"
-                              Style="{DynamicResource AccountSelectorStyle}">
+                      VerticalAlignment="Center"
+                      HorizontalAlignment="Right"
+                                          DockPanel.Dock="Right" 
+                                          Padding="5"
+                                          Style="{DynamicResource AccountSelectorStyle}">
                 <ComboBox.Resources>
                     <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
                     <Style x:Key="ComboBoxReadonlyToggleButton" TargetType="{x:Type ToggleButton}">
@@ -81,32 +121,32 @@
                                             <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
                                         </Grid.ColumnDefinitions>
                                         <Popup x:Name="PART_Popup" 
-                                                       AllowsTransparency="true" 
-                                                       Grid.ColumnSpan="2" 
-                                                       IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                       Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
-                                                       Placement="Bottom">
+                                                                   AllowsTransparency="true" 
+                                                                   Grid.ColumnSpan="2" 
+                                                                   IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                                   Margin="1" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+                                                                   Placement="Bottom">
                                             <Grid x:Name="Shdw" 
-                                                                                   
-                                                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+                                                                                               
+                                                                                               MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
                                                 <Border x:Name="DropDownBorder" 
-                                                                BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
-                                                                BorderThickness="1"
-                                                                Background="{DynamicResource PageBackgroundBrush}">
+                                                                            BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
+                                                                            BorderThickness="1"
+                                                                            Background="{DynamicResource PageBackgroundBrush}">
                                                     <ScrollViewer x:Name="DropDownScrollViewer">
 
                                                         <Grid RenderOptions.ClearTypeHint="Enabled">
                                                             <Canvas HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0">
                                                                 <Rectangle x:Name="OpaqueRect"
-                                                                                   Fill="{Binding Background, ElementName=DropDownBorder}" 
-                                                                                   Height="{Binding ActualHeight, ElementName=DropDownBorder}" 
-                                                                                   Width="{Binding ActualWidth, ElementName=DropDownBorder}" />
+                                                                                               Fill="{Binding Background, ElementName=DropDownBorder}" 
+                                                                                               Height="{Binding ActualHeight, ElementName=DropDownBorder}" 
+                                                                                               Width="{Binding ActualWidth, ElementName=DropDownBorder}" />
 
                                                             </Canvas>
 
                                                             <ItemsPresenter x:Name="ItemsPresenter"
-                                                                                    KeyboardNavigation.DirectionalNavigation="Contained" 
-                                                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                                                                KeyboardNavigation.DirectionalNavigation="Contained" 
+                                                                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                                                         </Grid>
                                                     </ScrollViewer>
@@ -114,21 +154,21 @@
                                             </Grid>
                                         </Popup>
                                         <ToggleButton
-                                                    Background="{DynamicResource MainNavBackgroundBrush}" 
-                                                    Grid.ColumnSpan="2" 
-                                                    IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                    Style="{StaticResource ComboBoxReadonlyToggleButton}"/>
+                                                                Background="{DynamicResource MainNavBackgroundBrush}" 
+                                                                Grid.ColumnSpan="2" 
+                                                                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                                                Style="{StaticResource ComboBoxReadonlyToggleButton}"/>
 
                                         <ContentPresenter
-                                                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
-                                                    ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
-                                                    Content="{TemplateBinding SelectionBoxItem}" 
-                                                    ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" 
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                    IsHitTestVisible="false" 
-                                                    Margin="{TemplateBinding Padding}" 
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" 
+                                                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" 
+                                                                Content="{TemplateBinding SelectionBoxItem}" 
+                                                                ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" 
+                                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                IsHitTestVisible="false" 
+                                                                Margin="{TemplateBinding Padding}" 
+                                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <!--                                        <Trigger Property="HasDropShadow" SourceName="PART_Popup" Value="true">-->
@@ -175,34 +215,9 @@
                     </StackPanel>
                 </ComboBoxItem>
             </ComboBox>
-            <controls:PathButton x:Name="SearchSecMenuOption"
-                                 DockPanel.Dock="Top"
-                                 PathData="{StaticResource SearchIcon}"
-                                 Text="Search/URL" />
-            <controls:PathButton x:Name="PlaylistsSecMenuOption"
-                                 DockPanel.Dock="Top"
-                                 PathData="{StaticResource PlaylistIcon}"
-                                 Text="Playlists" />
-
-            <controls:PathButton x:Name="AlbumsSecMenuOption"
-                                 DockPanel.Dock="Top"
-                                 PathData="{StaticResource AlbumIcon}"
-                                 Text="Albums" />
-
-            <controls:PathButton x:Name="TracksSecMenuOption"
-                                 DockPanel.Dock="Top"
-                                 PathData="{StaticResource TrackIcon}"
-                                 Text="Tracks" />
-            
-            <controls:PathButton x:Name="SettingsSecMenuOption"
-                                 DockPanel.Dock="Bottom"
-                                 PathData="{StaticResource SettingsIcon}"
-                                 VerticalAlignment="Bottom"
-                                 Text="Settings"/>
-
 
         </DockPanel>
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="30" />
@@ -219,13 +234,10 @@
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
-                    <TextBlock FontSize="{StaticResource PagePrimaryHeaderFontSize}" Text="Add by search or URL" />
-                    <TextBlock FontSize="{StaticResource PageSubHeaderFontSize}" Margin="0,15,0,30" Text="Enter the name of an album, track or playlist into the field below to search. Alternatively, paste a link to get an exact match:" TextWrapping="WrapWithOverflow" />
-                    <TextBox x:Name="PrimaryInputTextBox" TextWrapping="Wrap" Style="{DynamicResource PrimaryTextBox}" Margin="40,0"/>
-                    <StackPanel Orientation="Horizontal" Margin="40,0,0,0" HorizontalAlignment="Left">
-                        <Button x:Name="PasteButton" Style="{DynamicResource FlatButton}" Content="Paste" />
-                        <Button x:Name="ClearButton" Style="{DynamicResource FlatButton}" Content="Clear" />
-                    </StackPanel>
+                    <TextBlock FontSize="16" Text="Add by search or URL" />
+                    <TextBlock FontSize="14" Margin="0,15,0,30" Text="Enter the name of an album, track or playlist into the field below to search. Alternatively, paste a link to get an exact match:" TextWrapping="WrapWithOverflow" />
+
+
                     <Separator Margin="0,20,0,0" />
                 </StackPanel>
                 <Grid x:Name="SearchResultsStackPanel">
@@ -263,12 +275,6 @@
                     <!--                    </ListView>-->
                 </Grid>
             </DockPanel>
-        </Grid>
-        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
-            <Grid.Effect>
-                <DropShadowEffect/>
-            </Grid.Effect>
-
         </Grid>
     </Grid>
 </Window>

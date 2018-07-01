@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using AthameWPF.Plugin;
+using Athame.Core.Plugin;
 using AthameWPF.Settings;
 using AthameWPF.UI.Windows;
 

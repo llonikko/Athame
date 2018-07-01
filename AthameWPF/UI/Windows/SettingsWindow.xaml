@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AthameWPF.UI.Windows"
         xmlns:controls="clr-namespace:AthameWPF.UI.Controls"
         xmlns:viewModel="clr-namespace:AthameWPF.UI.ViewModels"
-        xmlns:plugin="clr-namespace:AthameWPF.Plugin"
+        xmlns:plugin="clr-namespace:Athame.Core.Plugin;assembly=Athame.Core"
         mc:Ignorable="d"
         Title="SettingsWindow" Height="478" Width="737" Style="{StaticResource WindowBase}" Name="Window">
     <Window.DataContext>
