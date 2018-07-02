@@ -73,7 +73,7 @@ namespace Athame.UI
 
             InitializeComponent();
             queueListView.SmallImageList = GlobalImageList.Instance.ImageList;
-            resolver = new UrlResolver(Program.DefaultPluginManager);
+            resolver = new UrlResolver(Program.DefaultPluginManager, Program.DefaultAuthenticationManager);
             aui = new AuthenticationUi(this);
             UnlockUi();
 
@@ -455,6 +455,9 @@ namespace Athame.UI
                     urlValidStateLabel.Text = "An exception occurred while trying to parse the URL.";
                     break;
 
+                case UrlParseState.ServiceNotRestored:
+                    urlValidStateLabel.Text = "Couldn't sign in to " + resolver.Service.Info.Name + ". Go to Settings to attempt sign-in again.";
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

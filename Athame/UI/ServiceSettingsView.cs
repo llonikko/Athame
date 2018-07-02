@@ -76,6 +76,7 @@ namespace Athame.UI
             restoreButton.Visible = true;
             signInStatusLabel.Text =
                 "You have saved credentials, but there was an error trying to restore your session.";
+            signInButton.Text = "Sign out";
         }
 
         private void UpdateViews()
@@ -96,7 +97,7 @@ namespace Athame.UI
 
         private async void signInButton_Click(object sender, EventArgs e)
         {
-            if (!authenticatable.IsAuthenticated)
+            if (am.NeedsAuthentication(service))
             {
                 await aui.Authenticate(service);
             }

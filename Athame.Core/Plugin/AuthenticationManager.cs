@@ -49,6 +49,13 @@ namespace Athame.Core.Plugin
             return service is IAuthenticatable && !IsAuthenticating(service);
         }
 
+        public bool NeedsAuthentication(MusicService service)
+        {
+            if (!CanAuthenticate(service)) return false;
+            var ias = service.AsAuthenticatable();
+            return !ias.HasSavedSession;
+        }
+
         public bool CanRestore(MusicService service)
         {
             if (IsAuthenticating(service)) return false;

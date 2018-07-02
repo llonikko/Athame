@@ -32,6 +32,10 @@ namespace Athame.Core.Search
         /// </summary>
         ServiceNotAuthenticated,
         /// <summary>
+        /// A service was found, but needs to be restored.
+        /// </summary>
+        ServiceNotRestored,
+        /// <summary>
         /// The service does not recognise this URL as pointing to any downloadable media.
         /// </summary>
         NoMedia,
@@ -51,6 +55,7 @@ namespace Athame.Core.Search
     public class UrlResolver
     {
         private readonly PluginManager pluginManager;
+        private readonly AuthenticationManager am;
 
         /// <summary>
         /// The service the URL's host points to.
@@ -76,9 +81,11 @@ namespace Athame.Core.Search
         /// Creates a new instance.
         /// </summary>
         /// <param name="pluginManager">The <see cref="PluginManager"/> to find services from.</param>
-        public UrlResolver(PluginManager pluginManager)
+        /// <param name="am">The <see cref="AuthenticationManager"/> to use.</param>
+        public UrlResolver(PluginManager pluginManager, AuthenticationManager am)
         {
             this.pluginManager = pluginManager;
+            this.am = am;
         }
 
         /// <summary>
@@ -90,7 +97,7 @@ namespace Athame.Core.Search
         {
             Service = null;
             ParseResult = null;
-
+            
             if (String.IsNullOrWhiteSpace(url))
             {
                 return UrlParseState.NullOrEmptyString;
@@ -108,8 +115,12 @@ namespace Athame.Core.Search
                 return UrlParseState.NoServiceFound;
             }
 
-            var authService = Service.AsAuthenticatable();
-            if (authService != null && !authService.IsAuthenticated)
+            if (am.CanRestore(Service))
+            {
+                return UrlParseState.ServiceNotRestored;
+            }
+
+            if (am.NeedsAuthentication(Service))
             {
                 return UrlParseState.ServiceNotAuthenticated;
             }
