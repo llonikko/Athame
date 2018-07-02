@@ -1,4 +1,5 @@
 ﻿using Athame.PluginAPI.Downloader;
+using Athame.PluginAPI.Service;
 
 namespace Athame.Core.DownloadAndTag
 {
@@ -14,7 +15,9 @@ namespace Athame.Core.DownloadAndTag
                 {
                     return 0;
                 }
-                var c = CurrentItemIndex < 0 ? 0 : CurrentItemIndex;
+
+                var c = CurrentItemIndex - 1;
+                c = c < 0 ? 0 : c;
                 var percent = (c + PercentCompleted) / TotalItems;
                 return percent;
             }
@@ -23,6 +26,8 @@ namespace Athame.Core.DownloadAndTag
         public int TotalItems { get; set; }
 
         public int CurrentItemIndex { get; set; }
+
+        public Track Track { get; set; }
 
         internal void Update(DownloadEventArgs eventArgs)
         {

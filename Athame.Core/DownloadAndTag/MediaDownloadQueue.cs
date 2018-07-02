@@ -83,6 +83,8 @@ namespace Athame.Core.DownloadAndTag
             Exception?.Invoke(this, e);
 
         }
+
+        public event EventHandler<TrackDownloadEventArgs> TrackSkipped;
         #endregion
 
         public int TrackCount
@@ -138,16 +140,16 @@ namespace Athame.Core.DownloadAndTag
             TrackDownloadEventArgs gEventArgs = null;
             while (tracksQueue.Count > 0)
             {
+                var currentItem = tracksQueue.Dequeue();
                 var eventArgs = gEventArgs = new TrackDownloadEventArgs
                 {
                     CurrentItemIndex = (tracksCollectionLength - tracksQueue.Count),
                     PercentCompleted = 0M,
                     State = DownloadState.PreProcess,
                     TotalItems = tracksCollectionLength,
-                    
+                    Track = currentItem,
                     TrackFile = null
                 };
-                var currentItem = tracksQueue.Dequeue();
 
                 OnTrackDequeued(eventArgs);
 
@@ -155,6 +157,7 @@ namespace Athame.Core.DownloadAndTag
                 {
                     if (!currentItem.IsDownloadable)
                     {
+                        TrackSkipped?.Invoke(this, eventArgs);
                         continue;
                     }
                     OnTrackDownloadProgress(eventArgs);

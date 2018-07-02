@@ -60,6 +60,7 @@ namespace Athame.UI
         private CollectionDownloadEventArgs currentCollection;
         private bool isListViewDirty;
         private bool isWorking;
+        
 
 
         public MainForm()
@@ -83,10 +84,18 @@ namespace Athame.UI
             mediaDownloadQueue.TrackDequeued += MediaDownloadQueue_TrackDequeued;
             mediaDownloadQueue.TrackDownloadCompleted += MediaDownloadQueue_TrackDownloadCompleted;
             mediaDownloadQueue.TrackDownloadProgress += MediaDownloadQueue_TrackDownloadProgress;
+            //mediaDownloadQueue.TrackSkipped += MediaDownloadQueue_TrackSkipped;
 
             // Error handler for plugin loader
             Program.DefaultPluginManager.LoadException += DefaultPluginManagerOnLoadException;
         }
+
+        private void MediaDownloadQueue_TrackSkipped(object sender, TrackDownloadEventArgs e)
+        {
+            if (currentlyDownloadingItem != null)
+                animator.Remove(currentlyDownloadingItem);
+        }
+
 
         private List<Exception> pluginLoadExceptions = new List<Exception>();
 
@@ -150,17 +159,23 @@ namespace Athame.UI
 
         private void MediaDownloadQueue_TrackDownloadCompleted(object sender, TrackDownloadEventArgs e)
         {
-            collectionStatusLabel.Text = "Completed";
             animator.Remove(currentlyDownloadingItem);
+            collectionStatusLabel.Text = "Completed";
             currentlyDownloadingItem.ImageKey = "done";
             currentlyDownloadingItem.Text = "Completed";
+        }
+
+        private ListViewItem FindListViewItem(Track track)
+        {
+            return queueListView.Items.Cast<ListViewItem>()
+                .FirstOrDefault(item => ((MediaItemTag) item.Tag).Track == track);
         }
 
         private void MediaDownloadQueue_TrackDequeued(object sender, TrackDownloadEventArgs e)
         {
             // this'll bite me in the ass someday
-            var itemIndex = e.CurrentItemIndex;
-            currentlyDownloadingItem = queueListView.Groups[currentCollection.CurrentCollectionIndex].Items[itemIndex * 2];
+            if (!e.Track.IsDownloadable) return;
+            currentlyDownloadingItem = FindListViewItem(e.Track);
             animator.Add(currentlyDownloadingItem);
         }
 
@@ -290,6 +305,7 @@ namespace Athame.UI
                 }
                 var group = queueListView.Groups[item.GroupIndex];
                 group.Header = MakeGroupHeader(item.Collection);
+                
             }
             
             mCurrentlySelectedQueueItem = null;

@@ -9,7 +9,7 @@ namespace Athame.UI
 {
     public class ListViewItemAnimator
     {
-        private readonly List<AnimatedControl<ListViewItem, int>> items = new List<AnimatedControl<ListViewItem, int>>();
+        private readonly List<AnimatedControl<ListViewItem, string>> items = new List<AnimatedControl<ListViewItem, string>>();
         private readonly Timer timer = new Timer();
         private int startIndex;
         private int endIndex;
@@ -50,7 +50,7 @@ namespace Athame.UI
         {
             var animatedControl = items.FirstOrDefault(control => control.Control == item);
             if (animatedControl != null) return;
-            items.Add(new AnimatedControl<ListViewItem, int>(item, item.ImageIndex));
+            items.Add(new AnimatedControl<ListViewItem, string>(item, item.ImageKey));
         }
 
         public bool Remove(ListViewItem item)
@@ -58,7 +58,7 @@ namespace Athame.UI
             var animatedControl = items.FirstOrDefault(control => control.Control == item);
             if (animatedControl == null) return false;
             animatedControl.IsAnimating = false;
-            animatedControl.Control.ImageIndex = animatedControl.PreviousState;
+            animatedControl.Control.ImageKey = animatedControl.PreviousState;
             return true;
         }
 
