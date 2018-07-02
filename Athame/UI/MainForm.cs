@@ -420,12 +420,14 @@ namespace Athame.UI
         }
 
         #region Validation for URL
-        private const string UrlInvalid = "Invalid URL. Check that the URL begins with \"http://\" or \"https://\".";
-        private const string UrlNoService = "Can't download this URL.";
-        private const string UrlNeedsAuthentication = "You need to sign in to {0} first. " + UrlNeedsAuthenticationLink1;
-        private const string UrlNeedsAuthenticationLink1 = "Click here to sign in.";
-        private const string UrlNotParseable = "The URL does not point to a valid track, album, artist or playlist.";
-        private const string UrlValidParseResult = "{0} from {1}";
+        public const string UrlInvalid = "Invalid URL. Check that the URL begins with \"http://\" or \"https://\".";
+        public const string UrlNoService = "Can't download this URL.";
+        public const string UrlNeedsAuthentication = "You need to sign in to {0} first. " + UrlNeedsAuthenticationLink1;
+        public const string UrlNeedsAuthenticationLink1 = "Click here to sign in.";
+        public const string UrlNeedsRestore = "Couldn't sign in to {0}. Go to Settings to attempt sign-in again.";
+        public const string UrlNotParseable = "The URL does not point to a valid track, album, artist or playlist.";
+        public const string UrlValidParseResult = "{0} from {1}";
+        public const string UrlExceptionOccurred = "An exception occurred while trying to parse the URL.";
 
         private void ValidateEnteredUrl()
         {
@@ -468,11 +470,11 @@ namespace Athame.UI
 
                 case UrlParseState.Exception:
                     Log.WriteException(Level.Error, Tag, resolver.Exception, "ValidateEnteredUrl()");
-                    urlValidStateLabel.Text = "An exception occurred while trying to parse the URL.";
+                    urlValidStateLabel.Text = UrlExceptionOccurred;
                     break;
 
                 case UrlParseState.ServiceNotRestored:
-                    urlValidStateLabel.Text = "Couldn't sign in to " + resolver.Service.Info.Name + ". Go to Settings to attempt sign-in again.";
+                    urlValidStateLabel.Text = String.Format(UrlNeedsRestore, resolver.Service.Info.Name);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -514,7 +516,12 @@ namespace Athame.UI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!resolver.HasParsedUrl)
+            ParseAndAddUrl(resolver);
+        }
+
+        private void ParseAndAddUrl(UrlResolver r)
+        {
+            if (!r.HasParsedUrl)
             {
                 return;
             }
@@ -527,7 +534,7 @@ namespace Athame.UI
             {
 #endif
             // Don't add if the item is already enqueued.
-            var isAlreadyInQueue = mediaDownloadQueue.ItemById(resolver.ParseResult.Id) != null;
+            var isAlreadyInQueue = mediaDownloadQueue.ItemById(r.ParseResult.Id) != null;
             if (isAlreadyInQueue)
             {
                 TaskDialogHelper.ShowMessage(owner: Handle, icon: TaskDialogStandardIcon.Error,
@@ -537,7 +544,7 @@ namespace Athame.UI
             }
 
             // Ask for the location if required before we begin retrieval
-            var prefType = PreferenceForType(resolver.ParseResult.Type);
+            var prefType = PreferenceForType(r.ParseResult.Type);
             var saveDir = prefType.SaveDirectory;
             if (prefType.AskForLocation)
             {
@@ -559,8 +566,8 @@ namespace Athame.UI
             {
                 Cancelable = false,
                 Caption = "Athame",
-                InstructionText = $"Getting {resolver.ParseResult.Type.ToString().ToLower()} details...",
-                Text = $"{resolver.Service.Info.Name}: {resolver.ParseResult.Id}",
+                InstructionText = $"Getting {r.ParseResult.Type.ToString().ToLower()} details...",
+                Text = $"{r.Service.Info.Name}: {r.ParseResult.Id}",
                 StandardButtons = TaskDialogStandardButtons.Cancel,
                 OwnerWindowHandle = Handle,
                 ProgressBar = new TaskDialogProgressBar { State = TaskDialogProgressBarState.Marquee }
@@ -572,8 +579,8 @@ namespace Athame.UI
                 var pathFormat = prefType.GetPlatformSaveFormat();
                 try
                 {
-                    var media = await resolver.Resolve();
-                    AddToQueue(resolver.Service, media, saveDir, pathFormat);
+                    var media = await r.ResolveAsync();
+                    AddToQueue(r.Service, media, saveDir, pathFormat);
                 }
                 catch (ResourceNotFoundException)
                 {
@@ -585,7 +592,7 @@ namespace Athame.UI
                 {
                     TaskDialogHelper.ShowMessage(
                         owner: Handle, icon: TaskDialogStandardIcon.Warning, buttons: TaskDialogStandardButtons.Ok,
-                    caption: $"'{resolver.ParseResult.Type}' is not supported yet.",
+                    caption: $"'{r.ParseResult.Type}' is not supported yet.",
                     message: "You may be able to download it in a later release.");
                 }
                 catch (Exception ex)
@@ -907,6 +914,16 @@ namespace Athame.UI
         {
             removeTrackToolStripMenuItem.Enabled = !isWorking;
             removeGroupToolStripMenuItem.Enabled = !isWorking;
+        }
+
+        private void bulkAddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = new BulkAddForm();
+            if (form.ShowDialog(this) != DialogResult.OK) return;
+            foreach (var formResolver in form.Resolvers)
+            {
+                ParseAndAddUrl(formResolver);
+            }
         }
     }
 }

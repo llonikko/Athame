@@ -62,6 +62,7 @@ namespace Athame.UI
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bulkAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox2.SuspendLayout();
             this.queueMenu.SuspendLayout();
             this.mMenu.SuspendLayout();
@@ -239,6 +240,7 @@ namespace Athame.UI
             // mMenu
             // 
             this.mMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bulkAddToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.toolStripSeparator1,
             this.aboutToolStripMenuItem});
@@ -261,6 +263,12 @@ namespace Athame.UI
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // bulkAddToolStripMenuItem
+            // 
+            this.bulkAddToolStripMenuItem.Name = "bulkAddToolStripMenuItem";
+            resources.ApplyResources(this.bulkAddToolStripMenuItem, "bulkAddToolStripMenuItem");
+            this.bulkAddToolStripMenuItem.Click += new System.EventHandler(this.bulkAddToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -324,6 +332,7 @@ namespace Athame.UI
         private System.Windows.Forms.ColumnHeader locCol;
         private System.Windows.Forms.ProgressBar collectionProgressBar;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ToolStripMenuItem bulkAddToolStripMenuItem;
     }
 }
 

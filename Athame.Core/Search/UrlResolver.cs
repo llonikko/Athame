@@ -97,6 +97,7 @@ namespace Athame.Core.Search
         {
             Service = null;
             ParseResult = null;
+            Exception = null;
             
             if (String.IsNullOrWhiteSpace(url))
             {
@@ -145,7 +146,7 @@ namespace Athame.Core.Search
         /// Resolves the last parsed URL to a media collection object.
         /// </summary>
         /// <returns>An <see cref="IMediaCollection"/> according to the <see cref="UrlParseResult.Type"/> property.</returns>
-        public async Task<IMediaCollection> Resolve()
+        public async Task<IMediaCollection> ResolveAsync()
         {
             if (!HasParsedUrl)
             {

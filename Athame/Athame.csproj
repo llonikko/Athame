@@ -102,6 +102,12 @@
     <Compile Include="UI\AuthProgressForm.Designer.cs">
       <DependentUpon>AuthProgressForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\BulkAddForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BulkAddForm.Designer.cs">
+      <DependentUpon>BulkAddForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\GlobalImageList.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\AuthProgressForm.resx">
       <DependentUpon>AuthProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BulkAddForm.resx">
+      <DependentUpon>BulkAddForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CredentialsForm.resx">
       <DependentUpon>CredentialsForm.cs</DependentUpon>
