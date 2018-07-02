@@ -32,7 +32,7 @@ namespace Athame.UI
             ProcessUrls();
             if (errorsStringBuilder.Length > 0)
             {
-                var messageDialog = TaskDialogHelper.CreateMessageDialog("Errors occurred while adding one or more URLs",
+                var messageDialog = TaskDialogHelper.CreateMessageDialog("Invalid URLs",
                     errorsStringBuilder.ToString().Trim(), TaskDialogStandardButtons.None, TaskDialogStandardIcon.Error,
                     Handle);
 

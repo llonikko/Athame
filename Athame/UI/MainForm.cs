@@ -541,6 +541,7 @@ namespace Athame.UI
                     caption: "Cannot add to download queue",
                     message: "This item already exists in the download queue.",
                     buttons: TaskDialogStandardButtons.Ok);
+                return;
             }
 
             // Ask for the location if required before we begin retrieval
