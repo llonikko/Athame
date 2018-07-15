@@ -4,8 +4,11 @@ about: Create a report to help us improve
 
 ---
 
-<!-- PLEASE READ THE README BEFORE FILING AN ISSUE OR REQUEST!
-ISSUES THAT HAVE ALREADY BEEN ANSWERED OR ADDRESSED WILL BE CLOSED -->
+<!-- 
+Please read the "FAQ" section of the readme before reporting an issue: https://github.com/svbnet/Athame/blob/master/readme.md#faq
+Please also search for your issue on the issues page before opening a new one.
+Duplicates of existing issues will be closed.
+-->
 
 If you've found a bug, please fill this out:
 
