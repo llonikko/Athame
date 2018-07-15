@@ -65,6 +65,9 @@ when put into a spectrum analyzer, also seem to cut off around 20Hz like a lossy
 ### I'm getting an error that says "HttpRequestException: Response code does not indicate success: 401 (Unauthorized)" in my computer's language
 Most likely your music subscription has expired. Try signing out and then back in.
 
+If this just happens on one track, try downloading only that track again. Tidal will sometimes do this randomly when downloading an album, but usually when downloading the track individually it
+works fine.
+
 Plugins
 -------
 ### [Tidal](https://github.com/svbnet/AthamePlugin.Tidal/releases) and [Google Play Music](https://github.com/svbnet/AthamePlugin.GooglePlayMusic/releases)
