@@ -16,6 +16,25 @@ Download
 --------
 [Click the 'Releases' tab above at the top to download the latest, or just click here.](https://github.com/svbnet/Athame/releases)
 
+Then...
+-------
+Open the Athame.exe executable.
+
+Keeping up to date
+------------------
+Follow me on [Twitter @svbnet](https://twitter.com/svbnet) and subscribe to [my blog](https://blog.svbnet.co) to stay up to date.
+
+Usage
+-----
+Enter a URL in the "URL" textbox, then click "Add". It will show up in the download queue. Click "Start" to begin downloading.
+
+If you haven't signed in, you can click the `Menu` button, then go to `Settings` and choose the tab of the music service
+you want to sign into. You can also just enter a URL and click "Click here to sign in" on the error message below the URL
+textbox.
+
+Under `Settings > General`, you can change where music is downloaded to as well as the filename format used. There is an explanation
+of the valid format specifiers on the General tab.
+
 FAQ
 ---
 ### Can you add feature x?
@@ -24,10 +43,6 @@ like artist browsing, text searching, and so on.
 
 ### Can you add plugin x?
 There are hundreds of music streaming services out there, so I'll mainly focus on the two plugins listed below.
-
-### Can you remove the "Respect the artists! Pay for music when you can! Downloaded with Athame" tag?
-No. The purpose of that tag is to remind people that Athame is a tool for **saving music from streaming services for personal use only**, and not a tool
-for illegal distribution of music.
 
 ### Why can't I add an artist?
 This is a feature being worked on in the newer version. The issue is that currently there is no way to determine what an artist URL definitely points to - the user
@@ -47,6 +62,8 @@ Athame and the Tidal plugin don't do any post-processing on the audio file, apar
 too. Either way the plugin retrieves audio streams the same way that the web and mobile players retrieve them, so as far as I know this is entirely to do with Tidal. Some FLAC tracks,
 when put into a spectrum analyzer, also seem to cut off around 20Hz like a lossy file would.
 
+### I'm getting an error that says "HttpRequestException: Response code does not indicate success: 401 (Unauthorized)" in my computer's language
+Most likely your music subscription has expired. Try signing out and then back in.
 
 Plugins
 -------
@@ -71,25 +88,6 @@ Qobuz isn't available in my country at the moment, so I have no plans to impleme
 
 Plugins are always distributed as Zip files - to install a plugin, simply extract the zip to the "Plugins" folder, which is in the same directory
 as the Athame executable. A guide for creating your own plugins can be found on the wiki.
-
-Then...
--------
-Open the Athame.exe executable.
-
-Keeping up to date
-------------------
-Follow me on [Twitter @svbnet](https://twitter.com/svbnet) and subscribe to [my blog](https://blog.svbnet.co) to stay up to date.
-
-Usage
------
-Enter a URL in the "URL" textbox, then click "Add". It will show up in the download queue. Click "Start" to begin downloading.
-
-If you haven't signed in, you can click the `Menu` button, then go to `Settings` and choose the tab of the music service
-you want to sign into. You can also just enter a URL and click "Click here to sign in" on the error message below the URL
-textbox.
-
-Under `Settings > General`, you can change where music is downloaded to as well as the filename format used. There is an explanation
-of the valid format specifiers on the General tab.
 
 Build
 -----
