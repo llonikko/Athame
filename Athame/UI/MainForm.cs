@@ -127,10 +127,14 @@ namespace Athame.UI
 
         private void MediaDownloadQueue_TrackDownloadProgress(object sender, TrackDownloadEventArgs e)
         {
-            collectionProgressBar.Value = PercentToInt(e.TotalProgress);
-            totalProgressBar.Value +=
-                PercentToInt(((decimal)(e.TotalProgress + currentCollection.CurrentCollectionIndex) /
-                              currentCollection.TotalNumberOfCollections)) - totalProgressBar.Value;
+            collectionProgressBar.InvokeActionIfRequired(() => { collectionProgressBar.Value = PercentToInt(e.TotalProgress); });
+            totalProgressBar.InvokeActionIfRequired(() =>
+            {
+                totalProgressBar.Value +=
+                    PercentToInt(((decimal)(e.TotalProgress + currentCollection.CurrentCollectionIndex) /
+                                  currentCollection.TotalNumberOfCollections)) - totalProgressBar.Value;
+            });
+
             UpdateTotalStatusText();     
             SetGlobalProgress(totalProgressBar.Value);
             
@@ -187,14 +191,20 @@ namespace Athame.UI
 
         private void UpdateTotalStatusText()
         {
-            totalStatusLabel.Text =
-                $"[{totalProgressBar.Value}%] {currentCollection.CurrentCollectionIndex + 1}/{currentCollection.TotalNumberOfCollections}: " +
-                $"{currentCollection.Collection.Type} \"{currentCollection.Collection.MediaCollection.Title}\"";
+            totalStatusLabel.InvokeActionIfRequired(() =>
+            {
+                totalStatusLabel.Text =
+                    $"[{totalProgressBar.Value}%] {currentCollection.CurrentCollectionIndex + 1}/{currentCollection.TotalNumberOfCollections}: " +
+                    $"{currentCollection.Collection.Type} \"{currentCollection.Collection.MediaCollection.Title}\"";
+            });
         }
 
         private void UpdateCollectionStatusText(string state)
         {
-            collectionStatusLabel.Text = $"[{collectionProgressBar.Value}%] {state}";
+            collectionStatusLabel.InvokeActionIfRequired(() =>
+            {
+                collectionStatusLabel.Text = $"[{collectionProgressBar.Value}%] {state}";
+            });
         }
 
         private void MediaDownloadQueue_Exception(object sender, ExceptionEventArgs e)

@@ -108,6 +108,7 @@
     <Compile Include="UI\BulkAddForm.Designer.cs">
       <DependentUpon>BulkAddForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\ControlExtensions.cs" />
     <Compile Include="UI\GlobalImageList.cs">
       <SubType>Component</SubType>
     </Compile>
