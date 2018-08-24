@@ -21,5 +21,13 @@ namespace Athame.Core.DownloadAndTag
         {
             return Path.Combine(Destination, GetRelativePath(trackFile));
         }
+
+        public string LogPath(TrackFile trackFile)
+        {
+            var trackRelativePath = GetRelativePath(trackFile);
+            string[] collectionFolderArray = trackRelativePath.Split('\\');
+            string collectionFolder = Destination + "\\" + collectionFolderArray[0] + "\\Tracklist.txt";
+            return collectionFolder;
+        }
     }
 }

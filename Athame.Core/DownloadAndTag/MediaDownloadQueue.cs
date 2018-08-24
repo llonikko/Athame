@@ -201,6 +201,12 @@ namespace Athame.Core.DownloadAndTag
                     EnsureParentDirectories(tempPath);
                     eventArgs.State = DownloadState.Downloading;
 
+                    // Write the track name to the logfile
+                    //var logpath = Path.Combine(eventArgs.Track.GetBasicPath(collection.PathFormat, collection.MediaCollection), "tracklist.txt");
+                    StreamWriter file2 = new StreamWriter(collection.LogPath(eventArgs.TrackFile), true);
+                    file2.WriteLine(eventArgs.Track.TrackNumber + " - " + eventArgs.Track.Title);
+                    file2.Close();
+
                     // Begin download
                     await downloader.DownloadAsyncTask(eventArgs.TrackFile, tempPath);
                     trackFiles.Add(eventArgs.TrackFile);
