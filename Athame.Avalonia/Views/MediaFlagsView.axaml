@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Athame.Avalonia.Views.MediaFlagsView">
+  <ItemsRepeater Margin="5" 
+                 VerticalAlignment="Center"
+                 Items="{Binding}">
+    <ItemsRepeater.Layout>
+      <StackLayout Orientation="Horizontal"
+                   Spacing="5"/>
+    </ItemsRepeater.Layout>
+    <ItemsRepeater.ItemTemplate>
+      <DataTemplate>
+        <Border Padding="8 1" 
+                BorderBrush="#F17022" 
+                BorderThickness="1"
+                CornerRadius="3">
+          <TextBlock FontWeight="Bold"
+                     FontSize="8" 
+                     Foreground="#F17022"
+                     Text="{Binding Name}"/>
+        </Border>
+      </DataTemplate>
+    </ItemsRepeater.ItemTemplate>
+  </ItemsRepeater>
+</UserControl>

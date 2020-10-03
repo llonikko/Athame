@@ -1,0 +1,262 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:rxui="http://reactiveui.net"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:Athame.Avalonia.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="775"
+             x:Class="Athame.Avalonia.Views.SettingsView">
+  <Grid RowDefinitions="* Auto"
+        ColumnDefinitions="*">
+    <TabControl Grid.Row="0"
+                Grid.Column="0"
+                Margin="5">
+      <TabItem Header="General">
+        <Grid RowDefinitions=".7* * Auto Auto"
+              ColumnDefinitions="*">
+          <Border Grid.Row="0"
+                  Grid.Column="0"
+                  Margin="5"
+                  Padding="5"
+                  BorderBrush="LightGray"
+                  BorderThickness="1"
+                  CornerRadius="5">
+            <StackPanel>
+              <TextBlock Margin="2"
+                         FontSize="13"
+                         Foreground="#62C2CC"
+                         Text="Album/Track Download Options"/>
+              <Grid RowDefinitions="* *"
+                    ColumnDefinitions="* 100"
+                    Margin="5">
+                <StackPanel Grid.Row="0"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+                  <RadioButton Margin="2"
+                               GroupName="AlbumSaveOption"
+                               Content="Save to: "
+                               Name="AlbumLocationRadioButton"/>
+                  <TextBlock Margin="5"
+                             FontWeight="Bold"
+                             FontStyle="Italic"
+                             TextWrapping="Wrap"
+                             Name="AlbumLocationTextBlock"/>
+                </StackPanel>
+                <RadioButton Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="2"
+                             GroupName="AlbumSaveOption"
+                             Content="Ask me everytime"
+                             Name="AlbumAskLocationRadioButton"/>
+                <Button Grid.Row="0"
+                        Grid.Column="1"
+                        Width="100"
+                        BorderBrush="LightGray"
+                        Content="Browse..."
+                        Name="SelectAlbumLocationButton"/>
+              </Grid>
+              <Grid RowDefinitions="* *"
+                    ColumnDefinitions="* 150"
+                    Margin="5">
+                <TextBox Grid.Row="0"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Margin="2"
+                         BorderBrush="LightGray"
+                         FontSize="14"
+                         Watermark="Path Format"
+                         UseFloatingWatermark="True"
+                         Name="AlbumPathFormatTextBox"/>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Margin="2 5"
+                           Name="SampleAlbumPathTextBlock"/>
+                <Button Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="2 5"
+                        BorderBrush="LightGray"
+                        Content="Help with path formats..."
+                        Name="AlbumPathFormatHelpButton"/>
+              </Grid>
+            </StackPanel>
+          </Border>
+          <Border Grid.Row="1"
+                  Grid.Column="0"
+                  Margin="5"
+                  Padding="5"
+                  BorderBrush="LightGray"
+                  BorderThickness="1"
+                  CornerRadius="5">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Margin="2"
+                           FontSize="13"
+                           Foreground="#62C2CC"
+                           Text="Playlist Download Options"/>
+                <CheckBox Margin="10 2"
+                          BorderBrush="LightGray"
+                          Content="Same as album/track"
+                          Name="SameAsAlbumCheckBox"/>
+              </StackPanel>
+              <StackPanel Name="PlaylistPreferencePanel">
+                <Grid RowDefinitions="* *"
+                      ColumnDefinitions="* 100"
+                      Margin="5">
+                  <StackPanel Grid.Row="0"
+                              Grid.Column="0"
+                              Orientation="Horizontal">
+                    <RadioButton Grid.Row="0"
+                                 Grid.Column="0"
+                                 Margin="2"
+                                 GroupName="PlaylistSaveOption"
+                                 Content="Save to: "
+                                 Name="PlaylistLocationRadioButton"/>
+                    <TextBlock Margin="5"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
+                               Name="PlaylistLocationTextBlock"/>
+                  </StackPanel>
+                  <RadioButton Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="2"
+                               GroupName="PlaylistSaveOption"
+                               Content="Ask me everytime"
+                               Name="PlaylistAskLocationRadioButton"/>
+                  <Button Grid.Row="0"
+                          Grid.Column="1"
+                          Width="100"
+                          BorderBrush="LightGray"
+                          Content="Browse..."
+                          Name="SelectPlaylistLocationButton"/>
+                </Grid>
+                <Grid RowDefinitions="* *"
+                      ColumnDefinitions="* 150"
+                      Margin="5">
+                  <TextBox Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Margin="2"
+                           BorderBrush="LightGray"
+                           FontSize="14"
+                           Watermark="Path Format"
+                           UseFloatingWatermark="True"
+                           Name="PlaylistPathFormatTextBox"/>
+                  <TextBlock Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="2 5"
+                             Name="SamplePlaylistPathTextBlock"/>
+                  <Button Grid.Row="1"
+                          Grid.Column="1"
+                          Margin="2 5"
+                          BorderBrush="LightGray"
+                          Content="Help with path formats..."
+                          Name="PlaylistPathFormatHelpButton"/>
+                </Grid>
+                <StackPanel Margin="5"
+                            HorizontalAlignment="Left">
+                  <TextBlock Margin="2"
+                             Text="Save playlist as file"/>
+                  <ComboBox Margin="2"
+                            Width="175"
+                            BorderBrush="LightGray"
+                            Name="PlaylistFileTypeComboBox">
+                    <ComboBoxItem Content="Don&apos;t Save"/>
+                    <ComboBoxItem Content="M3U"/>
+                    <ComboBoxItem Content="PLS"/>
+                  </ComboBox>
+                </StackPanel>
+                <CheckBox Margin="7"
+                          BorderBrush="LightGray"
+                          Content="Don&apos;t save album artwork when downloading a playlist"
+                          Name="DontSavePlaylistArtworkCheckBox"/>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+          <Border Grid.Row="2"
+                  Grid.Column="0"
+                  Margin="5"
+                  Padding="5"
+                  BorderBrush="LightGray"
+                  BorderThickness="1"
+                  CornerRadius="5">
+            <StackPanel Margin="5"
+                        HorizontalAlignment="Left">
+              <TextBlock Margin="2"
+                         FontSize="13"
+                         Foreground="#62C2CC"
+                         Text="Save album artwork as file"/>
+              <ComboBox Margin="2"
+                        Width="175"
+                        BorderBrush="LightGray"
+                        Name="MediaArtworkTypeComboBox">
+                <ComboBoxItem Content="As &quot;Cover.ext&quot;"/>
+                <ComboBoxItem Content="As &quot;{Artist} - {Album}.ext&quot;"/>
+              </ComboBox>
+            </StackPanel>
+          </Border>
+          <Border Grid.Row="3"
+                  Grid.Column="0"
+                  Margin="5" Padding="5"
+                  BorderBrush="LightGray"
+                  BorderThickness="1"
+                  CornerRadius="5">
+            <StackPanel Margin="5">
+              <TextBlock Margin="2"
+                         FontSize="13"
+                         Foreground="#62C2CC"
+                         Text="Misc"/>
+              <CheckBox Margin="2"
+                        BorderBrush="LightGray"
+                        Content="Ask before exiting if there are items in the queue"
+                        Name="AskBeforeExitCheckBox"/>
+              <CheckBox Margin="2"
+                        BorderBrush="LightGray"
+                        Content="Write &quot;Downloaded by Athame&quot; tags"
+                        Name="WriteWatermarkCheckBox"/>
+            </StackPanel>
+          </Border>
+        </Grid>
+      </TabItem>
+      <TabItem Header="Plugins">
+        <Grid RowDefinitions="* Auto"
+              ColumnDefinitions=".5* *">
+          <ListBox Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="5"
+                   BorderBrush="LightGray"
+                   FontSize="16"
+                   Items="{Binding PluginServices}"
+                   Name="PluginServicesListBox"/>
+          <Button Grid.Row="1"
+                  Grid.Column="0"
+                  Margin="5"
+                  BorderBrush="LightGray"
+                  Content="Open plugin directory"
+                  Name="OpenPluginDirectoryButton"/>
+          <ScrollViewer Grid.Row="0"
+                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
+                        HorizontalScrollBarVisibility="Disabled">
+            <views:PluginSettingsView Name="PluginSettingsView"/>
+          </ScrollViewer>
+        </Grid>
+      </TabItem>
+    </TabControl>
+    <StackPanel Grid.Row="1"
+                Grid.Column="0"
+                Margin="5"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right">
+      <Button Margin="2"
+              Width="100"
+              BorderBrush="LightGray"
+              Content="Cancel"
+              Name="CancelButton"/>
+      <Button Margin="2"
+              Width="100"
+              BorderBrush="LightGray"
+              Content="Save"
+              Name="SaveButton"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

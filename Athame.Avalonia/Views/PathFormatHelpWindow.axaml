@@ -1,0 +1,228 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Athame.Avalonia.Views.PathFormatHelpWindow"
+        Icon="/Assets/athame-logo.ico"
+        Title="Path Format Help"
+        Width="800" Height="550"
+        MinWidth="800" MinHeight="550">
+  <Viewbox>
+    <Grid RowDefinitions="Auto *"
+          ColumnDefinitions="*">
+      <TextBlock Grid.Row="0"
+                 Grid.Column="0"
+                 Margin="5"
+                 FontWeight="Bold"
+                 Text="Format substitutions are wrapped in curly braces, for instance: {Album.Artist} - {Title}"/>
+      <Grid Grid.Row="1"
+            Grid.Column="0"
+            RowDefinitions="* .7* .4* .4*"
+            ColumnDefinitions="*">
+        <Border Grid.Row="0"
+                Grid.Column="0"
+                Margin="5"
+                Padding="5"
+                BorderThickness="2"
+                BorderBrush="LightGray">
+          <StackPanel>
+            <TextBlock Margin="5"
+                       FontWeight="Bold"
+                       Foreground="Teal"
+                       Text="Track"/>
+            <Grid Grid.RowDefinitions="* * * * * * *"
+                  Grid.ColumnDefinitions="150 *">
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Artist"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Title"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="TrackNumber"/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="DiscNumber"/>
+              <TextBlock Grid.Row="4"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Genre"/>
+              <TextBlock Grid.Row="5"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Composer"/>
+              <TextBlock Grid.Row="6"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="AlbumArtistOrArtist"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The artist of the track."/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The track&apos;s title."/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The number of track relative to the disc."/>
+              <TextBlock Grid.Row="3"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The disc the track is on."/>
+              <TextBlock Grid.Row="4"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The track&apos;s genre."/>
+              <TextBlock Grid.Row="5"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The track&apos;s composer."/>
+              <TextBlock Grid.Row="6"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="If the album artist field is not available, will use the track&apos;s artist field, otherwise the Album.Artist field."/>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="1"
+                Grid.Column="0"
+                Margin="5"
+                Padding="5"
+                BorderThickness="2"
+                BorderBrush="LightGray">
+          <StackPanel>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5"
+                       Foreground="Teal"
+                       FontWeight="Bold"
+                       Text="Album"/>
+            <Grid Grid.RowDefinitions="* * *"
+                  Grid.ColumnDefinitions="150 *">
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Album.Artist"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Album.Title"/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Album.Type"/>
+              <TextBlock Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The album&apos;s artist."/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The album&apos;s title."/>
+              <TextBlock Grid.Row="2"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The album&apos;s type. May be Album, EP or Single."/>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="2"
+                Grid.Column="0"
+                Margin="5"
+                Padding="5"
+                BorderBrush="LightGray"
+                BorderThickness="2">
+          <StackPanel>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5"
+                       Foreground="Teal"
+                       FontWeight="Bold"
+                       Text="Playlist"/>
+            <Grid Grid.RowDefinitions="*"
+                  Grid.ColumnDefinitions="150 *">
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="Playlist.Title"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The playlist&apos;s name."/>
+            </Grid>
+          </StackPanel>
+        </Border>
+        <Border Grid.Row="3"
+                Grid.Column="0"
+                Margin="5"
+                Padding="5"
+                BorderThickness="2"
+                BorderBrush="LightGray">
+          <StackPanel>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5"
+                       Foreground="Teal"
+                       FontWeight="Bold"
+                       Text="General"/>
+            <Grid Grid.RowDefinitions="*"
+                  Grid.ColumnDefinitions="150 *">
+              <TextBlock Grid.Row="0"
+                         Grid.Column="0"
+                         Margin="2"
+                         HorizontalAlignment="Right"
+                         FontWeight="Bold"
+                         Text="ServiceName"/>
+              <TextBlock Grid.Row="1"
+                         Grid.Column="1"
+                         Margin="2"
+                         HorizontalAlignment="Left"
+                         Text="The service name."/>
+            </Grid>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Grid>
+  </Viewbox>
+</Window>

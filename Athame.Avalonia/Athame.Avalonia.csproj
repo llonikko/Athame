@@ -1,15 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.11" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.11" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.11" />
+    <PackageReference Include="Avalonia" Version="0.9.12" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.12" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.12" />
+    <PackageReference Include="Avalonia.Xaml.Behaviors" Version="0.9.9" />
+    <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.8.6" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.5.17" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Athame.Core\Athame.Core.csproj" />
+    <ProjectReference Include="..\Athame.Plugin.Api\Athame.Plugin.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Plugins\" />
   </ItemGroup>
 </Project>

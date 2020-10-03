@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:p="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+             x:Class="Athame.Avalonia.Views.AuthenticationView">
+  <StackPanel VerticalAlignment="Center"
+              HorizontalAlignment="Stretch">
+    <TextBlock Margin="10 5 10 5"
+               Foreground="#62C2CC"
+               Name="HelpTextBlock"/>
+    <Grid RowDefinitions="* * *"
+          Margin="5 0">
+      <Border Grid.Row="0"
+              Margin="0 5"
+              Padding="5"
+              BorderThickness="1"
+              BorderBrush="LightGray"
+              CornerRadius="5">
+        <TextBox BorderThickness="0"
+                 Watermark="Username"
+                 Name="UsernameTextBox"/>
+      </Border>
+      <Border Grid.Row="1"
+              Margin="0 5"
+              Padding="5"
+              BorderThickness="1"
+              BorderBrush="LightGray"
+              CornerRadius="5">
+        <TextBox BorderThickness="0"
+                 Watermark="Password"
+                 PasswordChar="*"
+                 Name="PasswordTextBox"/>
+      </Border>
+      <p:ProgressRing Grid.Row="2"
+                      Width="30"
+                      Height="30"
+                      Foreground="Green"
+                      Name="AuthenticationProgressRing"/>
+      <Button Grid.Row="2"
+              Margin="0 5"
+              Height="35"
+              BorderBrush="LightGray"
+              Content="Log In"
+              Name="LoginButton"/>
+    </Grid>
+    <TextBlock Margin="10 2 10 2"
+               Foreground="Red"
+               Text="Authentication Error"
+               Name="ErrorTextBlock"/>
+  </StackPanel>
+</UserControl>

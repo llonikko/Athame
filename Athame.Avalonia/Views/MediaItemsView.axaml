@@ -1,0 +1,101 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:views="clr-namespace:Athame.Avalonia.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Athame.Avalonia.Views.MediaItemsView">
+  <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Auto">
+    <ItemsRepeater Items="{Binding MediaItems}"
+                   Name="MediaItemsRepeater">
+      <ItemsRepeater.Layout>
+        <StackLayout Orientation="Vertical"
+                     Spacing="2"/>
+      </ItemsRepeater.Layout>
+      <ItemsRepeater.ItemTemplate>
+        <DataTemplate>
+          <Expander IsExpanded="False"
+                    Background="#FDB813">
+            <Expander.Header>
+              <Border Padding="5">
+                <StackPanel Orientation="Horizontal"
+                            Spacing="5">
+                  <TextBlock FontSize="15"
+                             FontWeight="Bold"
+                             Foreground="#E4F6F8"
+                             Text="{Binding Name}"/>
+                  <views:MediaFlagsView DataContext="{Binding Flags}"/>
+                </StackPanel>
+              </Border>
+            </Expander.Header>
+            <ItemsRepeater Items="{Binding Items}">
+              <ItemsRepeater.Layout>
+                <StackLayout Orientation="Vertical"
+                             Spacing="2"/>
+              </ItemsRepeater.Layout>
+              <ItemsRepeater.ItemTemplate>
+                <DataTemplate>
+                  <Border Margin="0 0 0 1"
+                          Padding="5"
+                          Background="#E4F6F8"
+                          Name="TrackItem">
+                    <i:Interaction.Behaviors>
+                      <ia:EventTriggerBehavior SourceObject="{Binding #TrackItem}"
+                                               EventName="PointerEnter">
+                        <ia:ChangePropertyAction TargetObject="{Binding #TrackItem}"
+                                                 PropertyName="Opacity" Value="0.90"/>
+                      </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <i:Interaction.Behaviors>
+                      <ia:EventTriggerBehavior SourceObject="{Binding #TrackItem}"
+                                               EventName="PointerLeave">
+                        <ia:ChangePropertyAction TargetObject="{Binding #TrackItem}"
+                                                 PropertyName="Opacity" Value="1.0"/>
+                      </ia:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <Grid RowDefinitions="Auto Auto"
+                          ColumnDefinitions="50 *">
+                      <StackPanel Grid.Row="0"
+                                  Grid.Column="0"
+                                  Grid.RowSpan="2"
+                                  Margin="5"
+                                  Orientation="Horizontal"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center">
+                        <TextBlock Foreground="#FDB813"
+                                   Text="{Binding Track.DiscNumber}"/>
+                        <TextBlock Foreground="#FDB813"
+                                   Text="/"/>
+                        <TextBlock Foreground="#FDB813"
+                                   Text="{Binding Track.TrackNumber}"/>
+                      </StackPanel>
+                      <StackPanel Grid.Row="0"
+                                  Grid.Column="1"
+                                  Orientation="Horizontal">
+                        <TextBlock Margin="5"
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
+                                   FontSize="14"
+                                   Foreground="#F68B1F"
+                                   Text="{Binding Track.Title}"/>
+                        <views:MediaFlagsView DataContext="{Binding Flags}"/>
+                      </StackPanel>
+                      <TextBlock Grid.Row="1"
+                                 Grid.Column="1"
+                                 Margin="5"
+                                 Foreground="#F68B1F"
+                                 Text="{Binding Track.Artist.Name}"/>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+          </Expander>
+        </DataTemplate>
+      </ItemsRepeater.ItemTemplate>
+    </ItemsRepeater>
+  </ScrollViewer>
+</UserControl>

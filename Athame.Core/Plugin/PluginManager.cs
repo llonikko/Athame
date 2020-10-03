@@ -21,7 +21,7 @@ namespace Athame.Core.Plugin
             PluginApi =
                 (from assembly in AppDomain.CurrentDomain.GetAssemblies()
                  let name = assembly.GetName()
-                 where name.Name == "Athame.Plugin.API"
+                 where name.Name == "Athame.Plugin.Api"
                  select name)
                 .FirstOrDefault();
         }
