@@ -1,23 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Athame.Core.Logging;
-using Athame.PluginAPI.Service;
-
-// ReSharper disable SuspiciousTypeConversion.Global
+using Athame.Plugin.Api.Service;
+using Serilog;
 
 namespace Athame.Core.Plugin
 {
     public class AuthenticationManager
     {
-        private const string Tag = nameof(AuthenticationManager);
-
         private readonly object lockObject = new object();
-        private readonly HashSet<MusicService> authenticatingServices = new HashSet<MusicService>();
+        private readonly HashSet<IMediaService> authenticableServices = new HashSet<IMediaService>();
 
-        private void EnsureNotAuthenticating(MusicService service)
+        public IEnumerable<IMediaService> CanRestore(IEnumerable<IMediaService> services)
+            => services.Where(CanRestore);
+
+        public IEnumerable<Task<AuthenticationResult>> Restore(IEnumerable<IMediaService> services)
+            => services.Select(Restore);
+
+        public Task<AuthenticationResult> Authenticate(IMediaService service, string username, string password, bool rememberUser)
+            => Authenticate(service, service.AsUsernamePasswordAuthenticatable().SetCredentials(username, password, rememberUser).AuthenticateAsync);
+
+        public Task<AuthenticationResult> Authenticate(IMediaService service)
+            => Authenticate(service, service.AsAuthenticatableAsync().AuthenticateAsync);
+
+        public Task<AuthenticationResult> Restore(IMediaService service)
+            => Authenticate(service, service.AsAuthenticatable().RestoreAsync);
+
+        private void ServiceBeginAuthenticating(IMediaService service)
+        {
+            lock (lockObject)
+            {
+                EnsureNotAuthenticating(service);
+                var result = authenticableServices.Add(service);
+                Log.Debug("ServiceBeginAuthenticating, {Service}, {Result}, {Count}", service.Name, result, authenticableServices.Count);
+            }
+        }
+
+        private void ServiceEndAuthenticating(IMediaService service)
+        {
+            lock (lockObject)
+            {
+                var result = authenticableServices.Remove(service);
+                Log.Debug("ServiceEndAuthenticating, {Service}, {Result}, {Count}", service.Name, result, authenticableServices.Count);
+            }
+        }
+
+        public bool NeedsAuthentication(IMediaService service)
+            => CanAuthenticate(service) && !service.AsAuthenticatable().HasSavedSession;
+
+        public bool CanRestore(IMediaService service)
+        {
+            if (IsAuthenticating(service))
+            {
+                return false;
+            }
+            var ias = service.AsAuthenticatable();
+            if (ias == null)
+            {
+                return false;
+            }
+            return ias.HasSavedSession && ias.Account != null;
+        }
+
+        private void EnsureNotAuthenticating(IMediaService service)
         {
             if (IsAuthenticating(service))
             {
@@ -25,111 +71,34 @@ namespace Athame.Core.Plugin
             }
         }
 
-        private void ServiceBeginAuthenticating(MusicService service)
+        public bool CanAuthenticate(IMediaService service) 
+            => (service is IAuthenticatable) && !IsAuthenticating(service);
+
+        public bool IsAuthenticating(IMediaService service)
         {
             lock (lockObject)
             {
-                EnsureNotAuthenticating(service);
-                var r = authenticatingServices.Add(service);
-                Log.Debug(Tag, $"ServiceBeginAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
+                var result = authenticableServices.Contains(service);
+                Log.Debug("IsAuthenticating, {Service}, {Result}, {Count}", service.Name, result, authenticableServices.Count);
+                return result;
             }
         }
 
-        private void ServiceEndAuthenticating(MusicService service)
+        private async Task<AuthenticationResult> Authenticate(IMediaService service, Func<Task<bool>> action)
         {
-            lock (lockObject)
-            {
-                var r = authenticatingServices.Remove(service);
-                Log.Debug(Tag, $"ServiceEndAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
-            }
-        }
-
-        public bool CanAuthenticate(MusicService service)
-        {
-            return service is IAuthenticatable && !IsAuthenticating(service);
-        }
-
-        public bool NeedsAuthentication(MusicService service)
-        {
-            if (!CanAuthenticate(service)) return false;
-            var ias = service.AsAuthenticatable();
-            return !ias.HasSavedSession;
-        }
-
-        public bool CanRestore(MusicService service)
-        {
-            if (IsAuthenticating(service)) return false;
-            var ias = service.AsAuthenticatable();
-            if (ias == null) return false;
-            return ias.HasSavedSession && !ias.IsAuthenticated && ias.Account != null;
-        }
-
-        public bool IsAuthenticating(MusicService service)
-        {
-            lock (lockObject)
-            {
-                var r = authenticatingServices.Contains(service);
-                Log.Debug(Tag, $"IsAuthenticating, {service.Info.Name}, {r}, {authenticatingServices.Count}");
-                return r;
-            }
-        }
-
-        public async Task<AuthenticationResult> Authenticate(MusicService service)
-        {
+            AuthenticationResult result;
             ServiceBeginAuthenticating(service);
             try
             {
-                return new AuthenticationResult(service, await service.AsAuthenticatableAsync().AuthenticateAsync(), null);
+                var isSuccess = await action.Invoke().ConfigureAwait(false);
+                result = new AuthenticationResult(service, isSuccess);
             }
             catch (Exception ex)
             {
-                return new AuthenticationResult(service, false, ex);
+                result = new AuthenticationResult(service, isSuccess: false, ex);
             }
-            finally
-            {
-                ServiceEndAuthenticating(service);
-            }
+            ServiceEndAuthenticating(service);
+            return result;
         }
-
-        public async Task<AuthenticationResult> Authenticate(MusicService service, string username, string password, bool rememberMe)
-        {
-            ServiceBeginAuthenticating(service);
-            try
-            {
-                return
-                    new AuthenticationResult(service,
-                    await service.AsUsernamePasswordAuthenticatable().AuthenticateAsync(username, password, rememberMe), null);
-            }
-            catch (Exception ex)
-            {
-                return new AuthenticationResult(service, false, ex);
-            }
-            finally
-            {
-                ServiceEndAuthenticating(service);
-            }
-        }
-
-        public async Task<AuthenticationResult> Restore(MusicService service)
-        {
-            ServiceBeginAuthenticating(service);
-            try
-            {
-                return new AuthenticationResult(service, await service.AsAuthenticatable().RestoreAsync(), null);
-            }
-            catch (Exception ex)
-            {
-                return new AuthenticationResult(service, false, ex);
-            }
-            finally
-            {
-                ServiceEndAuthenticating(service);
-            }
-        }
-
-
-
-
-
     }
 }

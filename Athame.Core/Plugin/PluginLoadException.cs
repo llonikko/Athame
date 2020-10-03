@@ -7,8 +7,6 @@ namespace Athame.Core.Plugin
         public string File { get; set; }
 
         public PluginLoadException(string message, string file) : base(message)
-        {
-            File = file;
-        }
+            => File = file;
     }
 }

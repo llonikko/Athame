@@ -1,25 +1,16 @@
-﻿using Athame.PluginAPI.Service;
-
-// ReSharper disable SuspiciousTypeConversion.Global
+﻿using Athame.Plugin.Api.Service;
 
 namespace Athame.Core.Plugin
 {
     public static class ServiceCastExtensions
     {
+        public static IAuthenticatable AsAuthenticatable(this IMediaService service)
+            => service as IAuthenticatable;
 
-        public static IAuthenticatable AsAuthenticatable(this MusicService service)
-        {
-            return service as IAuthenticatable;
-        }
+        public static IAuthenticatableAsync AsAuthenticatableAsync(this IMediaService service)
+            => service as IAuthenticatableAsync;
 
-        public static IAuthenticatableAsync AsAuthenticatableAsync(this MusicService service)
-        {
-            return service as IAuthenticatableAsync;
-        }
-
-        public static IUsernamePasswordAuthenticationAsync AsUsernamePasswordAuthenticatable(this MusicService service)
-        {
-            return service as IUsernamePasswordAuthenticationAsync;
-        }
+        public static IUsernamePasswordAuthenticationAsync AsUsernamePasswordAuthenticatable(this IMediaService service)
+            => service as IUsernamePasswordAuthenticationAsync;
     }
 }

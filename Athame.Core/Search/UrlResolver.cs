@@ -1,71 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Athame.Core.Plugin;
-using Athame.PluginAPI.Service;
+using Athame.Plugin.Api.Service;
 
 namespace Athame.Core.Search
 {
-    /// <summary>
-    /// The state of the URL parser after attempting to parse a URL.
-    /// </summary>
-    public enum UrlParseState
-    {
-        /// <summary>
-        /// The input was null or whitespace.
-        /// </summary>
-        NullOrEmptyString,
-        /// <summary>
-        /// The input was not a valid URL.
-        /// </summary>
-        InvalidUrl,
-        /// <summary>
-        /// The URL was valid, but no service corresponds to it.
-        /// </summary>
-        NoServiceFound,
-        /// <summary>
-        /// A service was found that matches the URL's host, but it is not authenticated.
-        /// At this state and the ones that follow it, the <see cref="UrlResolver.Service"/> property
-        /// is the matching service.
-        /// </summary>
-        ServiceNotAuthenticated,
-        /// <summary>
-        /// A service was found, but needs to be restored.
-        /// </summary>
-        ServiceNotRestored,
-        /// <summary>
-        /// The service does not recognise this URL as pointing to any downloadable media.
-        /// </summary>
-        NoMedia,
-        /// <summary>
-        /// The URL points to a downloadable media collection.
-        /// </summary>
-        Success,
-        /// <summary>
-        /// An exception occurred at some point. See <see cref="UrlResolver.Exception"/>.
-        /// </summary>
-        Exception
-    }
-
     /// <summary>
     /// Parses and resolves media URLs.
     /// </summary>
     public class UrlResolver
     {
         private readonly PluginManager pluginManager;
-        private readonly AuthenticationManager am;
+        private readonly AuthenticationManager authManager;
 
         /// <summary>
         /// The service the URL's host points to.
         /// </summary>
-        public MusicService Service { get; private set; }
+        public IMediaService Service { get; private set; }
 
         /// <summary>
-        /// The media type and ID parsed from the URL.
+        /// The media type and media ID parsed from the URL.
         /// </summary>
-        public UrlParseResult ParseResult { get; private set; }
+        public MediaUri MediaUri { get; private set; }
 
         /// <summary>
         /// The exception thrown by the service.
@@ -75,110 +31,88 @@ namespace Athame.Core.Search
         /// <summary>
         /// If a URL has been parsed yet.
         /// </summary>
-        public bool HasParsedUrl => Service != null && ParseResult != null;
+        public bool HasParsedUrl 
+            => Service != null && MediaUri != null;
 
         /// <summary>
         /// Creates a new instance.
         /// </summary>
         /// <param name="pluginManager">The <see cref="PluginManager"/> to find services from.</param>
-        /// <param name="am">The <see cref="AuthenticationManager"/> to use.</param>
-        public UrlResolver(PluginManager pluginManager, AuthenticationManager am)
+        /// <param name="authManager">The <see cref="AuthenticationManager"/> to use.</param>
+        public UrlResolver(PluginManager pluginManager, AuthenticationManager authManager)
         {
             this.pluginManager = pluginManager;
-            this.am = am;
+            this.authManager = authManager;
         }
 
         /// <summary>
         /// Attempts to parse a URL that refers to a media collection.
         /// </summary>
         /// <param name="url">The URL to parse.</param>
-        /// <returns>The state of the parser. See the documentation for <see cref="UrlParseState"/> for more info.</returns>
-        public UrlParseState Parse(string url)
+        /// <returns>The state of the parser. See the documentation for <see cref="UrlParseResult"/> for more info.</returns>
+        public UrlParseResult Parse(string url)
         {
             Service = null;
-            ParseResult = null;
+            MediaUri = null;
             Exception = null;
-            
-            if (String.IsNullOrWhiteSpace(url))
+
+            if (string.IsNullOrWhiteSpace(url))
             {
-                return UrlParseState.NullOrEmptyString;
+                return UrlParseResult.NullOrEmptyString;
             }
 
-            Uri actualUrl;
-            if (!Uri.TryCreate(url, UriKind.Absolute, out actualUrl))
+            if (!Uri.TryCreate(url, UriKind.Absolute, out Uri actualUrl))
             {
-                return UrlParseState.InvalidUrl;
+                return UrlParseResult.InvalidUrl;
             }
 
-            Service = pluginManager.GetServiceByBaseUri(actualUrl);
+            Service = pluginManager.GetService(actualUrl);
             if (Service == null)
             {
-                return UrlParseState.NoServiceFound;
+                return UrlParseResult.NoServiceFound;
             }
 
-            if (am.CanRestore(Service))
-            {
-                return UrlParseState.ServiceNotRestored;
-            }
+            // if (_authManager.CanRestore(Service))
+            //     return UrlParseResult.ServiceNotRestored;
 
-            if (am.NeedsAuthentication(Service))
-            {
-                return UrlParseState.ServiceNotAuthenticated;
-            }
+            // if (authManager.NeedsAuthentication(Service))
+            // {
+            //     return UrlParseResult.ServiceNotAuthenticated;
+            // }
 
             try
             {
-                if ((ParseResult = Service.ParseUrl(actualUrl)) == null || ParseResult?.Type == MediaType.Unknown)
+                MediaUri = Service.ParseUrl(actualUrl);
+                if (MediaUri == null || MediaUri.MediaType == MediaType.Unknown)
                 {
-                    return UrlParseState.NoMedia;
+                    return UrlParseResult.NoMedia;
                 }
             }
             catch (Exception ex)
             {
                 Exception = ex;
-                return UrlParseState.Exception;
+                return UrlParseResult.Exception;
             }
 
-            return UrlParseState.Success;
+            return UrlParseResult.Success;
         }
 
         /// <summary>
         /// Resolves the last parsed URL to a media collection object.
         /// </summary>
-        /// <returns>An <see cref="IMediaCollection"/> according to the <see cref="UrlParseResult.Type"/> property.</returns>
-        public async Task<IMediaCollection> ResolveAsync()
-        {
-            if (!HasParsedUrl)
+        /// <returns>An <see cref="IMediaCollection"/> according to the <see cref="MediaUri.MediaType"/> property.</returns>
+        public async Task<IMediaCollection> ResolveAsync() =>
+            MediaUri.MediaType switch
             {
-                throw new InvalidOperationException("Parse(string) must be called first.");
-            }
-            switch (ParseResult.Type)
-            {
-                case MediaType.Unknown:
-                    throw new InvalidOperationException("Can't resolve unknown media type");
-                    
-                case MediaType.Album:
-                    return await Service.GetAlbumAsync(ParseResult.Id, true);
-                    
-                case MediaType.Track:
-                    return (await Service.GetTrackAsync(ParseResult.Id)).AsCollection();
-
-                case MediaType.Playlist:
-                    var playlist = await Service.GetPlaylistAsync(ParseResult.Id);
-                    if (playlist.Tracks == null)
-                    {
-                        var items = Service.GetPlaylistItems(ParseResult.Id, 100);
-                        await items.LoadAllPagesAsync();
-                        playlist.Tracks = items.AllItems;
-                    }
-                    return playlist;
-
-                case MediaType.Artist:
-                    throw new NotImplementedException("Artist URLs aren't currently implemented.");
-
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+                MediaType.Album
+                    => await Service.GetAlbumAsync(MediaUri.MediaId, withTracks: true).ConfigureAwait(false),
+                MediaType.Track
+                    => (await Service.GetTrackAsync(MediaUri.MediaId).ConfigureAwait(false)).AsCollection(),
+                MediaType.Playlist
+                    => await Service.GetPlaylistAsync(MediaUri.MediaId).ConfigureAwait(false),
+                MediaType.Artist
+                    => throw new NotImplementedException("Artist URLs aren't currently implemented."),
+                _   => throw new InvalidOperationException("Can't resolve unknown media type")
+            };
     }
 }
