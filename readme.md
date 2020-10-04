@@ -1,6 +1,5 @@
-[Athame]
-======
-
+Athame
+------
 Athame is a program for downloading music from music streaming and sharing services.
 It is intended for educational and private use only, and **not** as a tool for pirating and distributing music.
 Above all else, remember that the artists and studios put a lot of work into making music -- if you can, purchase
