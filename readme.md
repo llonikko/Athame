@@ -94,8 +94,8 @@ as the Athame executable. A guide for creating your own plugins can be found on 
 
 Build
 -----
-* .NET 4.6.2 or later
-* Visual Studio 2015 (Express will work fine) or later with NuGet
+* .NET Core 3.1
+* Visual Studio 2019 or VS Code
 
 Roadmap
 -------
