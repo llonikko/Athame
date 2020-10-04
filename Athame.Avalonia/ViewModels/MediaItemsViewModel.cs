@@ -15,8 +15,8 @@ namespace Athame.Avalonia.ViewModels
     {
         public readonly MediaDownloadSource Source;
 
-        private readonly ReadOnlyObservableCollection<MediaDownloadItem> mediaItems;
-        public ReadOnlyObservableCollection<MediaDownloadItem> MediaItems => mediaItems;
+        private readonly ReadOnlyObservableCollection<MediaItem> mediaItems;
+        public ReadOnlyObservableCollection<MediaItem> MediaItems => mediaItems;
 
         public IObservable<bool> IsNotEmpty { get; }
 
@@ -28,7 +28,7 @@ namespace Athame.Avalonia.ViewModels
             
             Source
                 .Connect()
-                .Transform(ms => new MediaDownloadItem(ms))
+                .Transform(ms => new MediaItem(ms))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out mediaItems)
                 .DisposeMany()
@@ -44,7 +44,7 @@ namespace Athame.Avalonia.ViewModels
         private void AddMedia(MediaDownloadService media)
             => Source.Add(media);
 
-        private bool IsDownloadable(IEnumerable<MediaDownloadItem> items)
+        private bool IsDownloadable(IEnumerable<MediaItem> items)
             => items.Any(item => item.Items.Any(x => x.Track.IsDownloadable));
     }
 }

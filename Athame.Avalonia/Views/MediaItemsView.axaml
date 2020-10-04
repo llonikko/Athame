@@ -66,11 +66,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center">
                         <TextBlock Foreground="#FDB813"
-                                   Text="{Binding Track.DiscNumber}"/>
-                        <TextBlock Foreground="#FDB813"
-                                   Text="/"/>
-                        <TextBlock Foreground="#FDB813"
-                                   Text="{Binding Track.TrackNumber}"/>
+                                   Text="{Binding DiscTrackNumber}"/>
                       </StackPanel>
                       <StackPanel Grid.Row="0"
                                   Grid.Column="1"
