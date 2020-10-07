@@ -6,9 +6,6 @@ namespace Athame.Core.Download
     {
         public TrackFile TrackFile { get; set; }
 
-        public int Total { get; set; }
-        public int CurrentItemIndex { get; set; }
-
         public void PostUpdate(ProgressInfo progress)
         {
             PercentCompleted = progress.PercentCompleted;

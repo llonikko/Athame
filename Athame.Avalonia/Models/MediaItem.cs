@@ -9,25 +9,29 @@ namespace Athame.Avalonia.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public ICollection<TrackItem> Items { get; }
+        public IEnumerable<TrackItem> TrackItems { get; }
         public IEnumerable<Metadata> Flags { get; }
 
         public MediaItem(MediaDownloadService service)
         {
             Id = service.Media.Id;
             Name = $"{service.Media.Title} - {service.Media.Artist}";
-            
-            Items = new List<TrackItem>();
-            foreach(var track in service.Media.Tracks)
+            TrackItems = CreateTrackItems(service.Media.Tracks);
+            Flags = service.Media.CustomMetadata?.Where(m => m.CanDisplay && m.IsFlag);
+        }
+
+        private IEnumerable<TrackItem> CreateTrackItems(IEnumerable<Track> tracks)
+        {
+            var v = new List<TrackItem>();
+            foreach (var t in tracks)
             {
-                Items.Add(new TrackItem 
+                v.Add(new TrackItem
                 {
-                    Track = track,
+                    Track = t,
                     IsDownloaded = false
                 });
             }
-
-            Flags = service.Media.CustomMetadata?.Where(m => m.CanDisplay && m.IsFlag);
+            return v;
         }
     }
 

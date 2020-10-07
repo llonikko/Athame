@@ -12,7 +12,7 @@ namespace Athame.Core.Download
 {
     public class MediaDownloadService
     {
-        private readonly ICollection<TrackFile> trackFiles = new List<TrackFile>();
+        public ICollection<TrackFile> TrackFiles { get; }
 
         public IMediaService MediaService { get; }
         public IMediaCollection Media { get; }
@@ -23,21 +23,19 @@ namespace Athame.Core.Download
             MediaService = service;
             Context = context;
             Media = media;
+            TrackFiles = new List<TrackFile>();
         }
 
         public void CreateMediaFolder()
             => Context.CreateMediaFolder(Media);
 
         public async Task<TrackFile> CreateTrackFile(Track track)
-        {
-            var trackFile = await MediaService
+            => await MediaService
                 .GetDownloadableTrackAsync(track)
                 .ConfigureAwait(false);
- 
-            Context.CreateFullPath(trackFile);
-            trackFiles.Add(trackFile);
-            return trackFile;
-        }
+
+        public void CreatePath(TrackFile trackFile)
+            => trackFile.FullPath = Context.CreateFullPath(trackFile);
 
         public async Task DownloadArtworkAsync(IMedia media)
         {
@@ -94,7 +92,7 @@ namespace Athame.Core.Download
             {
                 var playlistFile = PlaylistFile
                     .Create(type)
-                    .BuildContent(trackFiles);
+                    .BuildContent(TrackFiles);
 
                 var fileName = Path.Combine(Context.MediaFolderPath, Media.CreateDefaultFileName());
                 AthameWriter.Write(fileName, playlistFile);

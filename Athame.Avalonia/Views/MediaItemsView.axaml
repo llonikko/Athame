@@ -31,7 +31,7 @@
                 </StackPanel>
               </Border>
             </Expander.Header>
-            <ItemsRepeater Items="{Binding Items}">
+            <ItemsRepeater Items="{Binding TrackItems}">
               <ItemsRepeater.Layout>
                 <StackLayout Orientation="Vertical"
                              Spacing="2"/>

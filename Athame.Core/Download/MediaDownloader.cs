@@ -25,16 +25,21 @@ namespace Athame.Core.Download
             while (serviceQ.Count > 0)
             {
                 var service = serviceQ.Dequeue();
-                OnMediaDownloadStarted(new MediaDownloadEventArgs
+                service.CreateMediaFolder();
+
+                var e = new MediaDownloadEventArgs
                 {
                     Service = service,
                     Index = services.Count() - serviceQ.Count - 1,
                     Total = services.Count()
-                });
+                };
+                OnMediaDownloadStarted(e);
 
-                service.CreateMediaFolder();
                 if (await DownloadMediaAsync(service))
                 {
+                    service.CreateArtworkFile(ArtworkFileName);
+                    service.CreateMediaInfo();
+                    service.CreatePlaylistFile(PlaylistFileType);
                     continue;
                 }
                 
@@ -44,7 +49,6 @@ namespace Athame.Core.Download
 
         private async Task<bool> DownloadMediaAsync(MediaDownloadService service)
         {
-            var tracksTotal = service.Media.Tracks.Count;
             var tracksQueue = new Queue<Track>(service.Media.Tracks);
 
             while (tracksQueue.Count > 0)
@@ -55,31 +59,21 @@ namespace Athame.Core.Download
                 var e = new TrackDownloadEventArgs
                 {
                     TrackFile = trackFile,
-                    CurrentItemIndex = (tracksTotal - tracksQueue.Count),
                     PercentCompleted = 0,
-                    DownloadState = DownloadState.PreProcess,
-                    Total = service.Media.GetDownloadableTracksCount()
+                    DownloadState = DownloadState.PreProcess
                 };
 
-                if (await DownloadTrackAsync(service, e))
-                {
-                    continue;
-                }
-                else
-                {
-                    return false;
-                }
+                if (!await DownloadTrackAsync(service, e)) return false;
             }
-
-            service.CreateArtworkFile(ArtworkFileName);
-            service.CreateMediaInfo();
-            service.CreatePlaylistFile(PlaylistFileType);
 
             return true;
         }
 
         private async Task<bool> DownloadTrackAsync(MediaDownloadService service, TrackDownloadEventArgs e)
         {
+            service.CreatePath(e.TrackFile);
+            service.TrackFiles.Add(e.TrackFile);
+
             if (!e.TrackFile.Track.IsDownloadable)
             {
                 OnTrackDownloadSkipped(e);

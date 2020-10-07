@@ -45,17 +45,7 @@ namespace Athame.Core.Download
         public string CreateFilePath(TrackFile trackFile, string format)
             => trackFile.FileType.AppendExtension(PathHelpers.FormatFilePath(trackFile.Track, format));
 
-        public void CreateFullPath(TrackFile trackFile)
-            => trackFile.FullPath = Path.Combine(DownloadFolderPath, CreateFilePath(trackFile, MediaPathFormat));
-    }
-
-    public class MediaFolder
-    {
-        public string BasePath { get; set; }
-
-        public void Create(IMediaCollection media)
-        {
-
-        }
+        public string CreateFullPath(TrackFile trackFile)
+            => Path.Combine(DownloadFolderPath, CreateFilePath(trackFile, MediaPathFormat));
     }
 }
