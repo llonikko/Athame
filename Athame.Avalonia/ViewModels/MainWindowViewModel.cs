@@ -28,6 +28,8 @@ namespace Athame.Avalonia.ViewModels
         public string TrackDownloadStatus { get; set; }
         [Reactive]
         public int TrackDownloadProgress { get; set; }
+        [Reactive]
+        public string TrackDownloadProgressText { get; set; }
 
         public ReactiveCommand<Unit, Unit> DownloadMediaCommand { get; }
         public ReactiveCommand<Unit, Unit> CancelDownloadCommand { get; }
@@ -111,14 +113,14 @@ namespace Athame.Avalonia.ViewModels
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
         {
+            TrackDownloadStatus = e.Status.GetDescription();
             TrackDownloadProgress = e.PercentCompleted;
-
-            TrackDownloadStatus = $"[{TrackDownloadProgress}%] {e.DownloadState.GetDescription()}";
+            TrackDownloadProgressText = $"{TrackDownloadProgress}%";
         }
 
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
-            TrackDownloadStatus = "Completed";
+            TrackDownloadStatus = e.Status.GetDescription();
         }
 
         public void TrackDownloadSkipped(TrackDownloadEventArgs e)

@@ -60,7 +60,7 @@ namespace Athame.Core.Download
                 {
                     TrackFile = trackFile,
                     PercentCompleted = 0,
-                    DownloadState = DownloadState.PreProcess
+                    Status = TrackDownloadStatus.PreProcess
                 };
 
                 if (!await DownloadTrackAsync(service, e)) return false;
@@ -82,7 +82,7 @@ namespace Athame.Core.Download
             {
                 OnTrackDownloadStarted(e);
 
-                e.DownloadState = DownloadState.DownloadingAlbumArtwork;
+                e.Status = TrackDownloadStatus.DownloadingAlbumArtwork;
                 OnTrackDownloadProgressed(e);
                 await service.DownloadArtworkAsync(e.TrackFile.Track.Album);
                 
@@ -97,7 +97,7 @@ namespace Athame.Core.Download
                         .GetDownloader()
                         .DownloadAsync(e.TrackFile, progress);
 
-                    e.DownloadState = DownloadState.WritingTags;
+                    e.Status = TrackDownloadStatus.WritingTags;
                     OnTrackDownloadProgressed(e);
                     TrackTagger.Tag(e.TrackFile, CanWriteWatermark);
                 }

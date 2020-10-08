@@ -41,19 +41,35 @@
                 CornerRadius="5"
                 BorderBrush="WhiteSmoke"
                 Background="White">
-          <StackPanel>
-            <TextBlock Margin="5"
+          <Grid RowDefinitions="Auto Auto Auto"
+                ColumnDefinitions="* *">
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Margin="5"
                        FontSize="16"
                        FontWeight="Bold"
                        Name="StatusTextBlock"/>
-            <TextBlock Margin="5"
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="5"
+                       HorizontalAlignment="Left"
                        Name="TrackDownloadStatusTextBlock"/>
-            <ProgressBar Margin="5"
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="5"
+                       HorizontalAlignment="Right"
+                       FontWeight="Bold"
+                       Name="TrackDownloadProgressTextBlock"/>
+            <ProgressBar Grid.Row="2"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="2"
+                         Margin="5"
                          Minimum="0"
                          Maximum="100"
                          Foreground="#62C2CC"
                          Name="TrackDownloadProgressBar"/>
-          </StackPanel>
+          </Grid>
         </Border>
         <StackPanel Grid.Row="3"
                     Margin="5"

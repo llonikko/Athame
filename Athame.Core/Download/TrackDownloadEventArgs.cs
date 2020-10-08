@@ -6,13 +6,15 @@ namespace Athame.Core.Download
     {
         public TrackFile TrackFile { get; set; }
 
+        public TrackDownloadStatus Status { get; set; }
+
         public void PostUpdate(ProgressInfo progress)
         {
             PercentCompleted = progress.PercentCompleted;
             
-            DownloadState = PercentCompleted == 100 
-                ? DownloadState.PostProcess 
-                : DownloadState.DownloadingTrack;
+            Status = PercentCompleted == 100 
+                ? TrackDownloadStatus.PostProcess 
+                : TrackDownloadStatus.DownloadingTrack;
         }
     }
 }

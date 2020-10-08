@@ -2,7 +2,7 @@
 
 namespace Athame.Plugin.Api.Downloader
 {
-    public enum DownloadState
+    public enum TrackDownloadStatus
     {
         [Description("Ready")]
         Ready,
@@ -20,6 +20,9 @@ namespace Athame.Plugin.Api.Downloader
         PostProcess,
 
         [Description("Writing tags")]
-        WritingTags
+        WritingTags,
+
+        [Description("Completed")]
+        Completed
     }
 }

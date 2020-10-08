@@ -45,6 +45,6 @@ namespace Athame.Avalonia.ViewModels
             => Source.Add(media);
 
         private bool IsDownloadable(IEnumerable<MediaItem> items)
-            => items.Any(item => item.Items.Any(x => x.Track.IsDownloadable));
+            => items.Any(item => item.TrackItems.Any(x => x.Track.IsDownloadable));
     }
 }

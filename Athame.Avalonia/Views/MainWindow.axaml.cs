@@ -23,6 +23,7 @@ namespace Athame.Avalonia.Views
 
         public TextBlock StatusTextBlock => this.FindControl<TextBlock>("StatusTextBlock");
         public TextBlock TrackDownloadStatusTextBlock => this.FindControl<TextBlock>("TrackDownloadStatusTextBlock");
+        public TextBlock TrackDownloadProgressTextBlock => this.FindControl<TextBlock>("TrackDownloadProgressTextBlock");
         public ProgressBar TrackDownloadProgressBar => this.FindControl<ProgressBar>("TrackDownloadProgressBar");
 
         public Button DownloadButton => this.FindControl<Button>("DownloadButton");
@@ -47,6 +48,8 @@ namespace Athame.Avalonia.Views
                 this.OneWayBind(ViewModel, vm => vm.DownloadStatus, v => v.StatusTextBlock.Text)
                     .DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.TrackDownloadStatus, v => v.TrackDownloadStatusTextBlock.Text)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.TrackDownloadProgressText, v => v.TrackDownloadProgressTextBlock.Text)
                     .DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.TrackDownloadProgress, v => v.TrackDownloadProgressBar.Value)
                     .DisposeWith(disposables);
