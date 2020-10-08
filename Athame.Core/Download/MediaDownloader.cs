@@ -110,6 +110,7 @@ namespace Athame.Core.Download
                     return true;
                 }
 
+                e.Status = TrackDownloadStatus.Completed;
                 OnTrackDownloadCompleted(e); // Raise the completed event even if an error occurred
             }
             return true;
