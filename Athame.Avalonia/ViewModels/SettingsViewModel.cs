@@ -104,11 +104,6 @@ namespace Athame.Avalonia.ViewModels
             get => (int)settings.PlaylistFileType;
             set => settings.PlaylistFileType = (PlaylistFileType)value;
         }
-        public int ArtworkFileName
-        {
-            get => (int)settings.ArtworkFileName;
-            set => settings.ArtworkFileName = (ArtworkFileName)value;
-        }
         public bool AskBeforeExit
         {
             get => settings.ConfirmExit;

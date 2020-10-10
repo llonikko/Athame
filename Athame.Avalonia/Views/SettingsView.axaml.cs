@@ -38,7 +38,6 @@ namespace Athame.Avalonia.Views
         public CheckBox WriteWatermarkCheckBox => this.FindControl<CheckBox>("WriteWatermarkCheckBox");
 
         public ComboBox PlaylistFileTypeComboBox => this.FindControl<ComboBox>("PlaylistFileTypeComboBox");
-        public ComboBox MediaArtworkTypeComboBox => this.FindControl<ComboBox>("MediaArtworkTypeComboBox");
 
         public ListBox PluginServicesListBox => this.FindControl<ListBox>("PluginServicesListBox");
 
@@ -90,9 +89,6 @@ namespace Athame.Avalonia.Views
 
                 #region ComboBox Bindings
                 this.Bind(ViewModel, vm => vm.PlaylistFileType, v => v.PlaylistFileTypeComboBox.SelectedIndex)
-                    .DisposeWith(disposables);
-
-                this.Bind(ViewModel, vm => vm.ArtworkFileName, v => v.MediaArtworkTypeComboBox.SelectedIndex)
                     .DisposeWith(disposables);
                 #endregion
 

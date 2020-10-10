@@ -12,7 +12,7 @@
                 Grid.Column="0"
                 Margin="5">
       <TabItem Header="General">
-        <Grid RowDefinitions=".7* * Auto Auto"
+        <Grid RowDefinitions=".7* * Auto"
               ColumnDefinitions="*">
           <Border Grid.Row="0"
                   Grid.Column="0"
@@ -160,7 +160,6 @@
                             Width="175"
                             BorderBrush="LightGray"
                             Name="PlaylistFileTypeComboBox">
-                    <ComboBoxItem Content="Don&apos;t Save"/>
                     <ComboBoxItem Content="M3U"/>
                     <ComboBoxItem Content="PLS"/>
                   </ComboBox>
@@ -173,28 +172,6 @@
             </StackPanel>
           </Border>
           <Border Grid.Row="2"
-                  Grid.Column="0"
-                  Margin="5"
-                  Padding="5"
-                  BorderBrush="LightGray"
-                  BorderThickness="1"
-                  CornerRadius="5">
-            <StackPanel Margin="5"
-                        HorizontalAlignment="Left">
-              <TextBlock Margin="2"
-                         FontSize="13"
-                         Foreground="#62C2CC"
-                         Text="Save album artwork as file"/>
-              <ComboBox Margin="2"
-                        Width="175"
-                        BorderBrush="LightGray"
-                        Name="MediaArtworkTypeComboBox">
-                <ComboBoxItem Content="As &quot;Cover.ext&quot;"/>
-                <ComboBoxItem Content="As &quot;{Artist} - {Album}.ext&quot;"/>
-              </ComboBox>
-            </StackPanel>
-          </Border>
-          <Border Grid.Row="3"
                   Grid.Column="0"
                   Margin="5" Padding="5"
                   BorderBrush="LightGray"

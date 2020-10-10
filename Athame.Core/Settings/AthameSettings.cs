@@ -10,7 +10,6 @@ namespace Athame.Core.Settings
         public MediaPreference PlaylistPreference { get; set; }
 
         public PlaylistFileType PlaylistFileType { get; set; }
-        public ArtworkFileName ArtworkFileName { get; set; }
 
         public bool PlaylistUsesGeneralPreference { get; set; }
         public bool DontSavePlaylistArtwork { get; set; }
@@ -37,8 +36,7 @@ namespace Athame.Core.Settings
 
             PlaylistUsesGeneralPreference = false;
             DontSavePlaylistArtwork = true;
-            ArtworkFileName = ArtworkFileName.AsCover;
-            PlaylistFileType = PlaylistFileType.None;
+            PlaylistFileType = PlaylistFileType.M3U;
             WriteWatermark = true;
             ConfirmExit = true;
         }
@@ -55,7 +53,6 @@ namespace Athame.Core.Settings
                 PlaylistPreference = PlaylistPreference.GetCopy(),
                 PlaylistUsesGeneralPreference = PlaylistUsesGeneralPreference,
                 DontSavePlaylistArtwork = DontSavePlaylistArtwork,
-                ArtworkFileName = ArtworkFileName,
                 PlaylistFileType = PlaylistFileType,
                 WriteWatermark = WriteWatermark,
                 ConfirmExit = ConfirmExit,

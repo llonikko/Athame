@@ -54,12 +54,10 @@ namespace Athame.Core.Download
             }
         }
 
-        public void CreateArtworkFile(ArtworkFileName name)
+        public void CreateArtworkFile()
         {
             var image = ImageCache.Instance.GetImage(Media);
-            var imageName = image?.FileType.AppendExtension(name == ArtworkFileName.AsCover 
-                ? "Cover" 
-                : Media.CreateDefaultFileName());
+            var imageName = image?.FileType.AppendExtension($"{Media.CreateDefaultFileName()} (Cover)");
 
             var fileName = Path.Combine(Context.MediaFolderPath, imageName);
             AthameWriter.Write(fileName, image);

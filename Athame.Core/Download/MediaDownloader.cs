@@ -17,7 +17,6 @@ namespace Athame.Core.Download
         public bool CanWriteWatermark { get; set; }
         public bool DontSavePlaylistArtwork { get; set; }
         public PlaylistFileType PlaylistFileType { get; set; }
-        public ArtworkFileName ArtworkFileName { get; set; }
 
         public async Task DownloadMediaAsync(IEnumerable<MediaDownloadService> services)
         {
@@ -37,7 +36,7 @@ namespace Athame.Core.Download
 
                 if (await DownloadMediaAsync(service))
                 {
-                    service.CreateArtworkFile(ArtworkFileName);
+                    service.CreateArtworkFile();
                     service.CreateMediaInfo();
                     service.CreatePlaylistFile(PlaylistFileType);
                     continue;
@@ -116,16 +115,6 @@ namespace Athame.Core.Download
             return true;
         }
 
-        private void WriteMediaArtwork(MediaDownloadService mediaService)
-        {
-            var setting = ArtworkFileName;
-            if (DontSavePlaylistArtwork && mediaService.Media.MediaType is MediaType.Playlist)
-            {
-                //setting = MediaArtworkType.DontSave;
-                return;
-            }
-        }
-
         private bool HandleDownloadException(TrackDownloadEventArgs e, Exception ex)
         {
             var dlex = new DownloadExceptionEventArgs
@@ -151,7 +140,6 @@ namespace Athame.Core.Download
         public void ApplySettings(AthameSettings settings)
         {
             PlaylistFileType = settings.PlaylistFileType;
-            ArtworkFileName = settings.ArtworkFileName;
             DontSavePlaylistArtwork = settings.DontSavePlaylistArtwork;
             CanWriteWatermark = settings.WriteWatermark;
         }
