@@ -1,5 +1,4 @@
 using System;
-using Athame.Core.Download;
 using Athame.Plugin.Api.Service;
 
 namespace Athame.Core.Settings
