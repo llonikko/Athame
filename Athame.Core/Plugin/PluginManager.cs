@@ -1,5 +1,4 @@
 ﻿using Athame.Plugin.Api;
-using Athame.Plugin.Api.Service;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -105,11 +104,11 @@ namespace Athame.Core.Plugin
 
             if (apiName == default(AssemblyName))
             {
-                throw new PluginLoadException("Plugin does not reference Athame.Plugin.API.", assembly.Location);
+                throw new PluginLoadException("Plugin does not reference Athame.Plugin.Api.", assembly.Location);
             }
             if (apiName.Version.Major != PluginApi.Version.Major)
             {
-                throw new PluginIncompatibleException($"Wrong major version of Athame.Plugin.API referenced: expected {PluginApi}, found {apiName}");
+                throw new PluginIncompatibleException($"Wrong major version of Athame.Plugin.Api referenced: expected {PluginApi}, found {apiName}");
             }
         }
 
@@ -145,32 +144,10 @@ namespace Athame.Core.Plugin
 
             foreach (var p in Plugins)
             {
-                p.Init(settingsPath);   
-                AddService(p.Service);
+                p.Init(settingsPath);
             }
         }
 
         private static readonly Regex FilenameRegex = new Regex(@"Athame.Plugin\.(?:.*)\.dll");
-        private readonly Dictionary<Uri, IMediaService> servicesByUris = new Dictionary<Uri, IMediaService>();
-
-        private void AddService(IMediaService service)
-        {
-            foreach (var uri in service.BaseUri)
-            {
-                servicesByUris.Add(uri, service);
-            }
-        }
-
-        public IMediaService GetService(string name)
-            => (from plugin in Plugins where plugin.Name == name select plugin.Service)
-            .FirstOrDefault();
-
-        public IMediaService GetService(Uri baseUri)
-            => (from s in servicesByUris where s.Key.Scheme == baseUri.Scheme && s.Key.Host == baseUri.Host select s.Value)
-            .FirstOrDefault();
-
-        public IEnumerable<IMediaService> PluginServices
-            => (from plugin in Plugins select plugin.Service)
-            .ToArray();
     }
 }

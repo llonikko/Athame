@@ -10,7 +10,7 @@ namespace Athame.Core.Search
     /// </summary>
     public class UrlResolver
     {
-        private readonly PluginManager pluginManager;
+        private readonly MediaServiceManager serviceManager;
         private readonly AuthenticationManager authManager;
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace Athame.Core.Search
         /// <summary>
         /// Creates a new instance.
         /// </summary>
-        /// <param name="pluginManager">The <see cref="PluginManager"/> to find services from.</param>
+        /// <param name="serviceManager">The <see cref="MediaServiceManager"/> to find services from.</param>
         /// <param name="authManager">The <see cref="AuthenticationManager"/> to use.</param>
-        public UrlResolver(PluginManager pluginManager, AuthenticationManager authManager)
+        public UrlResolver(MediaServiceManager serviceManager, AuthenticationManager authManager)
         {
-            this.pluginManager = pluginManager;
+            this.serviceManager = serviceManager;
             this.authManager = authManager;
         }
 
@@ -66,7 +66,7 @@ namespace Athame.Core.Search
                 return UrlParseResult.InvalidUrl;
             }
 
-            Service = pluginManager.GetService(actualUrl);
+            Service = serviceManager.GetService(actualUrl);
             if (Service == null)
             {
                 return UrlParseResult.NoServiceFound;

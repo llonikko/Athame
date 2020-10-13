@@ -12,7 +12,7 @@ namespace Athame.Core
 {
     public class AthameApp
     {
-        private readonly PluginManager pluginManager;
+        private readonly MediaServiceManager serviceManager;
 
         private static readonly string ApplicationDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         
@@ -39,11 +39,10 @@ namespace Athame.Core
 
         public UrlResolver UrlResolver { get; }
 
-        public List<IPlugin> Plugins 
-            => pluginManager.Plugins;
+        public List<IPlugin> Plugins { get; } = new List<IPlugin>();
 
-        public IEnumerable<IMediaService> PluginServices 
-            => pluginManager.PluginServices;
+        public IEnumerable<IMediaService> PluginServices
+            => serviceManager.Services;
 
         public AthameApp()
         {
@@ -54,10 +53,10 @@ namespace Athame.Core
 
             IsWindowed = true;
 
-            pluginManager = new PluginManager();
+            serviceManager = new MediaServiceManager();
 
             AuthenticationManager = new AuthenticationManager();
-            UrlResolver = new UrlResolver(pluginManager, AuthenticationManager);
+            UrlResolver = new UrlResolver(serviceManager, AuthenticationManager);
 
             AppSettings = new Settings<AthameSettings>(AthameAppSettingsPath);
         }
@@ -77,8 +76,12 @@ namespace Athame.Core
 
         public void LoadAndInitPlugins()
         {
+            var pluginManager = new PluginManager();
             pluginManager.LoadAll(AthamePluginsPath);
             pluginManager.InitAll(AthamePluginsSettingsPath);
+
+            Plugins.AddRange(pluginManager.Plugins);
+            serviceManager.Add(Plugins);
         }
     }
 }
