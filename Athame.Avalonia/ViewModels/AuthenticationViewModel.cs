@@ -73,7 +73,7 @@ namespace Athame.Avalonia.ViewModels
             var auth = Locator.Current.GetService<AthameApp>().AuthenticationManager;
 
             var result = await auth.Authenticate(service, Username, Password, true);
-            if (result.IsSuccess)
+            if (result.IsAuthenticated)
             {
                 return true;
             }

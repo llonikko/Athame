@@ -1,6 +1,5 @@
 using Athame.Avalonia.Models;
 using Athame.Core;
-using Athame.Core.Extensions;
 using Athame.Core.Plugin;
 using Athame.Plugin.Api.Service;
 using ReactiveUI;
@@ -71,23 +70,23 @@ namespace Athame.Avalonia.ViewModels
 
                 var result = await finishedTask;
 
-                var status = ServicesRestoreStatus.First(s => s.Name == result.Service.Name);
+                var status = ServicesRestoreStatus.First(s => s.Name == result.ServiceName);
                 status.IsAuthenticating = false;
 
-                if (result.IsSuccess)
+                if (result.IsAuthenticated)
                 {
-                    Log.Debug("Restore complete for {Result}", result);
+                    Log.Debug("Restore complete for {Result}", result.ServiceName);
                     status.Message = "Signed in successfully";
                 }
                 else
                 {
                     if (result.Exception != null)
                     {
-                        Log.Error(result.Exception, "Restore failed for {Result}", result);
+                        Log.Error(result.Exception, "Restore failed for {Result}", result.ServiceName);
                     }
                     else
                     {
-                        Log.Debug("Restore complete for {Result}", result);
+                        Log.Debug("Restore complete for {Result}", result.ServiceName);
                     }
 
                     fails.Add(result);

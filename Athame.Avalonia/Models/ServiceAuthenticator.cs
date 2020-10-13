@@ -31,7 +31,7 @@ namespace Athame.Avalonia.Models
         public async Task<bool> AuthenticateInternal(IMediaService service)
         {
             var result = await authManager.Authenticate(service);
-            if (result.IsSuccess)
+            if (result.IsAuthenticated)
             {
                 return true;
             }

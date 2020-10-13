@@ -86,19 +86,26 @@ namespace Athame.Core.Plugin
 
         private async Task<AuthenticationResult> Authenticate(IMediaService service, Func<Task<bool>> action)
         {
-            AuthenticationResult result;
+            bool isAuthenticated = false;
+            Exception exception = null;
+
             ServiceBeginAuthenticating(service);
             try
             {
-                var isSuccess = await action.Invoke().ConfigureAwait(false);
-                result = new AuthenticationResult(service, isSuccess);
+                isAuthenticated = await action.Invoke().ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                result = new AuthenticationResult(service, isSuccess: false, ex);
+                exception = ex;
             }
             ServiceEndAuthenticating(service);
-            return result;
+
+            return new AuthenticationResult
+            {
+                ServiceName = service.Name,
+                IsAuthenticated = isAuthenticated,
+                Exception = exception
+            };
         }
     }
 }
