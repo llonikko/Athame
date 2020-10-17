@@ -23,13 +23,13 @@ namespace Athame.Avalonia.ViewModels
         private readonly MediaDownloader downloader;
 
         [Reactive]
-        public string DownloadStatus { get; set; }
+        public string MediaDownloadStatus { get; set; }
         [Reactive]
         public string TrackDownloadStatus { get; set; }
         [Reactive]
-        public int TrackDownloadProgress { get; set; }
+        public int TrackDownloadProgressPercentage { get; set; }
         [Reactive]
-        public string TrackDownloadProgressText { get; set; }
+        public string TrackDownloadTitle { get; set; }
 
         public ReactiveCommand<Unit, Unit> DownloadMediaCommand { get; }
         public ReactiveCommand<Unit, Unit> CancelDownloadCommand { get; }
@@ -107,15 +107,15 @@ namespace Athame.Avalonia.ViewModels
         private void MediaServiceDequeued(MediaDownloadEventArgs e)
         {
             var current = e;
-            DownloadStatus = $"{current.Index + 1}/{current.Total}: "
+            MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
                 + $"{current.Service.Media.MediaType} - {current.Service.Media.Title}";
         }
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
         {
             TrackDownloadStatus = e.Status.GetDescription();
-            TrackDownloadProgress = e.PercentCompleted;
-            TrackDownloadProgressText = $"{TrackDownloadProgress}%";
+            TrackDownloadProgressPercentage = e.PercentCompleted;
+            TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
         }
 
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
@@ -135,12 +135,12 @@ namespace Athame.Avalonia.ViewModels
         {
             ApplySettings();
 
-            DownloadStatus = "Warming up...";
+            MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
             await downloader.DownloadMediaAsync(MediaItemsView.Source.Items);
 
-            DownloadStatus = "All downloads completed";
+            MediaDownloadStatus = "All downloads completed";
         }
 
         private Window CanRestore()
