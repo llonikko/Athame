@@ -77,8 +77,8 @@ namespace Athame.Core
         public void LoadAndInitPlugins()
         {
             var pluginManager = new PluginManager();
-            pluginManager.LoadAll(AthamePluginsPath);
-            pluginManager.InitAll(AthamePluginsSettingsPath);
+            pluginManager.LoadPlugins(AthamePluginsPath);
+            pluginManager.InitPlugins(AthamePluginsSettingsPath);
 
             Plugins.AddRange(pluginManager.Plugins);
             serviceManager.Add(Plugins);
