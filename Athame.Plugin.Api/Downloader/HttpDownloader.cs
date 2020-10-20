@@ -31,19 +31,14 @@ namespace Athame.Plugin.Api.Downloader
 
         public async Task DownloadFileAsync(Uri uri, string destination, IProgress<ProgressInfo> progress)
         {
-            var response = await EnsureSuccessResponse(uri).ConfigureAwait(false);   
+            var response = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
             Initialize(response);
 
             using var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
             await DownloadBytesAsync(contentStream, destination, progress).ConfigureAwait(false);
             UpdateProgress(progress);
-        }
-
-        private async Task<HttpResponseMessage> EnsureSuccessResponse(Uri uri)
-        {
-            var response = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-            return response;
         }
 
         private void Initialize(HttpResponseMessage response)
@@ -60,22 +55,18 @@ namespace Athame.Plugin.Api.Downloader
         {
             byte[] buffer = new byte[DefaultDownloadBufferLength];
             using var fileStream = File.OpenWrite(destination);
-            while (await WriteBytesAsync(contentStream, fileStream, buffer, progress).ConfigureAwait(false)) 
-                ;
-        }
 
-        private async ValueTask<bool> WriteBytesAsync(Stream content, FileStream destination, byte[] buffer, IProgress<ProgressInfo> progress)
-        {
-            var bytesRead = await content.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false);
-            if (bytesRead == 0)
+            while (true)
             {
-                return false;
+                var bytesRead = await contentStream.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false);
+                if (bytesRead == 0)
+                {
+                    break;
+                }
+                UpdateProgress(bytesRead, progress);
+
+                await fileStream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
             }
-
-            UpdateProgress(bytesRead, progress);
-
-            await destination.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
-            return true;
         }
 
         private void UpdateProgress(int bytesRead, IProgress<ProgressInfo> progress)

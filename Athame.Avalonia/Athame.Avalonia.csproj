@@ -24,7 +24,4 @@
     <ProjectReference Include="..\Athame.Core\Athame.Core.csproj" />
     <ProjectReference Include="..\Athame.Plugin.Api\Athame.Plugin.Api.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Plugins\" />
-  </ItemGroup>
 </Project>
