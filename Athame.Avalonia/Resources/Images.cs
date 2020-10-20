@@ -17,6 +17,11 @@ namespace Athame.Avalonia.Resources
                 .GetService<IAssetLoader>()
                 .Open(new Uri($"avares://Athame.Avalonia/Assets/tick.png")));
 
+        public static Bitmap Info
+            => new Bitmap(AvaloniaLocator.Current
+                .GetService<IAssetLoader>()
+                .Open(new Uri($"avares://Athame.Avalonia/Assets/information-white.png")));
+
         public static Bitmap Error
             => new Bitmap(AvaloniaLocator.Current
                 .GetService<IAssetLoader>()

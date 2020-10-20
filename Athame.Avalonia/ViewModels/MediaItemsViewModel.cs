@@ -1,5 +1,7 @@
 ﻿using Athame.Avalonia.Models;
+using Athame.Avalonia.Resources;
 using Athame.Core.Download;
+using Athame.Plugin.Api.Service;
 using DynamicData;
 using ReactiveUI;
 using System;
@@ -13,38 +15,45 @@ namespace Athame.Avalonia.ViewModels
 {
     public class MediaItemsViewModel : ViewModelBase
     {
-        public readonly MediaDownloadSource Source;
-
+        private readonly MediaDownloadSource source;
         private readonly ReadOnlyObservableCollection<MediaItem> mediaItems;
-        public ReadOnlyObservableCollection<MediaItem> MediaItems => mediaItems;
 
-        public IObservable<bool> IsNotEmpty { get; }
+        public IObservable<bool> CanDownload { get; }
 
         public ReactiveCommand<MediaDownloadService, Unit> AddMediaCommand { get; }
 
+        public IEnumerable<MediaDownloadService> Items
+            => source.Items;
+
+        public ReadOnlyObservableCollection<MediaItem> MediaItems 
+            => mediaItems;
+
         public MediaItemsViewModel()
         {
-            Source = new MediaDownloadSource();
+            source = new MediaDownloadSource();
             
-            Source
+            source
                 .Connect()
-                .Transform(ms => new MediaItem(ms))
+                .Transform(ms => new MediaItem(ms.Media))
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out mediaItems)
                 .DisposeMany()
                 .Subscribe();
 
-            IsNotEmpty = this
+            CanDownload = this
                 .WhenAnyValue(x => x.MediaItems.Count)
-                .Select(count => count > 0 && IsDownloadable(mediaItems));
+                .Select(count => count > 0 && mediaItems.Any(x => x.IsDownloadable()));
 
             AddMediaCommand = ReactiveCommand.Create<MediaDownloadService>(AddMedia);
         }
 
-        private void AddMedia(MediaDownloadService media)
-            => Source.Add(media);
+        public void UpdateTrackItem(Track track)
+        {
+            var item = mediaItems.Select(m => m.GetTrackItem(track)).First();
+            item.ImageStatus = Images.Success;
+        }
 
-        private bool IsDownloadable(IEnumerable<MediaItem> items)
-            => items.Any(item => item.TrackItems.Any(x => x.Track.IsDownloadable));
+        private void AddMedia(MediaDownloadService media)
+            => source.Add(media);
     }
 }

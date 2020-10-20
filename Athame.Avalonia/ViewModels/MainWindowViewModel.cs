@@ -59,7 +59,7 @@ namespace Athame.Avalonia.ViewModels
 
             DownloadMediaCommand = ReactiveCommand.CreateFromTask(
                 DownloadMedia,
-                MediaItemsView.IsNotEmpty);
+                MediaItemsView.CanDownload);
 
             CancelDownloadCommand = ReactiveCommand.Create(RemoveMedia);
 
@@ -121,6 +121,7 @@ namespace Athame.Avalonia.ViewModels
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
             TrackDownloadStatus = e.Status.GetDescription();
+            MediaItemsView.UpdateTrackItem(e.TrackFile.Track);
         }
 
         public void TrackDownloadSkipped(TrackDownloadEventArgs e)
@@ -138,7 +139,7 @@ namespace Athame.Avalonia.ViewModels
             MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
-            await downloader.DownloadMediaAsync(MediaItemsView.Source.Items);
+            await downloader.DownloadMediaAsync(MediaItemsView.Items);
 
             MediaDownloadStatus = "All downloads completed";
         }

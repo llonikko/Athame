@@ -64,7 +64,9 @@
                                   Margin="5"
                                   Orientation="Horizontal"
                                   HorizontalAlignment="Center"
-                                  VerticalAlignment="Center">
+                                  VerticalAlignment="Center" 
+                                  Spacing="10">
+                        <Image Source="{Binding ImageStatus}"/>
                         <TextBlock Foreground="#FDB813"
                                    Text="{Binding DiscTrackNumber}"/>
                       </StackPanel>
