@@ -151,7 +151,7 @@ namespace Athame.Avalonia.Views
                 this.Bind(ViewModel, vm => vm.SelectedPlugin, v => v.PluginServicesListBox.SelectedIndex)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.PluginSettingsView, v => v.PluginSettingsView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.PluginSettingsViewModel, v => v.PluginSettingsView.DataContext)
                     .DisposeWith(disposables);
             });
 

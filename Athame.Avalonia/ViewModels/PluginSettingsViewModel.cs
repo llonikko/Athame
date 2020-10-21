@@ -1,6 +1,3 @@
-using Athame.Avalonia.Models;
-using Athame.Core;
-using Athame.Core.Extensions;
 using Athame.Core.Plugin;
 using Athame.Plugin.Api;
 using Avalonia.Controls;
@@ -22,8 +19,8 @@ namespace Athame.Avalonia.ViewModels
         [Reactive]
         public UserControl PluginServiceSettingsView { get; set; }
 
-        public AuthenticationViewModel AuthenticationView { get; }
-        public PluginDetailsViewModel PluginDetailsView { get; }
+        public AuthenticationViewModel AuthenticationViewModel { get; }
+        public PluginDetailsViewModel PluginDetailsViewModel { get; }
 
         public ReactiveCommand<Unit, Unit> LogoutCommand { get; }
 
@@ -31,18 +28,17 @@ namespace Athame.Avalonia.ViewModels
         {
             this.plugin = plugin;
 
-            AuthenticationView = new AuthenticationViewModel(this.plugin.Service);
-
-            PluginDetailsView = new PluginDetailsViewModel(this.plugin);
+            AuthenticationViewModel = new AuthenticationViewModel(this.plugin.Service);
+            PluginDetailsViewModel = new PluginDetailsViewModel(this.plugin);
 
             LogoutCommand = ReactiveCommand.Create(Logout);
 
-            this.WhenAnyValue(x => x.AuthenticationView.IsAuthenticated)
+            this.WhenAnyValue(x => x.AuthenticationViewModel.IsAuthenticated)
                 .Where(authenticated => authenticated)
                 .Select(_ => Unit.Default)
                 .InvokeCommand(ReactiveCommand.Create(() =>
                 {
-                    AuthenticationView.Clear();
+                    AuthenticationViewModel.Clear();
                     Update();
                 }));
 
@@ -82,42 +78,5 @@ namespace Athame.Avalonia.ViewModels
 
             PluginServiceSettingsView = plugin.SettingsControl as UserControl;
         }
-
-        //private Window Restore()
-        //{
-        //    var window = new ServiceAuthenticator().Restore(plugin.PluginService);
-        //    if (window != null)
-        //    {
-        //        window.Closed += (s, e) =>
-        //        {
-        //            UpdateViews(plugin.PluginService.AsAuthenticatable());
-        //            plugin.Settings.Save();
-        //        };
-        //    }
-        //    return window;
-        //}
-
-        //private Window LogIn()
-        //{
-        //    var auth = Locator.Current.GetService<AthameApp>().AuthenticationManager;
-        //    var authenticatableService = plugin.PluginService.AsAuthenticatable();
-
-        //    if (auth.NeedsAuthentication(plugin.PluginService))
-        //    {
-        //        var window = new ServiceAuthenticator().Authenticate(plugin.PluginService);
-        //        if (window != null)
-        //        {
-        //            window.Closed += (s, e) =>
-        //            {
-        //                UpdateViews(plugin.PluginService.AsAuthenticatable());
-        //                plugin.Settings.Save();
-        //            };
-        //        }
-        //        return window;
-        //    }
-
-        //    LogOut(authenticatableService);
-        //    return null;
-        //}
     }
 }

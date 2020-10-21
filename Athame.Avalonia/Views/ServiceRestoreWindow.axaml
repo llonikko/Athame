@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:Athame.Avalonia.Views"
         xmlns:p="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
         x:Class="Athame.Avalonia.Views.ServiceRestoreWindow"
         Icon="/Assets/athame-logo.ico"
         Title="Restore Services"

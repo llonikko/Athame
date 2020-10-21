@@ -40,16 +40,13 @@ namespace Athame.Avalonia.ViewModels
             var parseResult = this
                 .WhenAnyValue(x => x.SearchText)
                 .Select(url => Parse(url));
-
             parseResult
                 .Select(result => GetMessage(result))
                 .ToPropertyEx(this, x => x.UrlValidationStatusText);
-
             parseResult
                 .Select(x => x == UrlParseResult.NullOrEmptyString)
                 .Select(validating => !validating)
                 .ToPropertyEx(this, x => x.IsValidating);
-
             parseResult
                 .Select(x => x == UrlParseResult.Success)
                 .ToPropertyEx(this, x => x.IsUrlValid);
@@ -62,10 +59,8 @@ namespace Athame.Avalonia.ViewModels
 
             var canSearch = isValid;
             SearchMediaCommand = ReactiveCommand.CreateFromTask(Search, canSearch);
-
             SearchMediaCommand.IsExecuting
                 .ToPropertyEx(this, x => x.IsSearching);
-
             SearchMediaCommand.ThrownExceptions
                 .Subscribe(error =>
                 {   /* Handle exceptions. */

@@ -31,11 +31,11 @@ namespace Athame.Avalonia.Views
                 this.OneWayBind(ViewModel, vm => vm.IsAuthenticated, v => v.AuthenticationPanel.IsVisible, isAuthenticated => !isAuthenticated)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.AuthenticationView, v => v.AuthenticationView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.AuthenticationViewModel, v => v.AuthenticationView.DataContext)
                     .DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.PluginServiceSettingsView, v => v.PluginServiceSettingsViewContentControl.Content)
                     .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.PluginDetailsView, v => v.PluginDetailsView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.PluginDetailsViewModel, v => v.PluginDetailsView.DataContext)
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.AuthenticationStatus, v => v.AuthenticationStatusTextBlock.Text)

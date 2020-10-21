@@ -5,7 +5,7 @@
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:views="clr-namespace:Athame.Avalonia.Views"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" 
              x:Class="Athame.Avalonia.Views.MediaItemsView">
   <ScrollViewer HorizontalScrollBarVisibility="Auto"
                 VerticalScrollBarVisibility="Auto">

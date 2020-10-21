@@ -20,13 +20,7 @@ namespace Athame.Avalonia.Views
         public MenuItem ViewAboutAppMenuItem => this.FindControl<MenuItem>("ViewAboutAppMenuItem");
 
         public SearchView SearchView => this.FindControl<SearchView>("SearchView");
-
-        public TextBlock MediaDownloadStatusTextBlock => this.FindControl<TextBlock>("MediaDownloadStatusTextBlock");
-        public TextBlock TrackDownloadStatusTextBlock => this.FindControl<TextBlock>("TrackDownloadStatusTextBlock");
-        public TextBlock TrackDownloadProgressTextBlock => this.FindControl<TextBlock>("TrackDownloadProgressTextBlock");
-        public ProgressBar TrackDownloadProgressBar => this.FindControl<ProgressBar>("TrackDownloadProgressBar");
-        public TextBlock TrackDownloadTitleTextBlock => this.FindControl<TextBlock>("TrackDownloadTitleTextBlock");
-
+        public DownloadStatusView DownloadStatusView => this.FindControl<DownloadStatusView>("DownloadStatusView");
 
         public Button DownloadButton => this.FindControl<Button>("DownloadButton");
         public Button CancelButton => this.FindControl<Button>("CancelButton");
@@ -44,18 +38,10 @@ namespace Athame.Avalonia.Views
                 this.BindCommand(ViewModel, vm => vm.ViewAboutAppCommand, v => v.ViewAboutAppMenuItem)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.SearchView, v => v.SearchView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.SearchViewModel, v => v.SearchView.DataContext)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.MediaDownloadStatus, v => v.MediaDownloadStatusTextBlock.Text)
-                    .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TrackDownloadStatus, v => v.TrackDownloadStatusTextBlock.Text)
-                    .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TrackDownloadProgressPercentage, v => v.TrackDownloadProgressTextBlock.Text, progress => $"{progress}%")
-                    .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TrackDownloadProgressPercentage, v => v.TrackDownloadProgressBar.Value)
-                    .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.TrackDownloadTitle, v => v.TrackDownloadTitleTextBlock.Text)
+                this.OneWayBind(ViewModel, vm => vm.DownloadStatusViewModel, v => v.DownloadStatusView.DataContext)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.DownloadMediaCommand, v => v.DownloadButton)
@@ -63,7 +49,7 @@ namespace Athame.Avalonia.Views
                 this.BindCommand(ViewModel, vm => vm.CancelDownloadCommand, v => v.CancelButton)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.MediaItemsView, v => v.MediaItemsView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.MediaItemsViewModel, v => v.MediaItemsView.DataContext)
                     .DisposeWith(disposables);
 
                 this.WhenAnyObservable(x => x.ViewModel.CanRestoreCommand)

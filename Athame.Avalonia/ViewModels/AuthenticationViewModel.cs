@@ -5,7 +5,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Splat;
-using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -26,8 +25,8 @@ namespace Athame.Avalonia.ViewModels
         public bool IsAuthenticated { [ObservableAsProperty]get; }
 
         public string Title { get; }
-        public string HelpText { get; }
-        public string ErrorText { get; }
+        public string HelpMessage { get; }
+        public string ErrorMessage { get; }
 
         public ReactiveCommand<Unit, bool> LoginCommand { get; }
 
@@ -36,19 +35,22 @@ namespace Athame.Avalonia.ViewModels
             this.service = service;
 
             Title = $"{service.Name} sign in";
-
-            HelpText = service.AsUsernamePasswordAuthenticatable().SignInHelpText
+            HelpMessage = service.AsUsernamePasswordAuthenticatable().SignInHelpText
                 ?? $"{service.Name} has not provided any help text.";
+            ErrorMessage = "An error occurred while signing in. Please check your credentials and try again.";
 
-            ErrorText = "An error occurred while signing in. Please check your credentials and try again.";
-
+            var canAuthenticate = this
+                .WhenAnyValue(
+                    x => x.Username, 
+                    x => x.Password, 
+                    (username, password) => 
+                        !string.IsNullOrEmpty(username) && 
+                        !string.IsNullOrEmpty(password));
             LoginCommand = ReactiveCommand.CreateFromTask(
                 Authenticate,
-                CanAuthenticate());
-
+                canAuthenticate);
             LoginCommand.IsExecuting
                 .ToPropertyEx(this, x => x.IsAuthenticating);
-
             LoginCommand
                 .Select(success => !success)
                 .ToPropertyEx(this, x => x.HasError);
@@ -59,14 +61,6 @@ namespace Athame.Avalonia.ViewModels
 
         public void Clear()
             => Username = Password = string.Empty;
-
-        private IObservable<bool> CanAuthenticate()
-           => this.WhenAnyValue(
-               x => x.Username,
-               x => x.Password,
-               (username, password) =>
-                   !string.IsNullOrEmpty(username) &&
-                   !string.IsNullOrEmpty(password));
 
         private async Task<bool> Authenticate()
         {

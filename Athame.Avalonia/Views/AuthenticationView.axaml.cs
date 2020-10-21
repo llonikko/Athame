@@ -29,10 +29,10 @@ namespace Athame.Avalonia.Views
                 this.OneWayBind(ViewModel, vm => vm.HasError, v => v.ErrorTextBlock.IsVisible)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.ErrorText, v => v.ErrorTextBlock.Text)
+                this.OneWayBind(ViewModel, vm => vm.ErrorMessage, v => v.ErrorTextBlock.Text)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.HelpText, v => v.HelpTextBlock.Text)
+                this.OneWayBind(ViewModel, vm => vm.HelpMessage, v => v.HelpTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.Bind(ViewModel, vm => vm.Username, v => v.UsernameTextBox.Text)

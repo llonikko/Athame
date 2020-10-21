@@ -1,7 +1,5 @@
 ﻿using Athame.Plugin.Api;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Athame.Avalonia.ViewModels
 {

@@ -5,7 +5,6 @@ using Athame.Core.Download;
 using Athame.Core.Extensions;
 using Avalonia.Controls;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Splat;
 using System;
@@ -21,64 +20,49 @@ namespace Athame.Avalonia.ViewModels
     {
         private readonly AthameApp app;
         private readonly MediaDownloader downloader;
-
-        [Reactive]
-        public string MediaDownloadStatus { get; set; }
-        [Reactive]
-        public string TrackDownloadStatus { get; set; }
-        [Reactive]
-        public int TrackDownloadProgressPercentage { get; set; }
-        [Reactive]
-        public string TrackDownloadTitle { get; set; }
+        private readonly MediaDownloadSource source;
 
         public ReactiveCommand<Unit, Unit> DownloadMediaCommand { get; }
         public ReactiveCommand<Unit, Unit> CancelDownloadCommand { get; }
-
         public ReactiveCommand<Unit, Window> CanRestoreCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveSettingsCommand { get; }
-
         public ReactiveCommand<Unit, IRoutableViewModel> ViewSettingsCommand { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> ViewAboutAppCommand { get; }
 
-        public SearchViewModel SearchView { get; }
-        public MediaItemsViewModel MediaItemsView { get; }
+        public SearchViewModel SearchViewModel { get; }
+        public DownloadStatusViewModel DownloadStatusViewModel { get; }
+        public MediaItemsViewModel MediaItemsViewModel { get; }
         public RoutingState Router { get; }
         public ViewModelActivator Activator { get; }
 
         public MainWindowViewModel()
         {
             app = Locator.Current.GetService<AthameApp>();
+            downloader = new MediaDownloader();
+            source = new MediaDownloadSource();
 
             Router = new RoutingState();
-
-            SearchView = new SearchViewModel();
-           
-            MediaItemsView = new MediaItemsViewModel();
-
-            downloader = new MediaDownloader();
+            SearchViewModel = new SearchViewModel();
+            DownloadStatusViewModel = new DownloadStatusViewModel();
+            MediaItemsViewModel = new MediaItemsViewModel(source);
 
             DownloadMediaCommand = ReactiveCommand.CreateFromTask(
                 DownloadMedia,
-                MediaItemsView.CanDownload);
-
+                MediaItemsViewModel.CanDownload);
             CancelDownloadCommand = ReactiveCommand.Create(RemoveMedia);
-
             CanRestoreCommand = ReactiveCommand.Create(CanRestore);
-
             SaveSettingsCommand = ReactiveCommand.Create(SaveSettings);
-
             ViewSettingsCommand = ReactiveCommand.CreateFromObservable(
                 Router.Navigate<SettingsViewModel>);
-
             ViewAboutAppCommand = ReactiveCommand.CreateFromObservable(
                 Router.Navigate<AboutMeViewModel>);
 
             Activator = new ViewModelActivator();
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                this.WhenAnyValue(x => x.SearchView.SearchResult)
+                this.WhenAnyValue(x => x.SearchViewModel.SearchResult)
                     .Where(media => media != null)
-                    .InvokeCommand(MediaItemsView.AddMediaCommand)
+                    .Subscribe(AddMedia)
                     .DisposeWith(disposables);
 
                 Observable
@@ -107,26 +91,29 @@ namespace Athame.Avalonia.ViewModels
         private void MediaServiceDequeued(MediaDownloadEventArgs e)
         {
             var current = e;
-            MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
+            DownloadStatusViewModel.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
                 + $"{current.Service.Media.MediaType} - {current.Service.Media.Title}";
         }
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
         {
-            TrackDownloadStatus = e.Status.GetDescription();
-            TrackDownloadProgressPercentage = e.PercentCompleted;
-            TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
+            DownloadStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
+            DownloadStatusViewModel.TrackDownloadProgressPercentage = e.PercentCompleted;
+            DownloadStatusViewModel.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
         }
 
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
-            TrackDownloadStatus = e.Status.GetDescription();
-            MediaItemsView.UpdateTrackItem(e.TrackFile.Track);
+            DownloadStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
+            MediaItemsViewModel.UpdateTrackItem(e.TrackFile.Track);
         }
 
         public void TrackDownloadSkipped(TrackDownloadEventArgs e)
         {
         }
+
+        private void AddMedia(MediaDownloadService media)
+            => source.Add(media);
 
         private void RemoveMedia()
         {
@@ -136,12 +123,12 @@ namespace Athame.Avalonia.ViewModels
         {
             ApplySettings();
 
-            MediaDownloadStatus = "Warming up...";
+            DownloadStatusViewModel.MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
-            await downloader.DownloadMediaAsync(MediaItemsView.Items);
+            await downloader.DownloadMediaAsync(source.Items);
 
-            MediaDownloadStatus = "All downloads completed";
+            DownloadStatusViewModel.MediaDownloadStatus = "All downloads completed";
         }
 
         private Window CanRestore()
