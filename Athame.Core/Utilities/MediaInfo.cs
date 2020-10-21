@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Athame.Core.Utilities
 {
-    public abstract class MediaInfo : ITextInfo
+    public abstract class MediaInfo : IContentInfo
     {
         private readonly StringBuilder contentBuilder = new StringBuilder();
 
         public virtual string Name { get; set; }
         public virtual string Extension => "txt";
-        public string Content
+        public string GetContent()
             => contentBuilder.ToString();
 
         protected abstract void BuildInfo(StringBuilder content, IMedia media);

@@ -1,9 +1,9 @@
 ﻿namespace Athame.Plugin.Api.Service
 {
-    public interface ITextInfo
+    public interface IContentInfo
     {
         string Name { get; }
         string Extension { get; }
-        string Content { get; }
+        string GetContent();
     }
 }

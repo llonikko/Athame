@@ -5,13 +5,13 @@ namespace Athame.Core.Utilities
 {
     public static class AthameWriter
     {
-        public static void Write(string fileName, ITextInfo textInfo)
+        public static void Write(string fileName, IContentInfo info)
         {
-            FileInfo file = new FileInfo($"{fileName}.{textInfo.Extension}");
+            FileInfo file = new FileInfo($"{fileName}.{info.Extension}");
             if (!file.Exists)
             {
                 var writer = file.CreateText();
-                writer.WriteLine(textInfo.Content);
+                writer.WriteLine(info.GetContent());
                 writer.Close();
             }
         }

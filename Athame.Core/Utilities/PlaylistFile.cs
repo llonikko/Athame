@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Athame.Core.Utilities
 {
-    public abstract class PlaylistFile : ITextInfo
+    public abstract class PlaylistFile : IContentInfo
     {
         private readonly StringBuilder contentBuilder = new StringBuilder();
 
         public virtual string Name { get; }
         public virtual string Extension { get; }
-        public string Content 
+        public string GetContent() 
             => contentBuilder.ToString();
 
         protected virtual void Initialize(StringBuilder content)
