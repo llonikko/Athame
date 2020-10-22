@@ -16,49 +16,37 @@ namespace Athame.Core
 
         private static readonly string ApplicationDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         
-        public bool IsWindowed { get; }
-
-        public string AthameAppDataPath
+        public string AppDataFolder
             => Path.GetFullPath(Path.Combine(ApplicationDataFolderPath, "Athame.Avalonia"));
-
-        public string AthameAppLogsPath
-            => Path.Combine(AthameAppDataPath, "Logs");
-
-        public string AthameAppSettingsPath
-            => Path.Combine(AthameAppDataPath, "Athame Settings.json");
-
-        public string AthamePluginsPath
+        public string AppLogsFolder
+            => Path.Combine(AppDataFolder, "Logs");
+        public string PluginsFolder
             => Path.Combine(Directory.GetCurrentDirectory(), "Plugins");
-
-        public string AthamePluginsSettingsPath
-            => Path.Combine(AthameAppDataPath, "Plugin Data");
+        public string PluginDataFolder
+            => Path.Combine(AppDataFolder, "Plugin Data");
+        public string AppSettingsPath
+            => Path.Combine(AppDataFolder, "Athame Settings.json");
 
         public ISettings<AthameSettings> AppSettings { get; }
-
         public AuthenticationManager AuthenticationManager { get; }
-
         public UrlResolver UrlResolver { get; }
-
-        public List<IPlugin> Plugins { get; } = new List<IPlugin>();
-
+        public List<IPlugin> Plugins { get; }
         public IEnumerable<IMediaService> PluginServices
             => serviceManager.Services;
 
         public AthameApp()
         {
-            Directory.CreateDirectory(AthameAppDataPath);
-            Directory.CreateDirectory(AthameAppLogsPath);
-            //Directory.CreateDirectory(PluginsPath);
-            Directory.CreateDirectory(AthamePluginsSettingsPath);
-
-            IsWindowed = true;
+            Directory.CreateDirectory(AppDataFolder);
+            Directory.CreateDirectory(AppLogsFolder);
+            //Directory.CreateDirectory(PluginsFolder);
+            Directory.CreateDirectory(PluginDataFolder);
 
             serviceManager = new MediaServiceManager();
-
+            Plugins = new List<IPlugin>();
             AuthenticationManager = new AuthenticationManager();
             UrlResolver = new UrlResolver(serviceManager, AuthenticationManager);
 
-            AppSettings = new Settings<AthameSettings>(AthameAppSettingsPath);
+            AppSettings = new Settings<AthameSettings>(AppSettingsPath);
         }
 
         public void InitApp()
@@ -66,7 +54,7 @@ namespace Athame.Core
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console()
-                .WriteTo.File(Path.Combine(AthameAppLogsPath, "log.txt"),
+                .WriteTo.File(Path.Combine(AppLogsFolder, "log.txt"),
                     rollingInterval: RollingInterval.Day,
                     rollOnFileSizeLimit: true)
                 .CreateLogger();
@@ -77,8 +65,8 @@ namespace Athame.Core
         public void LoadAndInitPlugins()
         {
             var pluginManager = new PluginManager();
-            pluginManager.LoadPlugins(AthamePluginsPath);
-            pluginManager.InitPlugins(AthamePluginsSettingsPath);
+            pluginManager.LoadPlugins(PluginsFolder);
+            pluginManager.InitPlugins(PluginDataFolder);
 
             Plugins.AddRange(pluginManager.Plugins);
             serviceManager.Add(Plugins);
