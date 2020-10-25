@@ -76,7 +76,7 @@ namespace Athame.Avalonia.ViewModels
                 IsAuthenticated = false;
             }
 
-            PluginServiceSettingsView = plugin.SettingsControl as UserControl;
+            PluginServiceSettingsView = plugin.SettingsControl.GetSettingsControl() as UserControl;
         }
     }
 }

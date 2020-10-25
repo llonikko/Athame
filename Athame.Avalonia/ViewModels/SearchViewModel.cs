@@ -89,7 +89,7 @@ namespace Athame.Avalonia.ViewModels
 
         private async Task<MediaDownloadService> Search()
         {
-            var settings = Locator.Current.GetService<AthameApp>().AppSettings.Current;
+            var settings = Locator.Current.GetService<AthameApp>().AppSettings;
             var folderBrowser = Locator.Current.GetService<FolderBrowserDialog>();
             var preference = settings.GetPreference(urlResolver.MediaUri.MediaType);
 

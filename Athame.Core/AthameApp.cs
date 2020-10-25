@@ -27,7 +27,7 @@ namespace Athame.Core
         public string AppSettingsPath
             => Path.Combine(AppDataFolder, "Athame Settings.json");
 
-        public ISettings<AthameSettings> AppSettings { get; }
+        public AthameSettings AppSettings { get; set; }
         public AuthenticationManager AuthenticationManager { get; }
         public UrlResolver UrlResolver { get; }
         public List<IPlugin> Plugins { get; }
@@ -45,8 +45,6 @@ namespace Athame.Core
             Plugins = new List<IPlugin>();
             AuthenticationManager = new AuthenticationManager();
             UrlResolver = new UrlResolver(serviceManager, AuthenticationManager);
-
-            AppSettings = new Settings<AthameSettings>(AppSettingsPath);
         }
 
         public void InitApp()
@@ -59,7 +57,7 @@ namespace Athame.Core
                     rollOnFileSizeLimit: true)
                 .CreateLogger();
 
-            AppSettings.Load();
+            AppSettings = JsonFileSettings.Load<AthameSettings>(AppSettingsPath);
         }
 
         public void LoadAndInitPlugins()

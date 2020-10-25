@@ -1,9 +1,10 @@
 using System;
+using Athame.Plugin.Api;
 using Athame.Plugin.Api.Service;
 
 namespace Athame.Core.Settings
 {
-    public class AthameSettings : ICloneable
+    public class AthameSettings : SettingsFile, ICloneable
     {
         public MediaPreference GeneralPreference { get; set; }
         public MediaPreference PlaylistPreference { get; set; }
@@ -56,5 +57,8 @@ namespace Athame.Core.Settings
                 WriteWatermark = WriteWatermark,
                 ConfirmExit = ConfirmExit,
             };
+
+        public override void Save()
+            => JsonFileSettings.Save(this);
     }
 }

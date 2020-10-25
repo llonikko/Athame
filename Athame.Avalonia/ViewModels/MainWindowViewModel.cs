@@ -152,7 +152,7 @@ namespace Athame.Avalonia.ViewModels
         private void ApplySettings()
         {
             Log.Debug("Applying current settings");
-            downloader.ApplySettings(app.AppSettings.Current);
+            downloader.ApplySettings(app.AppSettings);
         }
     }
 }

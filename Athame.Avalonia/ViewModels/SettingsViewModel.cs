@@ -135,7 +135,7 @@ namespace Athame.Avalonia.ViewModels
         public SettingsViewModel()
         {
             var app = Locator.Current.GetService<AthameApp>();
-            settings = app.AppSettings.Current.Clone() as AthameSettings;
+            settings = app.AppSettings.Clone() as AthameSettings;
 
             HostScreen = Locator.Current.GetService<IScreen>();
             PluginServices = app.Plugins.Select(p => p.Name);
@@ -169,7 +169,8 @@ namespace Athame.Avalonia.ViewModels
             SaveCommand = ReactiveCommand.CreateFromObservable(
                 () =>
                 {
-                    app.AppSettings.Update(settings);
+                    app.AppSettings = settings;
+                    app.AppSettings.Save();
                     app.Plugins[SelectedPlugin]?.Settings.Save();
                     return NavigateBack();
                 },

@@ -37,20 +37,19 @@ namespace Athame.Plugin.Api
         /// serialized when the user clicks "Save" on the settings form and when the application closes. Implementations should provide a
         /// "default" settings instance when there are no persisted settings available.
         /// </summary>
-        ISettings Settings { get; }
+        ISettingsFile Settings { get; }
 
         /// <summary>
         /// Returns a settings control to display in the settings form. Do not cache this in your implementation, as it is always disposed
         /// when the settings form closes.
         /// </summary>
         /// <returns>A settings control to display.</returns>
-        object SettingsControl { get; }
+        ISettingsControl SettingsControl { get; }
 
         /// <summary>
         /// Called when the plugin is initialized.
         /// </summary>
         /// <param name="application">Info and methods for interacting with the host application</param>
-        /// <param name="pluginContext">Information about how the plugin is loaded</param>
         void Init(string settingsPath);
     }
 }
