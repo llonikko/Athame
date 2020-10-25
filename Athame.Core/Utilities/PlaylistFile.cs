@@ -6,15 +6,8 @@ using System.Text;
 
 namespace Athame.Core.Utilities
 {
-    public abstract class PlaylistFile : IContentInfo
+    public abstract class PlaylistFile : ContentInfo
     {
-        private readonly StringBuilder contentBuilder = new StringBuilder();
-
-        public virtual string Name { get; }
-        public virtual string Extension { get; }
-        public string GetContent() 
-            => contentBuilder.ToString();
-
         protected virtual void Initialize(StringBuilder content)
         {
             content.Clear();
@@ -34,10 +27,10 @@ namespace Athame.Core.Utilities
 
         public PlaylistFile BuildContent(IEnumerable<TrackFile> trackFiles)
         {
-            Initialize(contentBuilder);
-            BuildHeader(contentBuilder, trackFiles);
-            BuildEntries(contentBuilder, trackFiles);
-            BuildFooter(contentBuilder, trackFiles);
+            Initialize(content);
+            BuildHeader(content, trackFiles);
+            BuildEntries(content, trackFiles);
+            BuildFooter(content, trackFiles);
             return this;
         }
 

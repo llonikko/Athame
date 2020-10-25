@@ -6,14 +6,9 @@ using System.Text;
 
 namespace Athame.Core.Utilities
 {
-    public abstract class MediaInfo : IContentInfo
+    public abstract class MediaInfo : ContentInfo
     {
-        private readonly StringBuilder contentBuilder = new StringBuilder();
-
-        public virtual string Name { get; set; }
-        public virtual string Extension => "txt";
-        public string GetContent()
-            => contentBuilder.ToString();
+        public override string Extension => "txt";
 
         protected abstract void BuildInfo(StringBuilder content, IMedia media);
 
@@ -31,7 +26,7 @@ namespace Athame.Core.Utilities
 
         public MediaInfo BuildContent(IMedia media)
         {
-            BuildInfo(contentBuilder, media);
+            BuildInfo(content, media);
             return this;
         }
 
