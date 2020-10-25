@@ -16,12 +16,9 @@ namespace Athame.Core.Settings
         public object Clone()
             => new MediaPreference
             {
-                Location = new StringBuilder(Location).ToString(),
-                PathFormat = new StringBuilder(PathFormat).ToString(),
+                Location = Location,
+                PathFormat = PathFormat,
                 AskLocation = AskLocation
             };
-
-        public MediaPreference GetCopy()
-            => Clone() as MediaPreference;
     }
 }

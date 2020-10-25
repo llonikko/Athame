@@ -44,13 +44,13 @@ namespace Athame.Core.Settings
         public MediaPreference GetPreference(MediaType type)
             => (type == MediaType.Playlist && !PlaylistUsesGeneralPreference)
                 ? PlaylistPreference
-                : GeneralPreference.GetCopy();
+                : GeneralPreference.Clone() as MediaPreference;
 
         public object Clone()
             => new AthameSettings
             {
-                GeneralPreference = GeneralPreference.GetCopy(),
-                PlaylistPreference = PlaylistPreference.GetCopy(),
+                GeneralPreference = GeneralPreference.Clone() as MediaPreference,
+                PlaylistPreference = PlaylistPreference.Clone() as MediaPreference,
                 PlaylistUsesGeneralPreference = PlaylistUsesGeneralPreference,
                 DontSavePlaylistArtwork = DontSavePlaylistArtwork,
                 PlaylistFileType = PlaylistFileType,
