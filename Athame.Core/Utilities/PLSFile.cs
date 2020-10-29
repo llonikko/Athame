@@ -1,4 +1,3 @@
-using Athame.Core.Extensions;
 using Athame.Plugin.Api.Downloader;
 using System.Collections.Generic;
 using System.IO;

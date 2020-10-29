@@ -34,8 +34,8 @@ namespace Athame.Plugin.Api.Service
         /// Parses a public-facing URL of a service, and returns the media type referenced and the identifier.
         /// </summary>
         /// <param name="uri">A URL to parse.</param>
-        /// <returns>A <see cref="MediaUri"/> containing a media type and ID.</returns>
-        MediaUri ParseUrl(Uri uri);
+        /// <returns>A <see cref="MediaDescriptor"/> containing a media type and ID.</returns>
+        MediaDescriptor ParseUrl(Uri uri);
 
         /// <summary>
         /// Performs a text search and retrieves the results -- see <see cref="SearchResult"/> for what is returned.

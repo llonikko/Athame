@@ -21,7 +21,7 @@ namespace Athame.Core.Search
         /// <summary>
         /// The media type and media ID parsed from the URL.
         /// </summary>
-        public MediaUri MediaUri { get; private set; }
+        public MediaDescriptor MediaUri { get; private set; }
 
         /// <summary>
         /// The exception thrown by the service.
@@ -100,7 +100,7 @@ namespace Athame.Core.Search
         /// <summary>
         /// Resolves the last parsed URL to a media collection object.
         /// </summary>
-        /// <returns>An <see cref="IMediaCollection"/> according to the <see cref="MediaUri.MediaType"/> property.</returns>
+        /// <returns>An <see cref="IMediaCollection"/> according to the <see cref="MediaDescriptor.MediaType"/> property.</returns>
         public async Task<IMediaCollection> ResolveAsync() =>
             MediaUri.MediaType switch
             {
