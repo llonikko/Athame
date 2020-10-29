@@ -1,4 +1,5 @@
-﻿using Athame.Avalonia.ViewModels;
+﻿using Athame.Avalonia.Resources;
+using Athame.Avalonia.ViewModels;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -34,12 +35,11 @@ namespace Athame.Avalonia.Views
                 this.Bind(ViewModel, vm => vm.IsValidating, v => v.UrlValidationStatusPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.UrlValidationStatusImage, v => v.UrlValidationStatusImage.Source)
-                    .DisposeWith(disposables);
-
                 this.OneWayBind(ViewModel, vm => vm.UrlValidationStatusText, v => v.UrlValidationStatusTextBlock.Text)
                     .DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.IsUrlValid, v => v.UrlValidationStatusTextBlock.Foreground, valid => valid ? Brushes.Green : Brushes.Red)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.IsUrlValid, v => v.UrlValidationStatusImage.Source, valid => valid ? Images.Success : Images.Error)
                     .DisposeWith(disposables);
 
                 this.OneWayBind(ViewModel, vm => vm.IsSearching, v => v.SearchProgressRing.IsActive)

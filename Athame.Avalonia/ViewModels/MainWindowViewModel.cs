@@ -3,6 +3,7 @@ using Athame.Avalonia.Views;
 using Athame.Core;
 using Athame.Core.Download;
 using Athame.Core.Extensions;
+using Athame.Core.Plugin;
 using Avalonia.Controls;
 using ReactiveUI;
 using Serilog;
@@ -19,7 +20,7 @@ namespace Athame.Avalonia.ViewModels
     public class MainWindowViewModel : ViewModelBase, IScreen, IActivatableViewModel
     {
         private readonly AthameApp app;
-        private readonly MediaDownloader downloader;
+        private readonly MediaDownloadManager downloader;
         private readonly MediaDownloadSource source;
 
         public ReactiveCommand<Unit, Unit> DownloadMediaCommand { get; }
@@ -38,7 +39,7 @@ namespace Athame.Avalonia.ViewModels
         public MainWindowViewModel()
         {
             app = Locator.Current.GetService<AthameApp>();
-            downloader = new MediaDownloader();
+            downloader = new MediaDownloadManager();
             source = new MediaDownloadSource();
 
             Router = new RoutingState();
@@ -92,7 +93,7 @@ namespace Athame.Avalonia.ViewModels
         {
             var current = e;
             DownloadStatusViewModel.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
-                + $"{current.Service.Media.MediaType} - {current.Service.Media.Title}";
+                + $"{current.Item.Media.MediaType} - {current.Item.Media.Title}";
         }
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
@@ -112,7 +113,7 @@ namespace Athame.Avalonia.ViewModels
         {
         }
 
-        private void AddMedia(MediaDownloadService media)
+        private void AddMedia(MediaDownloadItem media)
             => source.Add(media);
 
         private void RemoveMedia()
@@ -121,12 +122,12 @@ namespace Athame.Avalonia.ViewModels
 
         private async Task DownloadMedia()
         {
-            ApplySettings();
+            downloader.Settings = app.AppSettings;
 
             DownloadStatusViewModel.MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
-            await downloader.DownloadMediaAsync(source.Items);
+            await downloader.StartDownloadAsync(source.Items);
 
             DownloadStatusViewModel.MediaDownloadStatus = "All downloads completed";
         }
@@ -135,7 +136,7 @@ namespace Athame.Avalonia.ViewModels
         {
             app.LoadAndInitPlugins();
 
-            var services = app.AuthenticationManager.CanRestore(app.PluginServices);
+            var services = app.AuthenticationManager.CanRestore(MediaServiceManager.Services);
 
             return services.Any()
                 ? new ServiceRestoreWindow { DataContext = new ServiceRestoreWindowViewModel(services) }
@@ -147,12 +148,6 @@ namespace Athame.Avalonia.ViewModels
             Log.Debug("Save Settings");
             app.AppSettings.Save();
             app.Plugins.ForEach(p => p.Settings.Save());
-        }
-
-        private void ApplySettings()
-        {
-            Log.Debug("Applying current settings");
-            downloader.ApplySettings(app.AppSettings);
         }
     }
 }

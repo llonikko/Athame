@@ -1,11 +1,8 @@
-﻿using Athame.Avalonia.Extensions;
-using Athame.Avalonia.Models;
-using Athame.Avalonia.Resources;
+﻿using Athame.Avalonia.Models;
 using Athame.Core;
 using Athame.Core.Download;
 using Athame.Core.Search;
 using Athame.Plugin.Api.Service;
-using Avalonia.Media.Imaging;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
@@ -19,45 +16,44 @@ namespace Athame.Avalonia.ViewModels
 {
     public class SearchViewModel : ViewModelBase
     {
-        private readonly UrlResolver urlResolver;
+        private readonly UrlResolver resolver;
 
         [Reactive]
         public string SearchText { get; set; }
 
-        public Bitmap UrlValidationStatusImage { [ObservableAsProperty]get; }
         public string UrlValidationStatusText { [ObservableAsProperty]get; }
         public bool IsUrlValid { [ObservableAsProperty]get; }
         public bool IsValidating { [ObservableAsProperty]get; }
         public bool IsSearching { [ObservableAsProperty]get; }
-        public MediaDownloadService SearchResult { [ObservableAsProperty]get; }
 
-        public ReactiveCommand<Unit, MediaDownloadService> SearchMediaCommand { get; }
+        public UrlParseResult ParseResult { [ObservableAsProperty]get; }
+        public MediaDownloadItem SearchResult { [ObservableAsProperty]get; }
+
+        public ReactiveCommand<Unit, MediaDownloadItem> SearchMediaCommand { get; }
 
         public SearchViewModel()
         {
-            urlResolver = Locator.Current.GetService<AthameApp>().UrlResolver;
+            resolver = new UrlResolver();
 
             var parseResult = this
                 .WhenAnyValue(x => x.SearchText)
-                .Select(url => Parse(url));
+                .Select(url => resolver.Parse(url));
             parseResult
-                .Select(result => GetMessage(result))
+                .Select(result => result.GetMessage())
                 .ToPropertyEx(this, x => x.UrlValidationStatusText);
             parseResult
-                .Select(x => x == UrlParseResult.NullOrEmptyString)
+                .ToPropertyEx(this, x => x.ParseResult);
+
+            var parseStatus = parseResult.Select(x => x.ParseStatus);
+            parseStatus
+                .Select(x => x == UrlParseStatus.NullOrEmptyString)
                 .Select(validating => !validating)
                 .ToPropertyEx(this, x => x.IsValidating);
-            parseResult
-                .Select(x => x == UrlParseResult.Success)
+            parseStatus
+                .Select(x => x == UrlParseStatus.Success)
                 .ToPropertyEx(this, x => x.IsUrlValid);
 
-            var isValid = this.WhenAnyValue(x => x.IsUrlValid);
-
-            isValid
-                .Select(valid => valid ? Images.Success : Images.Error)
-                .ToPropertyEx(this, x => x.UrlValidationStatusImage);
-
-            var canSearch = isValid;
+            var canSearch = this.WhenAnyValue(x => x.IsUrlValid);
             SearchMediaCommand = ReactiveCommand.CreateFromTask(Search, canSearch);
             SearchMediaCommand.IsExecuting
                 .ToPropertyEx(this, x => x.IsSearching);
@@ -81,31 +77,24 @@ namespace Athame.Avalonia.ViewModels
                 .ToPropertyEx(this, x => x.SearchResult);
         }
 
-        private UrlParseResult Parse(string url) 
-            => urlResolver.Parse(url);
-
-        private string GetMessage(UrlParseResult result) 
-            => urlResolver.GetMessage(result);
-
-        private async Task<MediaDownloadService> Search()
+        private async Task<MediaDownloadItem> Search()
         {
             var settings = Locator.Current.GetService<AthameApp>().AppSettings;
             var folderBrowser = Locator.Current.GetService<FolderBrowserDialog>();
-            var preference = settings.GetPreference(urlResolver.MediaUri.MediaType);
+            var preference = settings.GetPreference(ParseResult.MediaDescriptor.MediaType);
 
             var path = preference.AskLocation
                 ? await folderBrowser.SelectFolder(preference.Location)
                 : preference.Location;
             var format = preference.GetPlatformSaveFormat();
-            var service = urlResolver.Service;
-            var media = await urlResolver.ResolveAsync();
 
+            var media = await resolver.ResolveMedia(ParseResult.MediaDescriptor);
             var context = new MediaDownloadContext
             {
-                DownloadFolderPath = path,
+                Root = path,
                 MediaPathFormat = format
             };
-            return new MediaDownloadService(service, context, media);
+            return new MediaDownloadItem(ParseResult.MediaDescriptor, context, media);
         }
     }
 }

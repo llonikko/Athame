@@ -2,20 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Athame.Core.Plugin;
-using Athame.Core.Search;
 using Athame.Core.Settings;
 using Athame.Plugin.Api;
-using Athame.Plugin.Api.Service;
 using Serilog;
 
 namespace Athame.Core
 {
     public class AthameApp
     {
-        private readonly MediaServiceManager serviceManager;
-
         private static readonly string ApplicationDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        
+
         public string AppDataFolder
             => Path.GetFullPath(Path.Combine(ApplicationDataFolderPath, "Athame.Avalonia"));
         public string AppLogsFolder
@@ -29,22 +25,20 @@ namespace Athame.Core
 
         public AthameSettings AppSettings { get; set; }
         public AuthenticationManager AuthenticationManager { get; }
-        public UrlResolver UrlResolver { get; }
         public List<IPlugin> Plugins { get; }
-        public IEnumerable<IMediaService> PluginServices
-            => serviceManager.Services;
 
         public AthameApp()
         {
             Directory.CreateDirectory(AppDataFolder);
             Directory.CreateDirectory(AppLogsFolder);
-            //Directory.CreateDirectory(PluginsFolder);
+            //if (!Directory.Exists(PluginsFolder))
+            //{
+            //    Directory.CreateDirectory(PluginsFolder);
+            //}
             Directory.CreateDirectory(PluginDataFolder);
 
-            serviceManager = new MediaServiceManager();
             Plugins = new List<IPlugin>();
             AuthenticationManager = new AuthenticationManager();
-            UrlResolver = new UrlResolver(serviceManager, AuthenticationManager);
         }
 
         public void InitApp()
@@ -67,7 +61,7 @@ namespace Athame.Core
             pluginManager.InitPlugins(PluginDataFolder);
 
             Plugins.AddRange(pluginManager.Plugins);
-            serviceManager.Add(Plugins);
+            MediaServiceManager.Add(Plugins);
         }
     }
 }

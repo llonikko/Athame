@@ -7,18 +7,18 @@ namespace Athame.Avalonia
 {
     public class MediaDownloadSource 
     {
-        private readonly SourceCache<MediaDownloadService, string> source 
-            = new SourceCache<MediaDownloadService, string>(ms => ms.Media.Id);
-        public IObservable<IChangeSet<MediaDownloadService, string>> Connect() 
+        private readonly SourceCache<MediaDownloadItem, string> source 
+            = new SourceCache<MediaDownloadItem, string>(ms => ms.Media.Id);
+        public IObservable<IChangeSet<MediaDownloadItem, string>> Connect() 
             => source.Connect();
 
-        public void Add(MediaDownloadService mediaService)
+        public void Add(MediaDownloadItem mediaService)
             => source.AddOrUpdate(mediaService);
 
-        public void Remove(MediaDownloadService mediaService)
+        public void Remove(MediaDownloadItem mediaService)
             => source.Remove(mediaService);
         
-        public IEnumerable<MediaDownloadService> Items
+        public IEnumerable<MediaDownloadItem> Items
             => source.Items;
 
         public void Clear()

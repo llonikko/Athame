@@ -2,7 +2,7 @@
 
 namespace Athame.Plugin.Api.Downloader
 {
-    public enum TrackDownloadStatus
+    public enum TrackStatus
     {
         [Description("Ready")]
         Ready,
@@ -10,8 +10,8 @@ namespace Athame.Plugin.Api.Downloader
         [Description("Pre-processing")]
         PreProcess,
 
-        [Description("Downloading album artwork")]
-        DownloadingAlbumArtwork,
+        [Description("Downloading artwork")]
+        DownloadingArtwork,
 
         [Description("Downloading track")]
         DownloadingTrack,
@@ -22,7 +22,13 @@ namespace Athame.Plugin.Api.Downloader
         [Description("Writing tags")]
         WritingTags,
 
-        [Description("Completed")]
-        Completed
+        [Description("Download completed")]
+        DownloadCompleted,
+
+        [Description("Skipping track")]
+        SkippingTrack,
+
+        [Description("Download failed")]
+        DownloadFailed
     }
 }

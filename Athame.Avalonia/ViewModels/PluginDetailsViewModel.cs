@@ -16,7 +16,6 @@ namespace Athame.Avalonia.ViewModels
             PluginName = plugin.Name;
             PluginDescription = plugin.Description;
             PluginAuthor = plugin.Author;
-            PluginWebsite = plugin.Website;
             PluginVersion = plugin.Version;
         }
     }

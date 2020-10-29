@@ -1,5 +1,4 @@
 ﻿using Athame.Plugin.Api.Service;
-using System;
 
 namespace Athame.Plugin.Api
 {
@@ -21,15 +20,14 @@ namespace Athame.Plugin.Api
         string Author { get; }
 
         /// <summary>
-        /// The plugin's homepage. Optional.
-        /// </summary>
-        Uri Website { get; }
-
-        /// <summary>
         /// The plugin's version. Required.
         /// </summary>
         int Version { get; }
 
+        /// <summary>
+        /// Gets the media service provider
+        /// </summary>
+        /// <return>The media service provider</return>
         IMediaService Service { get; }
 
         /// <summary>

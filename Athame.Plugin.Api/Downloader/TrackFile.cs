@@ -39,5 +39,8 @@ namespace Athame.Plugin.Api.Downloader
             => Track.Album.NumberOfDiscs > 1
                 ? Path.Combine(Directory.GetParent(FullPath).Name, FileName)
                 : FileName;
+
+        public static bool Exists(TrackFile trackFile)
+            => File.Exists(trackFile.FullPath);
     }
 }

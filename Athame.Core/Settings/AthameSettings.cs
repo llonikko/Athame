@@ -49,6 +49,7 @@ namespace Athame.Core.Settings
         public object Clone()
             => new AthameSettings
             {
+                SettingsPath = SettingsPath,
                 GeneralPreference = GeneralPreference.Clone() as MediaPreference,
                 PlaylistPreference = PlaylistPreference.Clone() as MediaPreference,
                 PlaylistUsesGeneralPreference = PlaylistUsesGeneralPreference,

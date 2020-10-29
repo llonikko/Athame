@@ -8,10 +8,10 @@ namespace Athame.Core.Download
 {
     public class MediaDownloadContext
     {
-        public string DownloadFolderPath { get; set; }
+        public string Root { get; set; }
         public string MediaPathFormat { get; set; }
 
-        public string MediaFolderPath { get; private set; }
+        public string MediaFolder { get; private set; }
         
         public void CreateMediaFolder(IMediaCollection media)
         {
@@ -27,7 +27,7 @@ namespace Athame.Core.Download
 
                 for (var disc = 1; disc <= album.NumberOfDiscs; disc++)
                 {
-                    PathHelpers.CreateFolder(Path.Combine(MediaFolderPath, $"CD{disc}"));
+                    PathHelpers.CreateFolder(Path.Combine(MediaFolder, $"CD{disc}"));
                 }
             }
             else
@@ -38,14 +38,14 @@ namespace Athame.Core.Download
 
         private void CreateMediaFolder(Track track, string format)
         {
-            MediaFolderPath = Path.Combine(DownloadFolderPath, PathHelpers.FormatFilePath(track, format));
-            PathHelpers.CreateFolder(MediaFolderPath);
+            MediaFolder = Path.Combine(Root, PathHelpers.FormatFilePath(track, format));
+            PathHelpers.CreateFolder(MediaFolder);
         }
 
         public string CreateFilePath(TrackFile trackFile, string format)
             => trackFile.FileType.AppendExtension(PathHelpers.FormatFilePath(trackFile.Track, format));
 
         public string CreateFullPath(TrackFile trackFile)
-            => Path.Combine(DownloadFolderPath, CreateFilePath(trackFile, MediaPathFormat));
+            => Path.Combine(Root, CreateFilePath(trackFile, MediaPathFormat));
     }
 }

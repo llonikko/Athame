@@ -36,8 +36,8 @@ namespace Athame.Plugin.Api.Downloader
 
             Initialize(response);
 
-            using var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            await DownloadBytesAsync(contentStream, destination, progress).ConfigureAwait(false);
+            using var content = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
+            await DownloadBytesAsync(content, destination, progress).ConfigureAwait(false);
             UpdateProgress(progress);
         }
 
@@ -51,21 +51,21 @@ namespace Athame.Plugin.Api.Downloader
             }
         }
 
-        private async Task DownloadBytesAsync(Stream contentStream, string destination, IProgress<ProgressInfo> progress)
+        private async Task DownloadBytesAsync(Stream content, string destination, IProgress<ProgressInfo> progress)
         {
             byte[] buffer = new byte[DefaultDownloadBufferLength];
-            using var fileStream = File.OpenWrite(destination);
+            using var file = File.OpenWrite(destination);
 
             while (true)
             {
-                var bytesRead = await contentStream.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false);
+                var bytesRead = await content.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false);
                 if (bytesRead == 0)
                 {
                     break;
                 }
                 UpdateProgress(bytesRead, progress);
 
-                await fileStream.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
+                await file.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
             }
         }
 

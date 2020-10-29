@@ -6,19 +6,19 @@ using System.Linq;
 
 namespace Athame.Core.Plugin
 {
-    public class MediaServiceManager
+    public static class MediaServiceManager
     {
-        private readonly Dictionary<Uri, IMediaService> services = new Dictionary<Uri, IMediaService>();
+        private static readonly Dictionary<Uri, IMediaService> services = new Dictionary<Uri, IMediaService>();
 
-        public void Add(IEnumerable<IPlugin> plugins)
+        public static void Add(IEnumerable<IPlugin> plugins)
         {
-            foreach (var p in plugins)
+            foreach (IPlugin p in plugins)
             {
                 AddService(p.Service);
             }
         }
 
-        public void AddService(IMediaService service)
+        public static void AddService(IMediaService service)
         {
             foreach (var uri in service.BaseUri)
             {
@@ -26,11 +26,11 @@ namespace Athame.Core.Plugin
             }
         }
 
-        public IMediaService GetService(Uri baseUri)
+        public static IMediaService GetService(Uri baseUri)
             => (from s in services where s.Key.Scheme == baseUri.Scheme && s.Key.Host == baseUri.Host select s.Value)
             .FirstOrDefault();
 
-        public IEnumerable<IMediaService> Services
+        public static IEnumerable<IMediaService> Services
             => (from s in services select s.Value)
             .Distinct();
     }

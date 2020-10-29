@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Athame.Plugin.Api.Downloader
 {
+    /// <summary>
+    /// The default implementation of <see cref="IDownloader"/>
+    /// </summary>
     public class TrackDownloader : IDownloader
     {
         protected readonly HttpDownloader downloader;
