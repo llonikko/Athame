@@ -9,10 +9,14 @@ namespace Athame.Avalonia.Views
 {
     public class PluginDetailsView : ReactiveUserControl<PluginDetailsViewModel>
     {
-        public TextBlock PluginNameTextBlock => this.FindControl<TextBlock>("PluginNameTextBlock");
-        public TextBlock PluginDescriptionTextBlock => this.FindControl<TextBlock>("PluginDescriptionTextBlock");
-        public TextBlock PluginAuthorTextBlock => this.FindControl<TextBlock>("PluginAuthorTextBlock");
-        public TextBlock PluginVersionTextBlock => this.FindControl<TextBlock>("PluginVersionTextBlock");
+        public TextBlock PluginNameTextBlock 
+            => this.FindControl<TextBlock>("PluginNameTextBlock");
+        public TextBlock PluginDescriptionTextBlock 
+            => this.FindControl<TextBlock>("PluginDescriptionTextBlock");
+        public TextBlock PluginAuthorTextBlock 
+            => this.FindControl<TextBlock>("PluginAuthorTextBlock");
+        public TextBlock PluginVersionTextBlock 
+            => this.FindControl<TextBlock>("PluginVersionTextBlock");
 
         public PluginDetailsView()
         {

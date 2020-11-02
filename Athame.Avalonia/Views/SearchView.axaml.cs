@@ -15,12 +15,23 @@ namespace Athame.Avalonia.Views
 {
     public class SearchView : ReactiveUserControl<SearchViewModel>
     {
-        public Button SearchButton => this.FindControl<Button>("SearchButton");
-        public TextBox SearchTextBox => this.FindControl<TextBox>("SearchTextBox");
-        public Image UrlValidationStatusImage => this.FindControl<Image>("UrlValidationStatusImage");
-        public TextBlock UrlValidationStatusTextBlock => this.FindControl<TextBlock>("UrlValidationStatusTextBlock");
-        public StackPanel UrlValidationStatusPanel => this.FindControl<StackPanel>("UrlValidationStatusPanel");
-        public ProgressRing SearchProgressRing => this.FindControl<ProgressRing>("SearchProgressRing");
+        public Button SearchButton 
+            => this.FindControl<Button>("SearchButton");
+        
+        public TextBox SearchTextBox 
+            => this.FindControl<TextBox>("SearchTextBox");
+        
+        public Image UrlValidationStatusImage 
+            => this.FindControl<Image>("UrlValidationStatusImage");
+        
+        public TextBlock UrlValidationStatusTextBlock 
+            => this.FindControl<TextBlock>("UrlValidationStatusTextBlock");
+        
+        public StackPanel UrlValidationStatusPanel 
+            => this.FindControl<StackPanel>("UrlValidationStatusPanel");
+        
+        public ProgressRing SearchProgressRing 
+            => this.FindControl<ProgressRing>("SearchProgressRing");
 
         public SearchView()
         {

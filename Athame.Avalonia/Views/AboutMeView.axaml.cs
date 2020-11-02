@@ -9,8 +9,10 @@ namespace Athame.Avalonia.Views
 {
     public class AboutMeView : ReactiveUserControl<AboutMeViewModel>
     {
-        public Image AppLogoImage => this.FindControl<Image>("AppLogoImage");
-        public Button OKButton => this.FindControl<Button>("OKButton");
+        public Image AppLogoImage 
+            => this.FindControl<Image>("AppLogoImage");
+        public Button OKButton 
+            => this.FindControl<Button>("OKButton");
 
         public AboutMeView()
         {

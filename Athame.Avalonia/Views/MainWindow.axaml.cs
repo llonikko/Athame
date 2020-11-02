@@ -13,18 +13,27 @@ namespace Athame.Avalonia.Views
 {
     public class MainWindow : ReactiveWindow<MainWindowViewModel>
     {
-        public RoutedViewHost MainViewHost => this.FindControl<RoutedViewHost>("MainViewHost");
+        public RoutedViewHost MainViewHost 
+            => this.FindControl<RoutedViewHost>("MainViewHost");
 
-        public MenuItem ViewSettingsMenuItem => this.FindControl<MenuItem>("ViewSettingsMenuItem");
-        public MenuItem ViewHelpMenuItem => this.FindControl<MenuItem>("ViewHelpMenuItem");
-        public MenuItem ViewAboutAppMenuItem => this.FindControl<MenuItem>("ViewAboutAppMenuItem");
+        public MenuItem ViewSettingsMenuItem 
+            => this.FindControl<MenuItem>("ViewSettingsMenuItem");
+        public MenuItem ViewHelpMenuItem 
+            => this.FindControl<MenuItem>("ViewHelpMenuItem");
+        public MenuItem ViewAboutAppMenuItem 
+            => this.FindControl<MenuItem>("ViewAboutAppMenuItem");
 
-        public SearchView SearchView => this.FindControl<SearchView>("SearchView");
-        public DownloadStatusView DownloadStatusView => this.FindControl<DownloadStatusView>("DownloadStatusView");
+        public SearchView SearchView 
+            => this.FindControl<SearchView>("SearchView");
+        public ProgressStatusView ProgressStatusView 
+            => this.FindControl<ProgressStatusView>("ProgressStatusView");
+        public MediaItemsView MediaItemsView 
+            => this.FindControl<MediaItemsView>("MediaItemsView");
 
-        public Button DownloadButton => this.FindControl<Button>("DownloadButton");
-        public Button CancelButton => this.FindControl<Button>("CancelButton");
-        public MediaItemsView MediaItemsView => this.FindControl<MediaItemsView>("MediaItemsView");
+        public Button DownloadButton 
+            => this.FindControl<Button>("DownloadButton");
+        public Button CancelButton 
+            => this.FindControl<Button>("CancelButton");
 
         public MainWindow()
         {
@@ -40,16 +49,14 @@ namespace Athame.Avalonia.Views
 
                 this.OneWayBind(ViewModel, vm => vm.SearchViewModel, v => v.SearchView.DataContext)
                     .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.DownloadStatusViewModel, v => v.DownloadStatusView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.ProgressStatusViewModel, v => v.ProgressStatusView.DataContext)
+                    .DisposeWith(disposables);
+                this.OneWayBind(ViewModel, vm => vm.MediaItemsViewModel, v => v.MediaItemsView.DataContext)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.DownloadMediaCommand, v => v.DownloadButton)
                     .DisposeWith(disposables);
                 this.BindCommand(ViewModel, vm => vm.CancelDownloadCommand, v => v.CancelButton)
-                    .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.MediaItemsViewModel, v => v.MediaItemsView.DataContext)
                     .DisposeWith(disposables);
 
                 this.WhenAnyObservable(x => x.ViewModel.CanRestoreCommand)

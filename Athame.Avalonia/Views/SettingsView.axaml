@@ -10,7 +10,7 @@
         ColumnDefinitions="*">
     <TabControl Grid.Row="0"
                 Grid.Column="0"
-                Margin="5">
+                Padding="5">
       <TabItem Header="General">
         <Grid RowDefinitions=".7* * Auto"
               ColumnDefinitions="*">
@@ -18,8 +18,8 @@
                   Grid.Column="0"
                   Margin="5"
                   Padding="5"
-                  BorderBrush="LightGray"
-                  BorderThickness="1"
+                  BorderBrush="WhiteSmoke"
+                  BorderThickness="2"
                   CornerRadius="5">
             <StackPanel>
               <TextBlock Margin="2"
@@ -84,8 +84,8 @@
                   Grid.Column="0"
                   Margin="5"
                   Padding="5"
-                  BorderBrush="LightGray"
-                  BorderThickness="1"
+                  BorderBrush="WhiteSmoke"
+                  BorderThickness="2"
                   CornerRadius="5">
             <StackPanel>
               <StackPanel Orientation="Horizontal">
@@ -173,11 +173,12 @@
           </Border>
           <Border Grid.Row="2"
                   Grid.Column="0"
-                  Margin="5" Padding="5"
-                  BorderBrush="LightGray"
-                  BorderThickness="1"
+                  Margin="5" 
+                  Padding="5"
+                  BorderBrush="WhiteSmoke"
+                  BorderThickness="2"
                   CornerRadius="5">
-            <StackPanel Margin="5">
+            <StackPanel>
               <TextBlock Margin="2"
                          FontSize="13"
                          Foreground="#62C2CC"
@@ -221,7 +222,7 @@
     </TabControl>
     <StackPanel Grid.Row="1"
                 Grid.Column="0"
-                Margin="5"
+                Margin="10"
                 Orientation="Horizontal"
                 HorizontalAlignment="Right">
       <Button Margin="2"

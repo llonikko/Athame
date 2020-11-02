@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace Athame.Avalonia.Views
@@ -7,16 +6,9 @@ namespace Athame.Avalonia.Views
     public class PathFormatHelpWindow : Window
     {
         public PathFormatHelpWindow()
-        {
-            this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-        }
+            => InitializeComponent();
 
         private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+            => AvaloniaXamlLoader.Load(this);
     }
 }

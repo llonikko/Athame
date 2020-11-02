@@ -2,7 +2,7 @@
 
 namespace Athame.Avalonia.ViewModels
 {
-    public class DownloadStatusViewModel : ViewModelBase
+    public class ProgressStatusViewModel : ViewModelBase
     {
         [Reactive]
         public string MediaDownloadStatus { get; set; }
@@ -13,7 +13,7 @@ namespace Athame.Avalonia.ViewModels
         [Reactive]
         public string TrackDownloadTitle { get; set; }
 
-        public DownloadStatusViewModel()
+        public ProgressStatusViewModel()
         {
             MediaDownloadStatus = "No media";
             TrackDownloadStatus = "Ready";

@@ -8,9 +8,9 @@
         xmlns:views="clr-namespace:Athame.Avalonia.Views"
         xmlns:p="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Athame.Avalonia.Views.MainWindow"
+        x:Class="Athame.Avalonia.Views.MainWindow" 
         Icon="/Assets/athame-logo.ico"
-        Title="Athame Avalonia"
+        Title="Athame"
         WindowStartupLocation="CenterScreen"
         Width="810" Height="820"
         MinWidth="810" MinHeight="820">
@@ -35,9 +35,9 @@
         <views:SearchView Grid.Row="1"
                           Margin="5"
                           Name="SearchView"/>
-        <views:DownloadStatusView Grid.Row="2"
+        <views:ProgressStatusView Grid.Row="2"
                                   Margin="5"
-                                  Name="DownloadStatusView"/>
+                                  Name="ProgressStatusView"/>
         <StackPanel Grid.Row="3"
                     Margin="5"
                     Orientation="Horizontal"

@@ -12,37 +12,64 @@ namespace Athame.Avalonia.Views
 {
     public class SettingsView : ReactiveUserControl<SettingsViewModel>
     {
-        public RadioButton AlbumLocationRadioButton => this.FindControl<RadioButton>("AlbumLocationRadioButton");
-        public RadioButton AlbumAskLocationRadioButton => this.FindControl<RadioButton>("AlbumAskLocationRadioButton");
-        public RadioButton PlaylistLocationRadioButton => this.FindControl<RadioButton>("PlaylistLocationRadioButton");
-        public RadioButton PlaylistAskLocationRadioButton => this.FindControl<RadioButton>("PlaylistAskLocationRadioButton");
+        public RadioButton AlbumLocationRadioButton 
+            => this.FindControl<RadioButton>("AlbumLocationRadioButton");
+        public RadioButton AlbumAskLocationRadioButton 
+            => this.FindControl<RadioButton>("AlbumAskLocationRadioButton");
+        public RadioButton PlaylistLocationRadioButton 
+            => this.FindControl<RadioButton>("PlaylistLocationRadioButton");
+        public RadioButton PlaylistAskLocationRadioButton 
+            => this.FindControl<RadioButton>("PlaylistAskLocationRadioButton");
 
-        public Button CancelButton => this.FindControl<Button>("CancelButton");
-        public Button SaveButton => this.FindControl<Button>("SaveButton");
-        public Button SelectAlbumLocationButton => this.FindControl<Button>("SelectAlbumLocationButton");
-        public Button SelectPlaylistLocationButton => this.FindControl<Button>("SelectPlaylistLocationButton");
-        public Button AlbumPathFormatHelpButton => this.FindControl<Button>("AlbumPathFormatHelpButton");
-        public Button PlaylistPathFormatHelpButton => this.FindControl<Button>("PlaylistPathFormatHelpButton");
+        public Button CancelButton 
+            => this.FindControl<Button>("CancelButton");
+        public Button SaveButton 
+            => this.FindControl<Button>("SaveButton");
 
-        public TextBlock AlbumLocationTextBlock => this.FindControl<TextBlock>("AlbumLocationTextBlock");
-        public TextBlock PlaylistLocationTextBlock => this.FindControl<TextBlock>("PlaylistLocationTextBlock");
-        public TextBlock SampleAlbumPathTextBlock => this.FindControl<TextBlock>("SampleAlbumPathTextBlock");
-        public TextBlock SamplePlaylistPathTextBlock => this.FindControl<TextBlock>("SamplePlaylistPathTextBlock");
+        public Button SelectAlbumLocationButton 
+            => this.FindControl<Button>("SelectAlbumLocationButton");
+        public Button SelectPlaylistLocationButton 
+            => this.FindControl<Button>("SelectPlaylistLocationButton");
+        
+        public Button AlbumPathFormatHelpButton 
+            => this.FindControl<Button>("AlbumPathFormatHelpButton");
+        public Button PlaylistPathFormatHelpButton 
+            => this.FindControl<Button>("PlaylistPathFormatHelpButton");
 
-        public TextBox AlbumPathFormatTextBox => this.FindControl<TextBox>("AlbumPathFormatTextBox");
-        public TextBox PlaylistPathFormatTextBox => this.FindControl<TextBox>("PlaylistPathFormatTextBox");
+        public TextBlock AlbumLocationTextBlock 
+            => this.FindControl<TextBlock>("AlbumLocationTextBlock");
+        public TextBlock PlaylistLocationTextBlock 
+            => this.FindControl<TextBlock>("PlaylistLocationTextBlock");
+        public TextBlock SampleAlbumPathTextBlock 
+            => this.FindControl<TextBlock>("SampleAlbumPathTextBlock");
+        public TextBlock SamplePlaylistPathTextBlock 
+            => this.FindControl<TextBlock>("SamplePlaylistPathTextBlock");
 
-        public CheckBox SameAsAlbumCheckBox => this.FindControl<CheckBox>("SameAsAlbumCheckBox");
-        public CheckBox DontSavePlaylistArtworkCheckBox => this.FindControl<CheckBox>("DontSavePlaylistArtworkCheckBox");
-        public CheckBox AskBeforeExitCheckBox => this.FindControl<CheckBox>("AskBeforeExitCheckBox");
-        public CheckBox WriteWatermarkCheckBox => this.FindControl<CheckBox>("WriteWatermarkCheckBox");
+        public TextBox AlbumPathFormatTextBox 
+            => this.FindControl<TextBox>("AlbumPathFormatTextBox");
+        public TextBox PlaylistPathFormatTextBox 
+            => this.FindControl<TextBox>("PlaylistPathFormatTextBox");
 
-        public ComboBox PlaylistFileTypeComboBox => this.FindControl<ComboBox>("PlaylistFileTypeComboBox");
+        public CheckBox SameAsAlbumCheckBox 
+            => this.FindControl<CheckBox>("SameAsAlbumCheckBox");
+        public CheckBox DontSavePlaylistArtworkCheckBox 
+            => this.FindControl<CheckBox>("DontSavePlaylistArtworkCheckBox");
+        public CheckBox AskBeforeExitCheckBox 
+            => this.FindControl<CheckBox>("AskBeforeExitCheckBox");
+        public CheckBox WriteWatermarkCheckBox 
+            => this.FindControl<CheckBox>("WriteWatermarkCheckBox");
 
-        public ListBox PluginServicesListBox => this.FindControl<ListBox>("PluginServicesListBox");
+        public ComboBox PlaylistFileTypeComboBox 
+            => this.FindControl<ComboBox>("PlaylistFileTypeComboBox");
 
-        public StackPanel PlaylistPreferencePanel => this.FindControl<StackPanel>("PlaylistPreferencePanel");
-        public PluginSettingsView PluginSettingsView => this.FindControl<PluginSettingsView>("PluginSettingsView");
+        public ListBox PluginServicesListBox 
+            => this.FindControl<ListBox>("PluginServicesListBox");
+
+        public StackPanel PlaylistPreferencePanel 
+            => this.FindControl<StackPanel>("PlaylistPreferencePanel");
+
+        public PluginSettingsView PluginSettingsView 
+            => this.FindControl<PluginSettingsView>("PluginSettingsView");
 
         public SettingsView()
         {

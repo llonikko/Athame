@@ -12,15 +12,21 @@ namespace Athame.Avalonia.Views
 {
     public class AuthenticationView : ReactiveUserControl<AuthenticationViewModel>
     {
-        public TextBlock HelpTextBlock => this.FindControl<TextBlock>("HelpTextBlock");
-        public TextBlock ErrorTextBlock => this.FindControl<TextBlock>("ErrorTextBlock");
+        public TextBlock HelpTextBlock 
+            => this.FindControl<TextBlock>("HelpTextBlock");
+        public TextBlock ErrorTextBlock 
+            => this.FindControl<TextBlock>("ErrorTextBlock");
 
-        public TextBox UsernameTextBox => this.FindControl<TextBox>("UsernameTextBox");
-        public TextBox PasswordTextBox => this.FindControl<TextBox>("PasswordTextBox");
+        public TextBox UsernameTextBox 
+            => this.FindControl<TextBox>("UsernameTextBox");
+        public TextBox PasswordTextBox 
+            => this.FindControl<TextBox>("PasswordTextBox");
 
-        public Button LoginButton => this.FindControl<Button>("LoginButton");
+        public Button LoginButton 
+            => this.FindControl<Button>("LoginButton");
 
-        public ProgressRing AuthenticationProgressRing => this.FindControl<ProgressRing>("AuthenticationProgressRing");
+        public ProgressRing AuthenticationProgressRing 
+            => this.FindControl<ProgressRing>("AuthenticationProgressRing");
 
         public AuthenticationView()
         {

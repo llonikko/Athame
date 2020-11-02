@@ -31,7 +31,7 @@ namespace Athame.Avalonia.ViewModels
         public ReactiveCommand<Unit, IRoutableViewModel> ViewAboutAppCommand { get; }
 
         public SearchViewModel SearchViewModel { get; }
-        public DownloadStatusViewModel DownloadStatusViewModel { get; }
+        public ProgressStatusViewModel ProgressStatusViewModel { get; }
         public MediaItemsViewModel MediaItemsViewModel { get; }
         public RoutingState Router { get; }
         public ViewModelActivator Activator { get; }
@@ -44,7 +44,7 @@ namespace Athame.Avalonia.ViewModels
 
             Router = new RoutingState();
             SearchViewModel = new SearchViewModel();
-            DownloadStatusViewModel = new DownloadStatusViewModel();
+            ProgressStatusViewModel = new ProgressStatusViewModel();
             MediaItemsViewModel = new MediaItemsViewModel(source);
 
             DownloadMediaCommand = ReactiveCommand.CreateFromTask(
@@ -92,20 +92,20 @@ namespace Athame.Avalonia.ViewModels
         private void MediaServiceDequeued(MediaDownloadEventArgs e)
         {
             var current = e;
-            DownloadStatusViewModel.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
+            ProgressStatusViewModel.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
                 + $"{current.Item.Media.MediaType} - {current.Item.Media.Title}";
         }
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
         {
-            DownloadStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
-            DownloadStatusViewModel.TrackDownloadProgressPercentage = e.PercentCompleted;
-            DownloadStatusViewModel.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
+            ProgressStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
+            ProgressStatusViewModel.TrackDownloadProgressPercentage = e.PercentCompleted;
+            ProgressStatusViewModel.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
         }
 
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
-            DownloadStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
+            ProgressStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
             MediaItemsViewModel.UpdateTrackItem(e.TrackFile.Track);
         }
 
@@ -124,12 +124,12 @@ namespace Athame.Avalonia.ViewModels
         {
             downloader.Settings = app.AppSettings;
 
-            DownloadStatusViewModel.MediaDownloadStatus = "Warming up...";
+            ProgressStatusViewModel.MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
             await downloader.StartDownloadAsync(source.Items);
 
-            DownloadStatusViewModel.MediaDownloadStatus = "All downloads completed";
+            ProgressStatusViewModel.MediaDownloadStatus = "All downloads completed";
         }
 
         private Window CanRestore()

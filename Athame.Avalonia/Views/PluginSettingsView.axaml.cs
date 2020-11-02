@@ -6,21 +6,27 @@ using Avalonia.ReactiveUI;
 using ReactiveUI;
 using System;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace Athame.Avalonia.Views
 {
     public class PluginSettingsView : ReactiveUserControl<PluginSettingsViewModel>
     {
-        public Panel AuthenticationStatusPanel => this.FindControl<Panel>("AuthenticationStatusPanel");
-        public Panel AuthenticationPanel => this.FindControl<Panel>("AuthenticationPanel");
+        public Panel AuthenticationStatusPanel 
+            => this.FindControl<Panel>("AuthenticationStatusPanel");
+        public Panel AuthenticationPanel 
+            => this.FindControl<Panel>("AuthenticationPanel");
 
-        public AuthenticationView AuthenticationView => this.FindControl<AuthenticationView>("AuthenticationView");
-        public ContentControl PluginServiceSettingsViewContentControl => this.FindControl<ContentControl>("PluginServiceSettingsViewContentControl");
-        public PluginDetailsView PluginDetailsView => this.FindControl<PluginDetailsView>("PluginDetailsView");
+        public AuthenticationView AuthenticationView 
+            => this.FindControl<AuthenticationView>("AuthenticationView");
+        public ContentControl PluginServiceSettingsViewContentControl 
+            => this.FindControl<ContentControl>("PluginServiceSettingsViewContentControl");
+        public PluginDetailsView PluginDetailsView 
+            => this.FindControl<PluginDetailsView>("PluginDetailsView");
 
-        public TextBlock AuthenticationStatusTextBlock => this.FindControl<TextBlock>("AuthenticationStatusTextBlock");
-        public Button LogoutButton => this.FindControl<Button>("LogoutButton");
+        public TextBlock AuthenticationStatusTextBlock 
+            => this.FindControl<TextBlock>("AuthenticationStatusTextBlock");
+        public Button LogoutButton 
+            => this.FindControl<Button>("LogoutButton");
 
         public PluginSettingsView()
         {

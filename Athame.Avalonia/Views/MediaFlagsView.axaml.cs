@@ -1,5 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace Athame.Avalonia.Views
@@ -7,13 +6,9 @@ namespace Athame.Avalonia.Views
     public class MediaFlagsView : UserControl
     {
         public MediaFlagsView()
-        {
-            this.InitializeComponent();
-        }
+            => InitializeComponent();
 
         private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+            => AvaloniaXamlLoader.Load(this);
     }
 }

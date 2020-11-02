@@ -7,15 +7,21 @@ using System.Reactive.Disposables;
 
 namespace Athame.Avalonia.Views
 {
-    public class DownloadStatusView : ReactiveUserControl<DownloadStatusViewModel>
+    public class ProgressStatusView : ReactiveUserControl<ProgressStatusViewModel>
     {
-        public TextBlock MediaDownloadStatusTextBlock => this.FindControl<TextBlock>("MediaDownloadStatusTextBlock");
-        public TextBlock TrackDownloadStatusTextBlock => this.FindControl<TextBlock>("TrackDownloadStatusTextBlock");
-        public TextBlock TrackDownloadProgressTextBlock => this.FindControl<TextBlock>("TrackDownloadProgressTextBlock");
-        public ProgressBar TrackDownloadProgressBar => this.FindControl<ProgressBar>("TrackDownloadProgressBar");
-        public TextBlock TrackDownloadTitleTextBlock => this.FindControl<TextBlock>("TrackDownloadTitleTextBlock");
+        public TextBlock MediaDownloadStatusTextBlock 
+            => this.FindControl<TextBlock>("MediaDownloadStatusTextBlock");
+        public TextBlock TrackDownloadStatusTextBlock 
+            => this.FindControl<TextBlock>("TrackDownloadStatusTextBlock");
+        public TextBlock TrackDownloadProgressTextBlock 
+            => this.FindControl<TextBlock>("TrackDownloadProgressTextBlock");
+        public TextBlock TrackDownloadTitleTextBlock 
+            => this.FindControl<TextBlock>("TrackDownloadTitleTextBlock");
 
-        public DownloadStatusView()
+        public ProgressBar TrackDownloadProgressBar 
+            => this.FindControl<ProgressBar>("TrackDownloadProgressBar");
+
+        public ProgressStatusView()
         {
             this.WhenActivated(disposables =>
             {
