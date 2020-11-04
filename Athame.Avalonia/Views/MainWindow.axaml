@@ -32,9 +32,9 @@
             </MenuItem>
           </Menu>
         </StackPanel>
-        <views:SearchView Grid.Row="1"
-                          Margin="5"
-                          Name="SearchView"/>
+        <views:MediaSearchView Grid.Row="1" 
+                               Margin="5" 
+                               Name="MediaSearchView"/>
         <views:ProgressStatusView Grid.Row="2"
                                   Margin="5"
                                   Name="ProgressStatusView"/>
@@ -42,15 +42,15 @@
                     Margin="5"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right">
-          <Button Width="100"
-                  Margin="2"
+          <Button Margin="2" 
+                  Width="100"
                   BorderBrush="LightGray"
-                  Content="Download"
+                  Content="Start"
                   Name="DownloadButton"/>
-          <Button Width="100"
-                  Margin="2"
+          <Button Margin="2" 
+                  Width="100"
                   BorderBrush="LightGray"
-                  Content="Cancel"
+                  Content="Stop"
                   Name="CancelButton"/>
         </StackPanel>
         <views:MediaItemsView Grid.Row="4"

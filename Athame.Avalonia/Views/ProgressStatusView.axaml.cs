@@ -17,7 +17,6 @@ namespace Athame.Avalonia.Views
             => this.FindControl<TextBlock>("TrackDownloadProgressTextBlock");
         public TextBlock TrackDownloadTitleTextBlock 
             => this.FindControl<TextBlock>("TrackDownloadTitleTextBlock");
-
         public ProgressBar TrackDownloadProgressBar 
             => this.FindControl<ProgressBar>("TrackDownloadProgressBar");
 

@@ -11,7 +11,6 @@ namespace Athame.Core.Settings
 
         public PlaylistFileType PlaylistFileType { get; set; }
 
-        public bool PlaylistUsesGeneralPreference { get; set; }
         public bool DontSavePlaylistArtwork { get; set; }
         public bool WriteWatermark { get; set; }
 
@@ -22,19 +21,16 @@ namespace Athame.Core.Settings
         {
             GeneralPreference = new MediaPreference
             {
-                AskLocation = false,
                 Location = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
                 PathFormat = "{AlbumArtistOrArtist}/{Album.Title}/{TrackNumber:00} {Title}"
             };
 
             PlaylistPreference = new MediaPreference
             {
-                AskLocation = false,
                 Location = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                 PathFormat = "{Playlist.Title}/{Title} - {AlbumArtistOrArtist}"
             };
 
-            PlaylistUsesGeneralPreference = false;
             DontSavePlaylistArtwork = true;
             PlaylistFileType = PlaylistFileType.M3U;
             WriteWatermark = true;
@@ -42,8 +38,8 @@ namespace Athame.Core.Settings
         }
 
         public MediaPreference GetPreference(MediaType type)
-            => (type == MediaType.Playlist && !PlaylistUsesGeneralPreference)
-                ? PlaylistPreference
+            => type == MediaType.Playlist
+                ? PlaylistPreference.Clone() as MediaPreference
                 : GeneralPreference.Clone() as MediaPreference;
 
         public object Clone()
@@ -52,7 +48,6 @@ namespace Athame.Core.Settings
                 SettingsPath = SettingsPath,
                 GeneralPreference = GeneralPreference.Clone() as MediaPreference,
                 PlaylistPreference = PlaylistPreference.Clone() as MediaPreference,
-                PlaylistUsesGeneralPreference = PlaylistUsesGeneralPreference,
                 DontSavePlaylistArtwork = DontSavePlaylistArtwork,
                 PlaylistFileType = PlaylistFileType,
                 WriteWatermark = WriteWatermark,

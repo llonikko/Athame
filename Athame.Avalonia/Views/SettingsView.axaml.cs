@@ -6,69 +6,53 @@ using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace Athame.Avalonia.Views
 {
     public class SettingsView : ReactiveUserControl<SettingsViewModel>
     {
-        public RadioButton AlbumLocationRadioButton 
-            => this.FindControl<RadioButton>("AlbumLocationRadioButton");
-        public RadioButton AlbumAskLocationRadioButton 
-            => this.FindControl<RadioButton>("AlbumAskLocationRadioButton");
-        public RadioButton PlaylistLocationRadioButton 
-            => this.FindControl<RadioButton>("PlaylistLocationRadioButton");
-        public RadioButton PlaylistAskLocationRadioButton 
-            => this.FindControl<RadioButton>("PlaylistAskLocationRadioButton");
-
-        public Button CancelButton 
+        public Button CancelButton
             => this.FindControl<Button>("CancelButton");
-        public Button SaveButton 
+        public Button SaveButton
             => this.FindControl<Button>("SaveButton");
-
-        public Button SelectAlbumLocationButton 
+        public Button SelectAlbumLocationButton
             => this.FindControl<Button>("SelectAlbumLocationButton");
-        public Button SelectPlaylistLocationButton 
+        public Button SelectPlaylistLocationButton
             => this.FindControl<Button>("SelectPlaylistLocationButton");
-        
-        public Button AlbumPathFormatHelpButton 
+        public Button AlbumPathFormatHelpButton
             => this.FindControl<Button>("AlbumPathFormatHelpButton");
-        public Button PlaylistPathFormatHelpButton 
+        public Button PlaylistPathFormatHelpButton
             => this.FindControl<Button>("PlaylistPathFormatHelpButton");
 
-        public TextBlock AlbumLocationTextBlock 
+        public TextBlock AlbumLocationTextBlock
             => this.FindControl<TextBlock>("AlbumLocationTextBlock");
-        public TextBlock PlaylistLocationTextBlock 
+        public TextBlock PlaylistLocationTextBlock
             => this.FindControl<TextBlock>("PlaylistLocationTextBlock");
-        public TextBlock SampleAlbumPathTextBlock 
+        public TextBlock SampleAlbumPathTextBlock
             => this.FindControl<TextBlock>("SampleAlbumPathTextBlock");
-        public TextBlock SamplePlaylistPathTextBlock 
+        public TextBlock SamplePlaylistPathTextBlock
             => this.FindControl<TextBlock>("SamplePlaylistPathTextBlock");
-
-        public TextBox AlbumPathFormatTextBox 
+        public TextBox AlbumPathFormatTextBox
             => this.FindControl<TextBox>("AlbumPathFormatTextBox");
-        public TextBox PlaylistPathFormatTextBox 
+        public TextBox PlaylistPathFormatTextBox
             => this.FindControl<TextBox>("PlaylistPathFormatTextBox");
 
-        public CheckBox SameAsAlbumCheckBox 
+        public CheckBox SameAsAlbumCheckBox
             => this.FindControl<CheckBox>("SameAsAlbumCheckBox");
-        public CheckBox DontSavePlaylistArtworkCheckBox 
+        public CheckBox DontSavePlaylistArtworkCheckBox
             => this.FindControl<CheckBox>("DontSavePlaylistArtworkCheckBox");
-        public CheckBox AskBeforeExitCheckBox 
+        public CheckBox AskBeforeExitCheckBox
             => this.FindControl<CheckBox>("AskBeforeExitCheckBox");
-        public CheckBox WriteWatermarkCheckBox 
+        public CheckBox WriteWatermarkCheckBox
             => this.FindControl<CheckBox>("WriteWatermarkCheckBox");
 
-        public ComboBox PlaylistFileTypeComboBox 
+        public ComboBox PlaylistFileTypeComboBox
             => this.FindControl<ComboBox>("PlaylistFileTypeComboBox");
 
-        public ListBox PluginServicesListBox 
+        public ListBox PluginServicesListBox
             => this.FindControl<ListBox>("PluginServicesListBox");
 
-        public StackPanel PlaylistPreferencePanel 
-            => this.FindControl<StackPanel>("PlaylistPreferencePanel");
-
-        public PluginSettingsView PluginSettingsView 
+        public PluginSettingsView PluginSettingsView
             => this.FindControl<PluginSettingsView>("PluginSettingsView");
 
         public SettingsView()
@@ -81,37 +65,6 @@ namespace Athame.Avalonia.Views
 
                 this.OneWayBind(ViewModel, vm => vm.IsPlaylistPathValid, v => v.SamplePlaylistPathTextBlock.Foreground, valid => valid ? Brushes.Green : Brushes.Red)
                     .DisposeWith(disposables);
-
-                this.OneWayBind(ViewModel, vm => vm.SameAsAlbum, v => v.PlaylistPreferencePanel.IsEnabled, sameAsAlbum => !sameAsAlbum)
-                    .DisposeWith(disposables);
-
-                var albumDontAsk = this
-                    .WhenAnyValue(x => x.ViewModel.AlbumAskLocation)
-                    .Select(askLocation => !askLocation);
-                albumDontAsk
-                    .BindTo(this, v => v.AlbumLocationRadioButton.IsChecked)
-                    .DisposeWith(disposables);
-                albumDontAsk
-                    .BindTo(this, v => v.SelectAlbumLocationButton.IsEnabled)
-                    .DisposeWith(disposables);
-
-                var playlistDontAsk = this
-                    .WhenAnyValue(x => x.ViewModel.PlaylistAskLocation)
-                    .Select(askLocation => !askLocation);
-                playlistDontAsk
-                    .BindTo(this, v => v.PlaylistLocationRadioButton.IsChecked)
-                    .DisposeWith(disposables);
-                playlistDontAsk
-                    .BindTo(this, v => v.SelectPlaylistLocationButton.IsEnabled)
-                    .DisposeWith(disposables);
-                #endregion
-
-                #region RadioButton Bindings
-                this.Bind(ViewModel, vm => vm.AlbumAskLocation, v => v.AlbumAskLocationRadioButton.IsChecked)
-                    .DisposeWith(disposables);
-
-                this.Bind(ViewModel, vm => vm.PlaylistAskLocation, v => v.PlaylistAskLocationRadioButton.IsChecked)
-                    .DisposeWith(disposables);
                 #endregion
 
                 #region ComboBox Bindings
@@ -120,9 +73,6 @@ namespace Athame.Avalonia.Views
                 #endregion
 
                 #region CheckBox Bindings
-                this.Bind(ViewModel, vm => vm.SameAsAlbum, v => v.SameAsAlbumCheckBox.IsChecked)
-                    .DisposeWith(disposables);
-
                 this.Bind(ViewModel, vm => vm.DontSavePlaylistArtwork, v => v.DontSavePlaylistArtworkCheckBox.IsChecked)
                     .DisposeWith(disposables);
 
@@ -178,7 +128,7 @@ namespace Athame.Avalonia.Views
                 this.Bind(ViewModel, vm => vm.SelectedPlugin, v => v.PluginServicesListBox.SelectedIndex)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.PluginSettingsViewModel, v => v.PluginSettingsView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.PluginSettingsView, v => v.PluginSettingsView.DataContext)
                     .DisposeWith(disposables);
             });
 

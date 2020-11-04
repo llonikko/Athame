@@ -1,4 +1,6 @@
-﻿using ReactiveUI.Fody.Helpers;
+﻿using Athame.Core.Extensions;
+using Athame.Plugin.Api.Downloader;
+using ReactiveUI.Fody.Helpers;
 
 namespace Athame.Avalonia.ViewModels
 {
@@ -16,7 +18,7 @@ namespace Athame.Avalonia.ViewModels
         public ProgressStatusViewModel()
         {
             MediaDownloadStatus = "No media";
-            TrackDownloadStatus = "Ready";
+            TrackDownloadStatus = TrackStatus.Ready.GetDescription();
             TrackDownloadProgressPercentage = 0;
         }
     }

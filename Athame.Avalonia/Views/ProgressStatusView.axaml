@@ -11,28 +11,23 @@
           BorderBrush="WhiteSmoke" 
           Background="White">
     <StackPanel Spacing="12">
-      <TextBlock FontSize="16"
+      <TextBlock FontSize="13"
                  FontWeight="Bold" 
-                 Text="Media Title"
                  Name="MediaDownloadStatusTextBlock"/>
-      <TextBlock Text="Download Status" 
-                 Name="TrackDownloadStatusTextBlock"/>
+      <TextBlock Name="TrackDownloadStatusTextBlock"/>
       <Grid ColumnDefinitions="40 *">
         <TextBlock Grid.Column="0"
                    VerticalAlignment="Center" 
-                   Text="0%"
                    Name="TrackDownloadProgressTextBlock"/>
         <ProgressBar Grid.Column="1"
                      VerticalAlignment="Center"
                      BorderThickness="1"
                      Minimum="0"
                      Maximum="100" 
-                     Value="0"
                      Foreground="#62C2CC"
                      Name="TrackDownloadProgressBar"/>
       </Grid>
-      <TextBlock Text="Track Title" 
-                 Name="TrackDownloadTitleTextBlock"/>
+      <TextBlock Name="TrackDownloadTitleTextBlock"/>
     </StackPanel>
   </Border>
 </UserControl>

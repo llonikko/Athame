@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Athame.Avalonia.ViewModels
 {
-    public class SearchViewModel : ViewModelBase
+    public class MediaSearchViewModel : ViewModelBase
     {
         private readonly UrlResolver resolver;
 
@@ -31,7 +31,7 @@ namespace Athame.Avalonia.ViewModels
 
         public ReactiveCommand<Unit, MediaDownloadItem> SearchMediaCommand { get; }
 
-        public SearchViewModel()
+        public MediaSearchViewModel()
         {
             resolver = new UrlResolver();
 
@@ -83,9 +83,7 @@ namespace Athame.Avalonia.ViewModels
             var folderBrowser = Locator.Current.GetService<FolderBrowserDialog>();
             var preference = settings.GetPreference(ParseResult.MediaDescriptor.MediaType);
 
-            var path = preference.AskLocation
-                ? await folderBrowser.SelectFolder(preference.Location)
-                : preference.Location;
+            var path = preference.Location;
             var format = preference.GetPlatformSaveFormat();
 
             var media = await resolver.ResolveMedia(ParseResult.MediaDescriptor);

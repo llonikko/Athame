@@ -23,8 +23,8 @@ namespace Athame.Avalonia.Views
         public MenuItem ViewAboutAppMenuItem 
             => this.FindControl<MenuItem>("ViewAboutAppMenuItem");
 
-        public SearchView SearchView 
-            => this.FindControl<SearchView>("SearchView");
+        public MediaSearchView SearchView 
+            => this.FindControl<MediaSearchView>("MediaSearchView");
         public ProgressStatusView ProgressStatusView 
             => this.FindControl<ProgressStatusView>("ProgressStatusView");
         public MediaItemsView MediaItemsView 
@@ -47,11 +47,11 @@ namespace Athame.Avalonia.Views
                 this.BindCommand(ViewModel, vm => vm.ViewAboutAppCommand, v => v.ViewAboutAppMenuItem)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.SearchViewModel, v => v.SearchView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.MediaSearch, v => v.SearchView.DataContext)
                     .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.ProgressStatusViewModel, v => v.ProgressStatusView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.ProgressStatus, v => v.ProgressStatusView.DataContext)
                     .DisposeWith(disposables);
-                this.OneWayBind(ViewModel, vm => vm.MediaItemsViewModel, v => v.MediaItemsView.DataContext)
+                this.OneWayBind(ViewModel, vm => vm.MediaItems, v => v.MediaItemsView.DataContext)
                     .DisposeWith(disposables);
 
                 this.BindCommand(ViewModel, vm => vm.DownloadMediaCommand, v => v.DownloadButton)

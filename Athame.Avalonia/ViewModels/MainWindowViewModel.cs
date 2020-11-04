@@ -30,9 +30,10 @@ namespace Athame.Avalonia.ViewModels
         public ReactiveCommand<Unit, IRoutableViewModel> ViewSettingsCommand { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> ViewAboutAppCommand { get; }
 
-        public SearchViewModel SearchViewModel { get; }
-        public ProgressStatusViewModel ProgressStatusViewModel { get; }
-        public MediaItemsViewModel MediaItemsViewModel { get; }
+        public MediaSearchViewModel MediaSearch { get; }
+        public ProgressStatusViewModel ProgressStatus { get; }
+        public MediaItemsViewModel MediaItems { get; }
+
         public RoutingState Router { get; }
         public ViewModelActivator Activator { get; }
 
@@ -43,13 +44,14 @@ namespace Athame.Avalonia.ViewModels
             source = new MediaDownloadSource();
 
             Router = new RoutingState();
-            SearchViewModel = new SearchViewModel();
-            ProgressStatusViewModel = new ProgressStatusViewModel();
-            MediaItemsViewModel = new MediaItemsViewModel(source);
+
+            MediaSearch = new MediaSearchViewModel();
+            ProgressStatus = new ProgressStatusViewModel();
+            MediaItems = new MediaItemsViewModel(source);
 
             DownloadMediaCommand = ReactiveCommand.CreateFromTask(
                 DownloadMedia,
-                MediaItemsViewModel.CanDownload);
+                MediaItems.CanDownload);
             CancelDownloadCommand = ReactiveCommand.Create(RemoveMedia);
             CanRestoreCommand = ReactiveCommand.Create(CanRestore);
             SaveSettingsCommand = ReactiveCommand.Create(SaveSettings);
@@ -61,7 +63,7 @@ namespace Athame.Avalonia.ViewModels
             Activator = new ViewModelActivator();
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                this.WhenAnyValue(x => x.SearchViewModel.SearchResult)
+                this.WhenAnyValue(x => x.MediaSearch.SearchResult)
                     .Where(media => media != null)
                     .Subscribe(AddMedia)
                     .DisposeWith(disposables);
@@ -92,21 +94,21 @@ namespace Athame.Avalonia.ViewModels
         private void MediaServiceDequeued(MediaDownloadEventArgs e)
         {
             var current = e;
-            ProgressStatusViewModel.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
+            ProgressStatus.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
                 + $"{current.Item.Media.MediaType} - {current.Item.Media.Title}";
         }
 
         private void TrackDownloadProgressed(TrackDownloadEventArgs e)
         {
-            ProgressStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
-            ProgressStatusViewModel.TrackDownloadProgressPercentage = e.PercentCompleted;
-            ProgressStatusViewModel.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
+            ProgressStatus.TrackDownloadStatus = e.Status.GetDescription();
+            ProgressStatus.TrackDownloadProgressPercentage = e.PercentCompleted;
+            ProgressStatus.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
         }
 
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
-            ProgressStatusViewModel.TrackDownloadStatus = e.Status.GetDescription();
-            MediaItemsViewModel.UpdateTrackItem(e.TrackFile.Track);
+            ProgressStatus.TrackDownloadStatus = e.Status.GetDescription();
+            MediaItems.UpdateTrackItem(e.TrackFile.Track);
         }
 
         public void TrackDownloadSkipped(TrackDownloadEventArgs e)
@@ -124,12 +126,12 @@ namespace Athame.Avalonia.ViewModels
         {
             downloader.Settings = app.AppSettings;
 
-            ProgressStatusViewModel.MediaDownloadStatus = "Warming up...";
+            ProgressStatus.MediaDownloadStatus = "Warming up...";
             await Task.Delay(2000);
 
             await downloader.StartDownloadAsync(source.Items);
 
-            ProgressStatusViewModel.MediaDownloadStatus = "All downloads completed";
+            ProgressStatus.MediaDownloadStatus = "All downloads completed";
         }
 
         private Window CanRestore()

@@ -13,7 +13,7 @@ using System.Reactive.Linq;
 
 namespace Athame.Avalonia.Views
 {
-    public class SearchView : ReactiveUserControl<SearchViewModel>
+    public class MediaSearchView : ReactiveUserControl<MediaSearchViewModel>
     {
         public Button SearchButton 
             => this.FindControl<Button>("SearchButton");
@@ -33,7 +33,7 @@ namespace Athame.Avalonia.Views
         public ProgressRing SearchProgressRing 
             => this.FindControl<ProgressRing>("SearchProgressRing");
 
-        public SearchView()
+        public MediaSearchView()
         {
             this.WhenActivated(disposables =>
             {
@@ -42,7 +42,6 @@ namespace Athame.Avalonia.Views
 
                 this.Bind(ViewModel, vm => vm.SearchText, v => v.SearchTextBox.Text)
                     .DisposeWith(disposables);
-
                 this.Bind(ViewModel, vm => vm.IsValidating, v => v.UrlValidationStatusPanel.IsVisible)
                     .DisposeWith(disposables);
 
@@ -55,7 +54,6 @@ namespace Athame.Avalonia.Views
 
                 this.OneWayBind(ViewModel, vm => vm.IsSearching, v => v.SearchProgressRing.IsActive)
                     .DisposeWith(disposables);
-
                 this.OneWayBind(ViewModel, vm => vm.IsSearching, v => v.SearchButton.IsVisible, isSearching => !isSearching)
                     .DisposeWith(disposables);
 

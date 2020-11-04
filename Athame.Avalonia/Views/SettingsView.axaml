@@ -15,180 +15,125 @@
         <Grid RowDefinitions=".7* * Auto"
               ColumnDefinitions="*">
           <Border Grid.Row="0"
-                  Grid.Column="0"
                   Margin="5"
-                  Padding="5"
+                  Padding="10"
                   BorderBrush="WhiteSmoke"
                   BorderThickness="2"
                   CornerRadius="5">
-            <StackPanel>
-              <TextBlock Margin="2"
-                         FontSize="13"
+            <StackPanel Spacing="10">
+              <StackPanel>
+                <TextBlock FontSize="16"
                          Foreground="#62C2CC"
                          Text="Album/Track Download Options"/>
-              <Grid RowDefinitions="* *"
-                    ColumnDefinitions="* 100"
-                    Margin="5">
-                <StackPanel Grid.Row="0"
-                            Grid.Column="0"
-                            Orientation="Horizontal">
-                  <RadioButton Margin="2"
-                               GroupName="AlbumSaveOption"
-                               Content="Save to: "
-                               Name="AlbumLocationRadioButton"/>
-                  <TextBlock Margin="5"
-                             FontWeight="Bold"
-                             FontStyle="Italic"
-                             TextWrapping="Wrap"
-                             Name="AlbumLocationTextBlock"/>
-                </StackPanel>
-                <RadioButton Grid.Row="1"
-                             Grid.Column="0"
-                             Margin="2"
-                             GroupName="AlbumSaveOption"
-                             Content="Ask me everytime"
-                             Name="AlbumAskLocationRadioButton"/>
-                <Button Grid.Row="0"
-                        Grid.Column="1"
-                        Width="100"
-                        BorderBrush="LightGray"
-                        Content="Browse..."
-                        Name="SelectAlbumLocationButton"/>
-              </Grid>
-              <Grid RowDefinitions="* *"
-                    ColumnDefinitions="* 150"
-                    Margin="5">
-                <TextBox Grid.Row="0"
-                         Grid.Column="0"
-                         Grid.ColumnSpan="2"
-                         Margin="2"
-                         BorderBrush="LightGray"
-                         FontSize="14"
-                         Watermark="Path Format"
-                         UseFloatingWatermark="True"
-                         Name="AlbumPathFormatTextBox"/>
-                <TextBlock Grid.Row="1"
-                           Grid.Column="0"
-                           Margin="2 5"
+                <Separator BorderBrush="#62C2CC" BorderThickness="1" />
+              </StackPanel>
+              <StackPanel Margin="0 5 0 0"
+                          Orientation="Horizontal">
+                <TextBlock Text="Location: " />
+                <TextBlock FontWeight="Bold"
+                           FontStyle="Italic"
+                           TextWrapping="Wrap"
+                           Name="AlbumLocationTextBlock"/>
+              </StackPanel>
+              <Button HorizontalAlignment="Left"
+                      Width="120"
+                      BorderBrush="LightGray"
+                      Content="Browse..."
+                      Name="SelectAlbumLocationButton"/>
+              <TextBox Margin="0 10 0 0" BorderBrush="LightGray"
+                       FontSize="14"
+                       Watermark="Path Format"
+                       UseFloatingWatermark="True"
+                       Name="AlbumPathFormatTextBox"/>
+              <Grid ColumnDefinitions="* Auto">
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
                            Name="SampleAlbumPathTextBlock"/>
-                <Button Grid.Row="1"
-                        Grid.Column="1"
-                        Margin="2 5"
+                <Button Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        Width="150"
                         BorderBrush="LightGray"
-                        Content="Help with path formats..."
+                        Content="Path Format Help"
                         Name="AlbumPathFormatHelpButton"/>
               </Grid>
             </StackPanel>
           </Border>
           <Border Grid.Row="1"
-                  Grid.Column="0"
                   Margin="5"
-                  Padding="5"
+                  Padding="10"
                   BorderBrush="WhiteSmoke"
                   BorderThickness="2"
                   CornerRadius="5">
-            <StackPanel>
-              <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="2"
-                           FontSize="13"
-                           Foreground="#62C2CC"
-                           Text="Playlist Download Options"/>
-                <CheckBox Margin="10 2"
-                          BorderBrush="LightGray"
-                          Content="Same as album/track"
-                          Name="SameAsAlbumCheckBox"/>
+            <StackPanel Spacing="10">
+              <StackPanel>
+                <TextBlock FontSize="16"
+                         Foreground="#62C2CC"
+                         Text="Playlist Download Options"/>
+                <Separator BorderBrush="#62C2CC" BorderThickness="1" />
               </StackPanel>
-              <StackPanel Name="PlaylistPreferencePanel">
-                <Grid RowDefinitions="* *"
-                      ColumnDefinitions="* 100"
-                      Margin="5">
-                  <StackPanel Grid.Row="0"
-                              Grid.Column="0"
-                              Orientation="Horizontal">
-                    <RadioButton Grid.Row="0"
-                                 Grid.Column="0"
-                                 Margin="2"
-                                 GroupName="PlaylistSaveOption"
-                                 Content="Save to: "
-                                 Name="PlaylistLocationRadioButton"/>
-                    <TextBlock Margin="5"
-                               FontWeight="Bold"
-                               FontStyle="Italic"
-                               Name="PlaylistLocationTextBlock"/>
-                  </StackPanel>
-                  <RadioButton Grid.Row="1"
-                               Grid.Column="0"
-                               Margin="2"
-                               GroupName="PlaylistSaveOption"
-                               Content="Ask me everytime"
-                               Name="PlaylistAskLocationRadioButton"/>
-                  <Button Grid.Row="0"
-                          Grid.Column="1"
-                          Width="100"
-                          BorderBrush="LightGray"
-                          Content="Browse..."
-                          Name="SelectPlaylistLocationButton"/>
-                </Grid>
-                <Grid RowDefinitions="* *"
-                      ColumnDefinitions="* 150"
-                      Margin="5">
-                  <TextBox Grid.Row="0"
-                           Grid.Column="0"
-                           Grid.ColumnSpan="2"
-                           Margin="2"
-                           BorderBrush="LightGray"
-                           FontSize="14"
-                           Watermark="Path Format"
-                           UseFloatingWatermark="True"
-                           Name="PlaylistPathFormatTextBox"/>
-                  <TextBlock Grid.Row="1"
-                             Grid.Column="0"
-                             Margin="2 5"
-                             Name="SamplePlaylistPathTextBlock"/>
-                  <Button Grid.Row="1"
-                          Grid.Column="1"
-                          Margin="2 5"
-                          BorderBrush="LightGray"
-                          Content="Help with path formats..."
-                          Name="PlaylistPathFormatHelpButton"/>
-                </Grid>
-                <StackPanel Margin="5"
-                            HorizontalAlignment="Left">
-                  <TextBlock Margin="2"
-                             Text="Save playlist as file"/>
-                  <ComboBox Margin="2"
-                            Width="175"
-                            BorderBrush="LightGray"
-                            Name="PlaylistFileTypeComboBox">
-                    <ComboBoxItem Content="M3U"/>
-                    <ComboBoxItem Content="PLS"/>
-                  </ComboBox>
-                </StackPanel>
-                <CheckBox Margin="7"
-                          BorderBrush="LightGray"
-                          Content="Don&apos;t save album artwork when downloading a playlist"
-                          Name="DontSavePlaylistArtworkCheckBox"/>
+              <StackPanel Margin="0 5 0 0"
+                          Orientation="Horizontal">
+                <TextBlock Text="Location: "/>
+                <TextBlock FontWeight="Bold"
+                           FontStyle="Italic"
+                           Name="PlaylistLocationTextBlock"/>
               </StackPanel>
+              <Button HorizontalAlignment="Left"
+                      Width="120"
+                      BorderBrush="LightGray"
+                      Content="Browse..."
+                      Name="SelectPlaylistLocationButton"/>
+              <TextBox Margin="0 10 0 0"
+                       BorderBrush="LightGray"
+                       FontSize="14"
+                       Watermark="Path Format"
+                       UseFloatingWatermark="True"
+                       Name="PlaylistPathFormatTextBox"/>
+              <Grid ColumnDefinitions="* Auto">
+                <TextBlock Grid.Column="0"
+                           VerticalAlignment="Center"
+                           Name="SamplePlaylistPathTextBlock"/>
+                <Button Grid.Column="1"
+                        Width="150"
+                        BorderBrush="LightGray"
+                        Content="Path Format Help"
+                        Name="PlaylistPathFormatHelpButton"/>
+              </Grid>
+              <StackPanel Margin="0 10 0 0"
+                          HorizontalAlignment="Left"
+                          Spacing="5">
+                <TextBlock Text="Save playlist file as"/>
+                <ComboBox Width="175"
+                          BorderBrush="LightGray"
+                          Name="PlaylistFileTypeComboBox">
+                  <ComboBoxItem Content="M3U"/>
+                  <ComboBoxItem Content="PLS"/>
+                </ComboBox>
+              </StackPanel>
+              <CheckBox BorderBrush="LightGray"
+                        Content="Don&apos;t save album artwork when downloading a playlist"
+                        Name="DontSavePlaylistArtworkCheckBox"/>
             </StackPanel>
           </Border>
           <Border Grid.Row="2"
                   Grid.Column="0"
-                  Margin="5" 
-                  Padding="5"
+                  Margin="5"
+                  Padding="10"
                   BorderBrush="WhiteSmoke"
                   BorderThickness="2"
                   CornerRadius="5">
-            <StackPanel>
-              <TextBlock Margin="2"
-                         FontSize="13"
+            <StackPanel Spacing="10">
+              <StackPanel>
+                <TextBlock FontSize="16"
                          Foreground="#62C2CC"
                          Text="Misc"/>
-              <CheckBox Margin="2"
+                <Separator BorderBrush="#62C2CC" BorderThickness="1" />
+              </StackPanel>
+              <CheckBox Margin="0 5 0 0"
                         BorderBrush="LightGray"
                         Content="Ask before exiting if there are items in the queue"
                         Name="AskBeforeExitCheckBox"/>
-              <CheckBox Margin="2"
-                        BorderBrush="LightGray"
+              <CheckBox BorderBrush="LightGray"
                         Content="Write &quot;Downloaded by Athame&quot; tags"
                         Name="WriteWatermarkCheckBox"/>
             </StackPanel>

@@ -30,39 +30,12 @@ namespace Athame.Avalonia.ViewModels
         #endregion
 
         #region App Settings Properties
-        public bool AlbumAskLocation
-        {
-            get => settings.GeneralPreference.AskLocation;
-            set
-            {
-                settings.GeneralPreference.AskLocation = value;
-                this.RaisePropertyChanged();
-            }
-        }
         public string AlbumLocation
         {
             get => settings.GeneralPreference.Location;
             set
             {
                 settings.GeneralPreference.Location = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        public bool SameAsAlbum
-        {
-            get => settings.PlaylistUsesGeneralPreference;
-            set
-            {
-                settings.PlaylistUsesGeneralPreference = value;
-                this.RaisePropertyChanged();
-            }
-        }
-        public bool PlaylistAskLocation
-        {
-            get => settings.PlaylistPreference.AskLocation;
-            set
-            {
-                settings.PlaylistPreference.AskLocation = value;
                 this.RaisePropertyChanged();
             }
         }
@@ -126,7 +99,7 @@ namespace Athame.Avalonia.ViewModels
 
         [Reactive]
         public int SelectedPlugin { get; set; }
-        public PluginSettingsViewModel PluginSettingsViewModel { [ObservableAsProperty]get; }
+        public PluginSettingsViewModel PluginSettingsView { [ObservableAsProperty]get; }
         public IEnumerable PluginServices { get; }
 
         public string UrlPathSegment => "Settings";
@@ -158,22 +131,21 @@ namespace Athame.Avalonia.ViewModels
 
             this.WhenAnyValue(x => x.SelectedPlugin)
                 .Select(p => new PluginSettingsViewModel(app.Plugins[p]))
-                .ToPropertyEx(this, x => x.PluginSettingsViewModel);
+                .ToPropertyEx(this, x => x.PluginSettingsView);
 
             var canSave = this
                 .WhenAnyValue(
-                    x => x.IsAlbumPathValid, 
-                    x => x.IsPlaylistPathValid, 
+                    x => x.IsAlbumPathValid,
+                    x => x.IsPlaylistPathValid,
                     (albumValid, playlistValid) =>
                         albumValid && playlistValid);
-            SaveCommand = ReactiveCommand.CreateFromObservable(
-                () =>
-                {
-                    app.AppSettings = settings;
-                    app.AppSettings.Save();
-                    app.Plugins[SelectedPlugin]?.Settings.Save();
-                    return NavigateBack();
-                },
+            SaveCommand = ReactiveCommand.CreateFromObservable(() =>
+            {
+                app.AppSettings = settings;
+                app.AppSettings.Save();
+                app.Plugins[SelectedPlugin]?.Settings.Save();
+                return NavigateBack();
+            },
                 canSave);
 
             CancelCommand = ReactiveCommand.CreateFromObservable(NavigateBack);
@@ -198,5 +170,6 @@ namespace Athame.Avalonia.ViewModels
             => HostScreen.Router.NavigateBack.Execute();
 
         private Window GetPathFormatHelpWindow() => new PathFormatHelpWindow();
+        //=> Locator.Current.GetService<Window>("PathFormatHelp");
     }
 }

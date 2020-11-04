@@ -14,7 +14,8 @@
   <ScrollViewer>
     <ItemsRepeater Items="{Binding ServicesRestoreStatus}">
       <ItemsRepeater.Layout>
-        <StackLayout Orientation="Vertical" Spacing="2"/>
+        <StackLayout Orientation="Vertical" 
+                     Spacing="2"/>
       </ItemsRepeater.Layout>
       <ItemsRepeater.ItemTemplate>
         <DataTemplate>

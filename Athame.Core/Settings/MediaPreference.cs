@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 
 namespace Athame.Core.Settings
 {
@@ -8,7 +7,6 @@ namespace Athame.Core.Settings
     {
         public string Location { get; set; }
         public string PathFormat { get; set; }
-        public bool AskLocation { get; set; }
 
         public string GetPlatformSaveFormat()
             => Path.DirectorySeparatorChar == '/' ? PathFormat : PathFormat.Replace('/', Path.DirectorySeparatorChar);
@@ -17,8 +15,7 @@ namespace Athame.Core.Settings
             => new MediaPreference
             {
                 Location = Location,
-                PathFormat = PathFormat,
-                AskLocation = AskLocation
+                PathFormat = PathFormat
             };
     }
 }

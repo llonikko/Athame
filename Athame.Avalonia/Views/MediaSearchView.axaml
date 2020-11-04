@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:p="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Athame.Avalonia.Views.SearchView">
+             x:Class="Athame.Avalonia.Views.MediaSearchView">
   <StackPanel Margin="5">
     <Border Padding="2"
             Background="White"
@@ -34,13 +34,13 @@
     <StackPanel Margin="15 2 15 2"
                 Orientation="Horizontal"
                 Name="UrlValidationStatusPanel">
-      <Image Margin="2"
-             HorizontalAlignment="Left"
+      <Image Margin="2" 
              Height="16"
+             HorizontalAlignment="Left"
              Name="UrlValidationStatusImage"/>
-      <TextBlock Margin="2"
-                 FontWeight="Bold"
+      <TextBlock Margin="2" 
                  HorizontalAlignment="Left"
+                 FontWeight="Bold"
                  Name="UrlValidationStatusTextBlock"/>
     </StackPanel>
   </StackPanel>
