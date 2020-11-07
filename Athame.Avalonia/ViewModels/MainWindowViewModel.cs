@@ -4,6 +4,7 @@ using Athame.Core;
 using Athame.Core.Download;
 using Athame.Core.Extensions;
 using Athame.Core.Plugin;
+using Athame.Plugin.Api.Downloader;
 using Avalonia.Controls;
 using ReactiveUI;
 using Serilog;
@@ -77,16 +78,16 @@ namespace Athame.Avalonia.ViewModels
                     .Subscribe()
                     .DisposeWith(disposables);
                 Observable
-                    .FromEventPattern<TrackDownloadEventArgs>(downloader, nameof(downloader.TrackDownloadProgressed))
+                    .FromEventPattern<TrackDownloadEventArgs>(
+                        downloader.TrackDownloader, nameof(downloader.TrackDownloader.TrackDownloadStarted), RxApp.MainThreadScheduler)
+                    .Subscribe(e => TrackDownloadStarted(e.EventArgs));
+                Observable
+                    .FromEventPattern<TrackDownloadEventArgs>(downloader, nameof(downloader.TrackDownloadProgressChanged))
                     .Subscribe(e => TrackDownloadProgressed(e.EventArgs))
                     .DisposeWith(disposables);
                 Observable
                     .FromEventPattern<TrackDownloadEventArgs>(downloader, nameof(downloader.TrackDownloadCompleted))
                     .Subscribe(e => TrackDownloadCompleted(e.EventArgs))
-                    .DisposeWith(disposables);
-                Observable
-                    .FromEventPattern<TrackDownloadEventArgs>(downloader, nameof(downloader.TrackDownloadSkipped))
-                    .Subscribe(e => TrackDownloadSkipped(e.EventArgs))
                     .DisposeWith(disposables);
             });
         }
@@ -95,27 +96,37 @@ namespace Athame.Avalonia.ViewModels
         {
             var current = e;
             ProgressStatus.MediaDownloadStatus = $"{current.Index + 1}/{current.Total}: "
-                + $"{current.Item.Media.MediaType} - {current.Item.Media.Title}";
+                + $"{current.CurrentMediaDownload.Media.MediaType} - {current.CurrentMediaDownload.Media.Title}";
         }
 
-        private void TrackDownloadProgressed(TrackDownloadEventArgs e)
+        private void TrackDownloadStarted(TrackDownloadEventArgs e)
         {
             ProgressStatus.TrackDownloadStatus = e.Status.GetDescription();
             ProgressStatus.TrackDownloadProgressPercentage = e.PercentCompleted;
             ProgressStatus.TrackDownloadTitle = $"{e.TrackFile.Track.Artist} - {e.TrackFile.Track.Title}";
         }
 
+        private void TrackDownloadProgressed(TrackDownloadEventArgs e)
+        {
+            ProgressStatus.TrackDownloadStatus = e.Status.GetDescription();
+            ProgressStatus.TrackDownloadProgressPercentage = e.PercentCompleted;
+        }
+
         private void TrackDownloadCompleted(TrackDownloadEventArgs e)
         {
             ProgressStatus.TrackDownloadStatus = e.Status.GetDescription();
-            MediaItems.UpdateTrackItem(e.TrackFile.Track);
+
+            if (TrackStatus.DownloadSkipped == e.Status)
+            {
+                MediaItems.UpdateTrackViewItem(e.TrackFile.Track, e.TrackFile.Track.IsDownloadable);
+            }
+            else
+            {
+                MediaItems.UpdateTrackViewItem(e.TrackFile.Track, TrackStatus.DownloadCompleted == e.Status);
+            }
         }
 
-        public void TrackDownloadSkipped(TrackDownloadEventArgs e)
-        {
-        }
-
-        private void AddMedia(MediaDownloadItem media)
+        private void AddMedia(MediaItem media)
             => source.Add(media);
 
         private void RemoveMedia()

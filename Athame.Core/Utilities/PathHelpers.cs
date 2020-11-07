@@ -60,6 +60,9 @@ namespace Athame.Core.Utilities
             }
         }
 
+        public static string CreateDefaultFileName(IMedia media)
+            => CleanFilename($"{media.Artist} - {media.Title}");
+
         public static string FormatFilePath(object obj, string pathFormat)
         {
             // Hacky method to clean the file path

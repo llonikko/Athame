@@ -1,12 +1,9 @@
-﻿using Athame.Avalonia.Models;
-using Athame.Core;
-using Athame.Core.Download;
+﻿using Athame.Core.Download;
 using Athame.Core.Search;
 using Athame.Plugin.Api.Service;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
-using Splat;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -16,7 +13,7 @@ namespace Athame.Avalonia.ViewModels
 {
     public class MediaSearchViewModel : ViewModelBase
     {
-        private readonly UrlResolver resolver;
+        private MediaDescriptor Descriptor { [ObservableAsProperty]get; }
 
         [Reactive]
         public string SearchText { get; set; }
@@ -26,30 +23,28 @@ namespace Athame.Avalonia.ViewModels
         public bool IsValidating { [ObservableAsProperty]get; }
         public bool IsSearching { [ObservableAsProperty]get; }
 
-        public UrlParseResult ParseResult { [ObservableAsProperty]get; }
-        public MediaDownloadItem SearchResult { [ObservableAsProperty]get; }
+        public Core.Download.MediaItem SearchResult { [ObservableAsProperty]get; }
 
-        public ReactiveCommand<Unit, MediaDownloadItem> SearchMediaCommand { get; }
+        public ReactiveCommand<Unit, MediaItem> SearchMediaCommand { get; }
 
         public MediaSearchViewModel()
         {
-            resolver = new UrlResolver();
-
-            var parseResult = this
+            var result = this
                 .WhenAnyValue(x => x.SearchText)
-                .Select(url => resolver.Parse(url));
-            parseResult
+                .Select(url => UrlResolver.Parse(url));
+            result
                 .Select(result => result.GetMessage())
                 .ToPropertyEx(this, x => x.UrlValidationStatusText);
-            parseResult
-                .ToPropertyEx(this, x => x.ParseResult);
+            result
+                .Select(x => x.Result)
+                .ToPropertyEx(this, x => x.Descriptor);
 
-            var parseStatus = parseResult.Select(x => x.ParseStatus);
-            parseStatus
+            var status = result.Select(x => x.Status);
+            status
                 .Select(x => x == UrlParseStatus.NullOrEmptyString)
                 .Select(validating => !validating)
                 .ToPropertyEx(this, x => x.IsValidating);
-            parseStatus
+            status
                 .Select(x => x == UrlParseStatus.Success)
                 .ToPropertyEx(this, x => x.IsUrlValid);
 
@@ -77,22 +72,10 @@ namespace Athame.Avalonia.ViewModels
                 .ToPropertyEx(this, x => x.SearchResult);
         }
 
-        private async Task<MediaDownloadItem> Search()
+        private async Task<Core.Download.MediaItem> Search()
         {
-            var settings = Locator.Current.GetService<AthameApp>().AppSettings;
-            var folderBrowser = Locator.Current.GetService<FolderBrowserDialog>();
-            var preference = settings.GetPreference(ParseResult.MediaDescriptor.MediaType);
-
-            var path = preference.Location;
-            var format = preference.GetPlatformSaveFormat();
-
-            var media = await resolver.ResolveMedia(ParseResult.MediaDescriptor);
-            var context = new MediaDownloadContext
-            {
-                Root = path,
-                MediaPathFormat = format
-            };
-            return new MediaDownloadItem(ParseResult.MediaDescriptor, context, media);
+            var resolver = new MediaResolver(Descriptor);
+            return await resolver.ResolveMedia();
         }
     }
 }

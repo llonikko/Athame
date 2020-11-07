@@ -25,8 +25,8 @@ namespace Athame.Plugin.Api.Downloader
         [Description("Download completed")]
         DownloadCompleted,
 
-        [Description("Skipping track")]
-        SkippingTrack,
+        [Description("Download track skipped")]
+        DownloadSkipped,
 
         [Description("Download failed")]
         DownloadFailed

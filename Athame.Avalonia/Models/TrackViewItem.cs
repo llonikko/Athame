@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Athame.Avalonia.Models
 {
-    public class TrackItem : ReactiveObject
+    public class TrackViewItem : ReactiveObject
     {
         public string DiscTrackNumber
             => $"{Track.DiscNumber}/{Track.TrackNumber}";
@@ -21,18 +21,18 @@ namespace Athame.Avalonia.Models
         public IEnumerable<Metadata> Flags
             => Track.CustomMetadata.Where(m => m.CanDisplay && m.IsFlag);
 
-        public TrackItem(Track track)
+        public TrackViewItem(Track track)
         {
             Track = track;
             ImageStatus = track.IsDownloadable ? Images.Info : Images.Error;
         }
 
-        public static IEnumerable<TrackItem> Create(IEnumerable<Track> tracks)
+        public static IEnumerable<TrackViewItem> Create(IEnumerable<Track> tracks)
         {
-            var v = new List<TrackItem>();
+            var v = new List<TrackViewItem>();
             foreach (var t in tracks)
             {
-                v.Add(new TrackItem(t));
+                v.Add(new TrackViewItem(t));
             }
             return v;
         }

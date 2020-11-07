@@ -12,31 +12,34 @@ namespace Athame.Avalonia.ViewModels
 {
     public class MediaItemsViewModel : ViewModelBase
     {
-        private readonly ReadOnlyObservableCollection<MediaItem> mediaItems;
+        private readonly ReadOnlyObservableCollection<MediaViewItem> items;
 
         public IObservable<bool> CanDownload { get; }
-        public ReadOnlyObservableCollection<MediaItem> MediaItems 
-            => mediaItems;
+        public ReadOnlyObservableCollection<MediaViewItem> MediaItems 
+            => items;
 
         public MediaItemsViewModel(MediaDownloadSource source)
         {
             source
                 .Connect()
-                .Transform(ms => new MediaItem(ms.Media))
+                .Transform(ms => new MediaViewItem(ms.Media))
                 .ObserveOn(RxApp.MainThreadScheduler)
-                .Bind(out mediaItems)
+                .Bind(out items)
                 .DisposeMany()
                 .Subscribe();
 
             CanDownload = this
                 .WhenAnyValue(x => x.MediaItems.Count)
-                .Select(count => count > 0 && mediaItems.Any(x => x.IsDownloadable()));
+                .Select(count => count > 0 && items.Any(x => x.IsDownloadable()));
         }
 
-        public void UpdateTrackItem(Track track)
+        public void UpdateTrackViewItem(Track track, bool success)
         {
-            var item = mediaItems.Select(m => m.GetTrackItem(track)).First();
-            item.ImageStatus = Images.Success;
+            var id = track.Playlist?.Id ?? track.Album.Id;
+            var tv = items
+                .SingleOrDefault(m => m.Id == id)
+                .GetTrackViewItem(track);
+            tv.ImageStatus = success ? Images.Success : Images.Error;
         }
     }
 }
