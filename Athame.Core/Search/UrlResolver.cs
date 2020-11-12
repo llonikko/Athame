@@ -14,8 +14,8 @@ namespace Athame.Core.Search
         /// Attempts to parse a URL that refers to a media collection.
         /// </summary>
         /// <param name="url">The URL to parse.</param>
-        /// <returns>The state of the parser. See the documentation for <see cref="UrlParseResult"/> for more info.</returns>
-        public static IUrlParseResult Parse(string url)
+        /// <returns>The state of the parser. See the documentation for <see cref="IUrlParseResult"/> for more info.</returns>
+        public static IUrlParseResult ResolveUrl(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
             {

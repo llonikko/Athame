@@ -45,7 +45,7 @@ namespace Athame.Avalonia.Views
                 this.Bind(ViewModel, vm => vm.IsValidating, v => v.UrlValidationStatusPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(ViewModel, vm => vm.UrlValidationStatusText, v => v.UrlValidationStatusTextBlock.Text)
+                this.OneWayBind(ViewModel, vm => vm.UrlValidationMessage, v => v.UrlValidationStatusTextBlock.Text)
                     .DisposeWith(disposables);
                 this.OneWayBind(ViewModel, vm => vm.IsUrlValid, v => v.UrlValidationStatusTextBlock.Foreground, valid => valid ? Brushes.Green : Brushes.Red)
                     .DisposeWith(disposables);

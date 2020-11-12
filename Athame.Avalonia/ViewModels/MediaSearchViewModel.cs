@@ -1,4 +1,5 @@
 ﻿using Athame.Core.Download;
+using Athame.Core.Interface;
 using Athame.Core.Search;
 using Athame.Plugin.Api.Service;
 using ReactiveUI;
@@ -13,33 +14,34 @@ namespace Athame.Avalonia.ViewModels
 {
     public class MediaSearchViewModel : ViewModelBase
     {
-        private MediaDescriptor Descriptor { [ObservableAsProperty]get; }
+        private IUrlParseResult ParseResult { [ObservableAsProperty]get; }
 
         [Reactive]
         public string SearchText { get; set; }
 
-        public string UrlValidationStatusText { [ObservableAsProperty]get; }
+        public string UrlValidationMessage { [ObservableAsProperty]get; }
         public bool IsUrlValid { [ObservableAsProperty]get; }
         public bool IsValidating { [ObservableAsProperty]get; }
         public bool IsSearching { [ObservableAsProperty]get; }
 
-        public Core.Download.MediaItem SearchResult { [ObservableAsProperty]get; }
+        public MediaItem SearchResult { [ObservableAsProperty]get; }
 
         public ReactiveCommand<Unit, MediaItem> SearchMediaCommand { get; }
 
         public MediaSearchViewModel()
         {
-            var result = this
+            this
                 .WhenAnyValue(x => x.SearchText)
-                .Select(url => UrlResolver.Parse(url));
-            result
-                .Select(result => result.GetMessage())
-                .ToPropertyEx(this, x => x.UrlValidationStatusText);
-            result
-                .Select(x => x.Result)
-                .ToPropertyEx(this, x => x.Descriptor);
+                .Select(url => UrlResolver.ResolveUrl(url))
+                .ToProperty(this, x => x.ParseResult);
 
-            var status = result.Select(x => x.Status);
+            this.WhenAnyValue(x => x.ParseResult)
+                .Select(x => x.Message)
+                .ToPropertyEx(this, x => x.UrlValidationMessage);
+
+            var status = this
+                .WhenAnyValue(x => x.ParseResult)
+                .Select(x => x.Status);
             status
                 .Select(x => x == UrlParseStatus.NullOrEmptyString)
                 .Select(validating => !validating)
@@ -49,18 +51,18 @@ namespace Athame.Avalonia.ViewModels
                 .ToPropertyEx(this, x => x.IsUrlValid);
 
             var canSearch = this.WhenAnyValue(x => x.IsUrlValid);
-            SearchMediaCommand = ReactiveCommand.CreateFromTask(Search, canSearch);
+            SearchMediaCommand = ReactiveCommand.CreateFromTask(SearchMedia, canSearch);
             SearchMediaCommand.IsExecuting
                 .ToPropertyEx(this, x => x.IsSearching);
             SearchMediaCommand.ThrownExceptions
                 .Subscribe(error =>
                 {   /* Handle exceptions. */
-                    if (error is ResourceNotFoundException ex)
+                    if (error is ResourceNotFoundException)
                     {
                         // var msgBox = MessageBox.Avalonia.MessageBoxManager
                         //     .GetMessageBoxStandardWindow("Not Found", ex.Message);
                         // msgBox.Show();
-                        Log.Debug(ex.Message, "Not Found");
+                        Log.Debug(error.Message, "Not Found");
                     }
                     else
                     {
@@ -72,9 +74,9 @@ namespace Athame.Avalonia.ViewModels
                 .ToPropertyEx(this, x => x.SearchResult);
         }
 
-        private async Task<Core.Download.MediaItem> Search()
+        private async Task<MediaItem> SearchMedia()
         {
-            var resolver = new MediaResolver(Descriptor);
+            var resolver = MediaResolver.Create(ParseResult);
             return await resolver.ResolveMedia();
         }
     }

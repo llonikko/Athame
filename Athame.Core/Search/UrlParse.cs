@@ -22,9 +22,7 @@ namespace Athame.Core.Search
         public UrlParseStatus Status
             => UrlParseStatus.NullOrEmptyString;
 
-        public MediaDescriptor Result { get; }
-
-        public string GetMessage()
+        public string Message
             => "";
     }
 
@@ -33,9 +31,7 @@ namespace Athame.Core.Search
         public UrlParseStatus Status
             => UrlParseStatus.NoServiceFound;
 
-        public MediaDescriptor Result { get; }
-
-        public string GetMessage()
+        public string Message
             => "Can't download this URL.";
     }
 
@@ -44,9 +40,7 @@ namespace Athame.Core.Search
         public UrlParseStatus Status
             => UrlParseStatus.InvalidUrl;
 
-        public MediaDescriptor Result { get; }
-
-        public string GetMessage()
+        public string Message
             => "Invalid URL. Check that the URL begins with http:// or https://.";
     }
 
@@ -55,9 +49,7 @@ namespace Athame.Core.Search
         public UrlParseStatus Status
             => UrlParseStatus.NoMedia;
 
-        public MediaDescriptor Result { get; }
-
-        public string GetMessage()
+        public string Message
             => "The URL does not point to a valid track, album, artist or playlist.";
     }
 
@@ -66,14 +58,14 @@ namespace Athame.Core.Search
         public UrlParseStatus Status
             => UrlParseStatus.Success;
 
-        public MediaDescriptor Result { get; }
+        public MediaDescriptor MediaDescriptor { get; }
 
-        public string GetMessage()
-            => $"{Result.MediaType} from {Result.MediaServiceName}";
+        public string Message
+            => $"{MediaDescriptor.MediaType} from {MediaDescriptor.MediaServiceName}";
 
         public UrlParseSuccess(MediaDescriptor descriptor)
         {
-            Result = descriptor;
+            MediaDescriptor = descriptor;
         }
     }
 }

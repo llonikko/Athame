@@ -1,4 +1,6 @@
 ﻿using Athame.Core.Download;
+using Athame.Core.Extensions;
+using Athame.Core.Interface;
 using Athame.Core.Plugin;
 using Athame.Plugin.Api.Service;
 using System;
@@ -37,5 +39,8 @@ namespace Athame.Core.Search
 
             return new MediaItem(media, descriptor);
         }
+
+        public static MediaResolver Create(IUrlParseResult result)
+            => new MediaResolver(result.AsMediaUrlParseResult().MediaDescriptor);
     }
 }
