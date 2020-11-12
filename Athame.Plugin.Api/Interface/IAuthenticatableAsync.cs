@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     /// <summary>
     /// Represents an authentication method handled entirely by the service (for instance, OAuth and so on).

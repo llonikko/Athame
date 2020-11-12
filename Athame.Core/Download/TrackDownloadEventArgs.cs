@@ -2,11 +2,13 @@
 
 namespace Athame.Core.Download
 {
-    public class TrackDownloadEventArgs : DownloadEventArgs
+    public class TrackDownloadEventArgs
     {
         public TrackFile TrackFile { get; set; }
 
         public TrackStatus Status { get; set; }
+
+        public int PercentCompleted { get; set; }
 
         public void PostUpdate(ProgressInfo progress)
         {

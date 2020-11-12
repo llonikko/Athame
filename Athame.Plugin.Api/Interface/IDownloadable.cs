@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Athame.Plugin.Api.Downloader
+namespace Athame.Plugin.Api.Interface
 {
     public interface IDownloadable
     {

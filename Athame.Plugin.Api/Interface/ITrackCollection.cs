@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Service;
+using System;
 using System.Collections.Generic;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     /// <summary>
     /// Represents a generic enumerable collection of tracks.
     /// </summary>
-    public interface IMediaCollection : IMedia
+    public interface ITrackCollection : IMedia
     {
         /// <summary>
         /// The tracks this collection contains.

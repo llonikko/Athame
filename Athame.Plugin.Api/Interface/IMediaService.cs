@@ -1,9 +1,10 @@
 ﻿using Athame.Plugin.Api.Downloader;
+using Athame.Plugin.Api.Service;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     public interface IMediaService
     {

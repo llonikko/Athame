@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Athame.Plugin.Api.Service;
+using System.Threading.Tasks;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     /// <summary>
     /// The base interface for services that provide authentication. Do not directly implement this interface;

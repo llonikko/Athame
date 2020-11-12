@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Service;
+using System;
 using System.Collections.Generic;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     public interface IMedia
     {

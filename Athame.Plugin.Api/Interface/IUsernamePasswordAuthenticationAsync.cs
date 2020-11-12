@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Athame.Plugin.Api.Service;
+using System.Collections.Generic;
 
-namespace Athame.Plugin.Api.Service
+namespace Athame.Plugin.Api.Interface
 {
     /// <summary>
     /// Represents an authentication method where the user provides a username and password.

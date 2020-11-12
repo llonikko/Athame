@@ -1,4 +1,4 @@
-﻿namespace Athame.Plugin.Api.Service
+﻿namespace Athame.Plugin.Api.Interface
 {
     public interface IContentInfo
     {

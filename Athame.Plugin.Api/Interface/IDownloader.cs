@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Downloader;
+using System;
 using System.Threading.Tasks;
 
-namespace Athame.Plugin.Api.Downloader
+namespace Athame.Plugin.Api.Interface
 {
     public interface IDownloader
     {
