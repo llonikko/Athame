@@ -1,4 +1,4 @@
-﻿using Athame.Plugin.Api.Service;
+﻿using Athame.Plugin.Api.Interface;
 using CenterCLR;
 using System;
 using System.IO;
@@ -74,7 +74,7 @@ namespace Athame.Core.Utilities
             return finalPath;
         }
 
-        public static bool TryFormat(string format, IMediaCollection media, out string result)
+        public static bool TryFormat(string format, ITrackCollection media, out string result)
         {
             try
             {

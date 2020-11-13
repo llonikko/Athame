@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Interface;
+using System;
 using System.Collections.Generic;
 
 namespace Athame.Plugin.Api.Service
@@ -6,7 +7,7 @@ namespace Athame.Plugin.Api.Service
     /// <summary>
     /// Represents an ordered, arbitrary list of tracks.
     /// </summary>
-    public class Playlist : IMediaCollection
+    public class Playlist : ITrackCollection
     {
         /// <summary>
         /// The service-specific identifier of the playlist.

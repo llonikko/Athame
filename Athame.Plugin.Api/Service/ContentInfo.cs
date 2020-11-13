@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Athame.Plugin.Api.Interface;
+using System.Text;
 
 namespace Athame.Plugin.Api.Service
 {

@@ -1,6 +1,6 @@
 ﻿using Athame.Core.Interface;
 using Athame.Plugin.Api.Downloader;
-using Athame.Plugin.Api.Service;
+using Athame.Plugin.Api.Interface;
 using Serilog;
 using System;
 using System.Threading.Tasks;

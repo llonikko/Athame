@@ -1,4 +1,5 @@
 ﻿using Athame.Core.Extensions;
+using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
 using System.Text;
 

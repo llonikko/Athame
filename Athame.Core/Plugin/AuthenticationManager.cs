@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Athame.Plugin.Api.Service;
+using Athame.Plugin.Api.Interface;
 using Serilog;
 
 namespace Athame.Core.Plugin

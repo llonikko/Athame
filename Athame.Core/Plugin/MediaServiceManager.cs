@@ -1,5 +1,5 @@
 ﻿using Athame.Plugin.Api;
-using Athame.Plugin.Api.Service;
+using Athame.Plugin.Api.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;

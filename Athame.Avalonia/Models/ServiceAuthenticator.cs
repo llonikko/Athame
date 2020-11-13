@@ -2,6 +2,7 @@ using Athame.Avalonia.ViewModels;
 using Athame.Avalonia.Views;
 using Athame.Core;
 using Athame.Core.Plugin;
+using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
 using Splat;
 using System.Collections.Generic;

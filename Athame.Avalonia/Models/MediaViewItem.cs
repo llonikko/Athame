@@ -1,4 +1,5 @@
-﻿using Athame.Plugin.Api.Service;
+﻿using Athame.Plugin.Api.Interface;
+using Athame.Plugin.Api.Service;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace Athame.Avalonia.Models
         public IEnumerable<TrackViewItem> TrackViewItems { get; }
         public IEnumerable<Metadata> Flags { get; }
 
-        public MediaViewItem(IMediaCollection media)
+        public MediaViewItem(ITrackCollection media)
         {
             Id = media.Id;
             Name = $"{media.Title} - {media.Artist}";

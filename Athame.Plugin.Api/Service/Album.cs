@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Athame.Plugin.Api.Service
 {
-    public class Album : IMediaCollection
+    public class Album : ITrackCollection
     {
         /// <summary>
         /// Service-specific identifier for the album. Not null.

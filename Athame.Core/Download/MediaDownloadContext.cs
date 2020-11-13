@@ -1,6 +1,7 @@
 using Athame.Core.Settings;
 using Athame.Core.Utilities;
 using Athame.Plugin.Api.Downloader;
+using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace Athame.Core.Download
             pathFormat = preference.PathFormat;
         }
 
-        public void CreateMediaFolder(IMediaCollection media)
+        public void CreateMediaFolder(ITrackCollection media)
         {
             var parts = PathHelpers.Split(pathFormat).ToList();
             if (media is Album album && album.NumberOfDiscs > 1)

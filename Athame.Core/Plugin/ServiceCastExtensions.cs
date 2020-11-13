@@ -1,4 +1,4 @@
-﻿using Athame.Plugin.Api.Service;
+﻿using Athame.Plugin.Api.Interface;
 
 namespace Athame.Core.Plugin
 {

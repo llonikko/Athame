@@ -3,6 +3,7 @@ using Athame.Core.Plugin;
 using Athame.Core.Settings;
 using Athame.Core.Utilities;
 using Athame.Plugin.Api.Downloader;
+using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
 using Serilog;
 using System;
@@ -100,7 +101,7 @@ namespace Athame.Core.Download
             AthameWriter.Write(fileName, image);
         }
 
-        public void CreateMediaInfo(string path, IMediaCollection media)
+        public void CreateMediaInfo(string path, ITrackCollection media)
         {
             try
             {
@@ -138,7 +139,7 @@ namespace Athame.Core.Download
                _ => throw new InvalidOperationException()
            };
 
-        public static MediaInfo GetMediaInfo(IMediaCollection media)
+        public static MediaInfo GetMediaInfo(ITrackCollection media)
             => media.MediaType switch
             {
                 MediaType.Album    => new AlbumInfo().BuildContent(media),

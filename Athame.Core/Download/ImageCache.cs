@@ -1,4 +1,5 @@
-﻿using Athame.Plugin.Api.Service;
+﻿using Athame.Plugin.Api.Interface;
+using Athame.Plugin.Api.Service;
 using System.Collections.Generic;
 
 namespace Athame.Core.Download

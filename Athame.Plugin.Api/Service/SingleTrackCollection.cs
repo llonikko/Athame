@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Athame.Plugin.Api.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace Athame.Plugin.Api.Service
     /// Represents a single track for use in scenarios where a <see cref="IMediaCollection"/> is required.
     /// This does not need to be handled by your service implementation, and is meant for internal use only.
     /// </summary>
-    public class SingleTrackCollection : IMediaCollection
+    public class SingleTrackCollection : ITrackCollection
     {
         /// <summary>
         /// Constructs a new instance based on a single track. Also sets properties of <see cref="IMediaCollection"/>

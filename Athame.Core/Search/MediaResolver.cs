@@ -2,6 +2,7 @@
 using Athame.Core.Extensions;
 using Athame.Core.Interface;
 using Athame.Core.Plugin;
+using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
 using System;
 using System.Threading.Tasks;
@@ -26,7 +27,7 @@ namespace Athame.Core.Search
             var id = descriptor.MediaId;
             var service = MediaServiceManager.GetService(descriptor.OriginalUri);
 
-            IMediaCollection media = descriptor.MediaType switch
+            ITrackCollection media = descriptor.MediaType switch
             {
                 MediaType.Album
                     => await service.GetAlbumAsync(id, withTracks: true),

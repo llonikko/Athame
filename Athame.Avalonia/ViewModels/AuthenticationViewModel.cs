@@ -1,6 +1,6 @@
 ﻿using Athame.Core;
 using Athame.Core.Plugin;
-using Athame.Plugin.Api.Service;
+using Athame.Plugin.Api.Interface;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
