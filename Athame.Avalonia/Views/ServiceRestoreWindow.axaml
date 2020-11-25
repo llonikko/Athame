@@ -12,7 +12,7 @@
         Width="750" Height="150"
         CanResize="False">
   <ScrollViewer>
-    <ItemsRepeater Items="{Binding ServicesRestoreStatus}">
+    <ItemsRepeater Items="{Binding StatusList}">
       <ItemsRepeater.Layout>
         <StackLayout Orientation="Vertical" 
                      Spacing="2"/>

@@ -19,13 +19,13 @@ namespace Athame.Core.Plugin
             => services.Select(Restore);
 
         public Task<AuthenticationResult> Authenticate(IMediaService service, string username, string password, bool rememberUser)
-            => Authenticate(service, service.AsUsernamePasswordAuthenticatable().SetCredentials(username, password, rememberUser).AuthenticateAsync);
+            => Authenticate(service, service.SetCredentials(username, password, rememberUser).AuthenticateAsync);
 
         public Task<AuthenticationResult> Authenticate(IMediaService service)
-            => Authenticate(service, service.AsAuthenticatableAsync().AuthenticateAsync);
+            => Authenticate(service, service.AuthenticateAsync);
 
         public Task<AuthenticationResult> Restore(IMediaService service)
-            => Authenticate(service, service.AsAuthenticatable().RestoreAsync);
+            => Authenticate(service, service.RestoreAsync);
 
         private void ServiceBeginAuthenticating(IMediaService service)
         {
@@ -47,20 +47,16 @@ namespace Athame.Core.Plugin
         }
 
         public bool NeedsAuthentication(IMediaService service)
-            => CanAuthenticate(service) && !service.AsAuthenticatable().HasSavedSession;
+            => CanAuthenticate(service) && !service.HasSavedSession;
 
         public bool CanRestore(IMediaService service)
         {
-            if (IsAuthenticating(service))
+            if (service == null || IsAuthenticating(service))
             {
                 return false;
             }
-            var ias = service.AsAuthenticatable();
-            if (ias == null)
-            {
-                return false;
-            }
-            return ias.HasSavedSession && ias.Account != null;
+            
+            return service.HasSavedSession && service.Account != null;
         }
 
         private void EnsureNotAuthenticating(IMediaService service)

@@ -26,7 +26,7 @@ namespace Athame.Avalonia.ViewModels
 
         public ReactiveCommand<Unit, Unit> DownloadMediaCommand { get; }
         public ReactiveCommand<Unit, Unit> CancelDownloadCommand { get; }
-        public ReactiveCommand<Unit, Window> CanRestoreCommand { get; }
+        public ReactiveCommand<Unit, ServiceRestoreWindowViewModel> CanRestoreCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveSettingsCommand { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> ViewSettingsCommand { get; }
         public ReactiveCommand<Unit, IRoutableViewModel> ViewAboutAppCommand { get; }
@@ -145,15 +145,15 @@ namespace Athame.Avalonia.ViewModels
             ProgressStatus.MediaDownloadStatus = "All downloads completed";
         }
 
-        private Window CanRestore()
+        private ServiceRestoreWindowViewModel CanRestore()
         {
             app.LoadAndInitPlugins();
 
             var services = app.AuthenticationManager.CanRestore(MediaServiceManager.Services);
 
             return services.Any()
-                ? new ServiceRestoreWindow { DataContext = new ServiceRestoreWindowViewModel(services) }
-                : ServiceRestoreWindow.Null;
+                ? new ServiceRestoreWindowViewModel(services)
+                : ServiceRestoreWindowViewModel.Null;
         }
 
         private void SaveSettings()

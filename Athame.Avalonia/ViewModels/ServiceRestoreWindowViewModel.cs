@@ -16,7 +16,9 @@ namespace Athame.Avalonia.ViewModels
     {
         private readonly IEnumerable<IMediaService> services;
 
-        public IList<ServiceRestoreStatus> ServicesRestoreStatus { get; }
+        public static readonly ServiceRestoreWindowViewModel Null;
+
+        public IList<ServiceRestoreStatus> StatusList { get; }
 
         public ReactiveCommand<Unit, Unit> RestoreCommand { get; }
 
@@ -24,78 +26,81 @@ namespace Athame.Avalonia.ViewModels
         {
             this.services = services;
 
-            ServicesRestoreStatus = new List<ServiceRestoreStatus>();
-            Init();
-
-            RestoreCommand = ReactiveCommand.CreateFromTask(Restore);
-        }
-
-        private void Init()
-        {
+            StatusList = new List<ServiceRestoreStatus>();
             foreach (var svc in services)
             {
-                ServicesRestoreStatus.Add(new ServiceRestoreStatus
-                {
-                    IsAuthenticating = true,
-                    Message = "Please wait...",
-                    Name = svc.Name,
-                    Account = svc.AsAuthenticatable().Account.FormattedName
-                });
+                StatusList.Add(ServiceRestoreStatus.Create(svc));
             }
+
+            RestoreCommand = ReactiveCommand.CreateFromTask(Restore);
         }
 
         private async Task Restore()
         {
             Log.Debug("Restore");
-            var allRestored = await RestoreAll();
+
+            var tasks = Locator.Current.GetService<AthameApp>()
+                .AuthenticationManager
+                .Restore(services)
+                .ToList();
+
+            Log.Debug("Starting restore, Restore task Count = {Count}", tasks.Count);
+
+            var allRestored = await RestoreAll(tasks);
+
+            Log.Information("Finished restore");
             // if (allRestored) 
             // {
             //     Close();
             // }
         }
 
-        private async Task<bool> RestoreAll()
+        private async Task<bool> RestoreAll(IList<Task<AuthenticationResult>> restoreTasks)
         {
-            var auth = Locator.Current.GetService<AthameApp>().AuthenticationManager;
-
             var fails = new List<AuthenticationResult>();
-            var restoreTasks = auth.Restore(services).ToList();
-
-            Log.Debug("Starting restore, Restore task Count = {Count}", restoreTasks.Count);
             while (restoreTasks.Count > 0)
             {
                 var finishedTask = await Task.WhenAny(restoreTasks);
+                AuthenticationResult result = await finishedTask;
+
+                SetStatus(result);
+                LogResult(result);
+
+                if (!result.IsAuthenticated)
+                {
+                    fails.Add(result);
+                }
 
                 restoreTasks.Remove(finishedTask);
+            }
 
-                var result = await finishedTask;
+            return fails.Count == 0;
+        }
 
-                var status = ServicesRestoreStatus.First(s => s.Name == result.ServiceName);
-                status.IsAuthenticating = false;
+        private void SetStatus(AuthenticationResult result)
+        {
+            var status = StatusList.First(s => s.Name == result.ServiceName);
+            status.IsAuthenticating = false;
+            status.Message = result.IsAuthenticated ? "Sign-in successful." : "Sign-in failed.";
+        }
 
-                if (result.IsAuthenticated)
+        private void LogResult(AuthenticationResult result)
+        {
+            if (result.IsAuthenticated)
+            {
+                Log.Information("Restore complete for {Result}", result.ServiceName);
+            }
+            else
+            {
+                if (result.Exception != null)
                 {
-                    Log.Debug("Restore complete for {Result}", result.ServiceName);
-                    status.Message = "Signed in successfully";
+                    Log.Error(result.Exception, "Restore failed for {Result}", result.ServiceName);
                 }
                 else
                 {
-                    if (result.Exception != null)
-                    {
-                        Log.Error(result.Exception, "Restore failed for {Result}", result.ServiceName);
-                    }
-                    else
-                    {
-                        Log.Debug("Restore complete for {Result}", result.ServiceName);
-                    }
-
-                    fails.Add(result);
-                    status.Message = "Error signing in";
+                    Log.Information("Restore complete for {Result}", result.ServiceName);
                 }
             }
-
-            Log.Information("Finished restore");
-            return fails.Count == 0;
         }
     }
 }

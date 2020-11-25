@@ -15,6 +15,6 @@
         /// </summary>
         public string Name { get; set; }
 
-        public virtual string FormattedName { get; }
+        public virtual string DisplayName { get; }
     }
 }

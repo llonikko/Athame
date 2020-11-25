@@ -60,8 +60,15 @@ namespace Athame.Avalonia.Views
                     .DisposeWith(disposables);
 
                 this.WhenAnyObservable(x => x.ViewModel.CanRestoreCommand)
-                    .Where(window => window != ServiceRestoreWindow.Null)
-                    .Subscribe(async window => await window.ShowDialog(this))
+                    .Where(vm => vm != ServiceRestoreWindowViewModel.Null)
+                    .Subscribe(async vm =>
+                    {
+                        var window = new ServiceRestoreWindow
+                        {
+                            DataContext = vm
+                        };
+                        await window.ShowDialog(this);
+                    })
                     .DisposeWith(disposables);
             });
 

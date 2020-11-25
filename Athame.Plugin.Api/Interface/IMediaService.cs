@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Athame.Plugin.Api.Interface
 {
-    public interface IMediaService
+    public interface IMediaService : IUsernamePasswordAuthenticationAsync
     {
         /// <summary>
         /// Retrieves a track's downloadable form.

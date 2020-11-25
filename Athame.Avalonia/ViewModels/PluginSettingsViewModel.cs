@@ -47,7 +47,7 @@ namespace Athame.Avalonia.ViewModels
 
         private void Logout()
         {
-            plugin.Service.AsAuthenticatable().Reset();
+            plugin.Service.Reset();
             Update();
         }
 
@@ -59,12 +59,12 @@ namespace Athame.Avalonia.ViewModels
 
         private void UpdateViews()
         {
-            var service = plugin.Service.AsAuthenticatable();
+            var service = plugin.Service;
 
             if (service.IsAuthenticated)
             {
                 IsAuthenticated = true;
-                AuthenticationStatus = $"Logged in as {service.Account.FormattedName}";
+                AuthenticationStatus = $"Logged in as {service.Account.DisplayName}";
             }
             else if (service.HasSavedSession)
             {

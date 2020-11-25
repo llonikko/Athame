@@ -35,7 +35,7 @@ namespace Athame.Avalonia.ViewModels
             this.service = service;
 
             Title = $"{service.Name} sign in";
-            HelpMessage = service.AsUsernamePasswordAuthenticatable().SignInHelpText
+            HelpMessage = service.SignInHelpText
                 ?? $"{service.Name} has not provided any help text.";
             ErrorMessage = "An error occurred while signing in. Please check your credentials and try again.";
 
