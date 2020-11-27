@@ -25,7 +25,7 @@ namespace Athame.Core.Search
         public async Task<MediaItem> ResolveMedia()
         {
             var id = descriptor.MediaId;
-            var service = MediaServiceManager.GetService(descriptor.OriginalUri);
+            var service = AthameApp.GetService(descriptor.OriginalUri);
 
             ITrackCollection media = descriptor.MediaType switch
             {

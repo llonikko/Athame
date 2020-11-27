@@ -141,8 +141,7 @@ namespace Athame.Avalonia.ViewModels
                         albumValid && playlistValid);
             SaveCommand = ReactiveCommand.CreateFromObservable(() =>
             {
-                app.AppSettings = settings;
-                app.AppSettings.Save();
+                app.UpdateSettings(settings);
                 app.Plugins[SelectedPlugin]?.Settings.Save();
                 return NavigateBack();
             },

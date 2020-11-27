@@ -56,7 +56,7 @@ namespace Athame.Core.Download
             context.CreateMediaFolder(e.CurrentMediaDownload.Media);
 
             trackDownloader.Context = context;
-            trackDownloader.MediaService = MediaServiceManager.GetService(descriptor.OriginalUri);
+            trackDownloader.MediaService = AthameApp.GetService(descriptor.OriginalUri);
         }
 
         public virtual void MediaDownloadCompleted(object sender, MediaDownloadEventArgs e)

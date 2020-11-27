@@ -1,16 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Athame.Core.Plugin;
 using Athame.Core.Settings;
 using Athame.Plugin.Api;
+using Athame.Plugin.Api.Interface;
 using Serilog;
 
 namespace Athame.Core
 {
     public class AthameApp
     {
-        private static readonly string ApplicationDataFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        private static readonly string ApplicationDataFolderPath 
+            = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+        private static readonly Dictionary<Uri, IMediaService> services
+            = new Dictionary<Uri, IMediaService>();
 
         public string AppDataFolder
             => Path.GetFullPath(Path.Combine(ApplicationDataFolderPath, "Athame.Avalonia"));
@@ -54,14 +60,40 @@ namespace Athame.Core
             AppSettings = JsonFileSettings.Load<AthameSettings>(AppSettingsPath);
         }
 
-        public void LoadAndInitPlugins()
+        public void LoadPlugins()
         {
-            var pluginManager = new PluginManager();
-            pluginManager.LoadPlugins(PluginsFolder);
-            pluginManager.InitPlugins(PluginDataFolder);
-
-            Plugins.AddRange(pluginManager.Plugins);
-            MediaServiceManager.Add(Plugins);
+            // Plugins are stored in format {PluginDirectory}/{PluginName}/Athame.Plugin.*.dll
+            foreach (var dir in Directory.GetDirectories(PluginsFolder))
+            {
+                if (PluginLoader.Load(dir) is IPlugin p)
+                {
+                    Plugins.Add(p);
+                    p.Init(PluginDataFolder);
+                    AddService(p.Service);
+                }
+            }
         }
+
+        public void UpdateSettings(AthameSettings settings)
+        {
+            AppSettings = settings;
+            AppSettings.Save();
+        }
+
+        public static void AddService(IMediaService service)
+        {
+            foreach (var uri in service.BaseUri)
+            {
+                services.Add(uri, service);
+            }
+        }
+
+        public static IMediaService GetService(Uri baseUri)
+            => (from s in services where s.Key.Scheme == baseUri.Scheme && s.Key.Host == baseUri.Host select s.Value)
+            .FirstOrDefault();
+
+        public static IEnumerable<IMediaService> Services
+            => (from s in services select s.Value)
+            .Distinct();
     }
 }

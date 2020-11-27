@@ -27,7 +27,7 @@ namespace Athame.Core.Search
                 return UrlParse.Invalid;
             }
 
-            var service = MediaServiceManager.GetService(actualUrl);
+            var service = AthameApp.GetService(actualUrl);
             if (service == null)
             {
                 return UrlParse.NoService;

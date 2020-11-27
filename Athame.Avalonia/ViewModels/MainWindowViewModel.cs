@@ -147,9 +147,9 @@ namespace Athame.Avalonia.ViewModels
 
         private ServiceRestoreWindowViewModel CanRestore()
         {
-            app.LoadAndInitPlugins();
+            app.LoadPlugins();
 
-            var services = app.AuthenticationManager.CanRestore(MediaServiceManager.Services);
+            var services = app.AuthenticationManager.CanRestore(AthameApp.Services);
 
             return services.Any()
                 ? new ServiceRestoreWindowViewModel(services)
