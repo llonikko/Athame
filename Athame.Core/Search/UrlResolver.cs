@@ -1,6 +1,5 @@
 ﻿using System;
 using Athame.Core.Interface;
-using Athame.Core.Plugin;
 using Athame.Plugin.Api.Service;
 
 namespace Athame.Core.Search

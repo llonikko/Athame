@@ -1,11 +1,8 @@
 ﻿using Athame.Avalonia.Extensions;
-using Athame.Avalonia.Views;
 using Athame.Core;
 using Athame.Core.Download;
 using Athame.Core.Extensions;
-using Athame.Core.Plugin;
 using Athame.Plugin.Api.Downloader;
-using Avalonia.Controls;
 using ReactiveUI;
 using Serilog;
 using Splat;

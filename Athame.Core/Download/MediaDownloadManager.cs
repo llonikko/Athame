@@ -1,5 +1,4 @@
 using Athame.Core.Interface;
-using Athame.Core.Plugin;
 using Athame.Core.Settings;
 using Athame.Core.Utilities;
 using Athame.Plugin.Api.Downloader;

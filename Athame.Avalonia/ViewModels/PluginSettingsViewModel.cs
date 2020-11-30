@@ -1,4 +1,3 @@
-using Athame.Core.Plugin;
 using Athame.Plugin.Api;
 using Avalonia.Controls;
 using ReactiveUI;
