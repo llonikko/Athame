@@ -104,7 +104,9 @@ namespace Athame.Core.Download
         {
             try
             {
-                var info = GetMediaInfo(media);
+                var info = MediaInfo
+                    .Create(media.MediaType)
+                    .BuildContent(media);
                 var fileName = Path.Combine(path, info.Name);
                 AthameWriter.Write(fileName, info);
             }
@@ -137,13 +139,5 @@ namespace Athame.Core.Download
                PlaylistFileType.PLS => new PLSFile(),
                _ => throw new InvalidOperationException()
            };
-
-        public static MediaInfo GetMediaInfo(ITrackCollection media)
-            => media.MediaType switch
-            {
-                MediaType.Album    => new AlbumInfo().BuildContent(media),
-                MediaType.Playlist => new PlaylistInfo().BuildContent(media),
-                _ => throw new InvalidOperationException()
-            };
     }
 }

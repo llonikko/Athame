@@ -1,6 +1,7 @@
 using Athame.Core.Extensions;
 using Athame.Plugin.Api.Interface;
 using Athame.Plugin.Api.Service;
+using System.Linq;
 using System.Text;
 
 namespace Athame.Core.Utilities
@@ -24,8 +25,17 @@ namespace Athame.Core.Utilities
                 {
                     content.AppendLine($"CD{disc}");
                 }
-                
-                BuildTrackListTextInfo(content, album.GetTracks(disc));
+
+                var tracks = album.GetTracks(disc);
+                string format = tracks.Count() > 99 ? "{0:000}" : "{0:00}";
+                foreach (var track in tracks)
+                {
+                    content.Append(string.Format(format, track.TrackNumber));
+                    content.Append(" - ");
+                    content.Append($"{track.Title}");
+                    content.AppendLine();
+                }
+
                 content.AppendLine();
             }
         }

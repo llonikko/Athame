@@ -17,8 +17,12 @@ namespace Athame.Core.Utilities
             content.AppendLine($"{playlist.Description}");
             content.AppendLine($"{playlist.Tracks.Count} Tracks - {playlist.FormattedDuration()}");
             content.AppendLine();
-            
-            BuildTrackListTextInfo(content, playlist.Tracks);
+
+            foreach (var track in playlist.Tracks)
+            {
+                content.Append($"{track.Title}");
+                content.AppendLine();
+            }
         }
     }
 }
