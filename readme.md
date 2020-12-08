@@ -10,7 +10,7 @@ just a very buggy, basic tool which I hope will either be improved upon in the f
 
 Build
 -----
-* .NET Core 5.0
+* .NET 5.0
 * Visual Studio 2019 or VS Code
 
 Status
