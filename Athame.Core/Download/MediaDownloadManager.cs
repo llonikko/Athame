@@ -120,9 +120,9 @@ namespace Athame.Core.Download
         {
             try
             {
-                var playlistFile = CreatePlaylist(type)
+                var playlistFile = PlaylistFile
+                    .Create(type)
                     .BuildContent(trackFiles);
-
                 var fileName = Path.Combine(path, PathHelpers.CreateDefaultFileName(media));
                 AthameWriter.Write(fileName, playlistFile);
             }
@@ -131,13 +131,5 @@ namespace Athame.Core.Download
                 Log.Warning(ex, "Exception occurred when writing playlist file");
             }
         }
-
-        public static PlaylistFile CreatePlaylist(PlaylistFileType type)
-           => type switch
-           {
-               PlaylistFileType.M3U => new M3UFile(),
-               PlaylistFileType.PLS => new PLSFile(),
-               _ => throw new InvalidOperationException()
-           };
     }
 }
