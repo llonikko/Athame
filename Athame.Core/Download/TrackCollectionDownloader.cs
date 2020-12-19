@@ -26,7 +26,9 @@ namespace Athame.Core.Download
 
                     OnTrackDownloadStarted(e);
 
-                    InitializeOperation();
+                    Context.CreatePath(e.TrackFile);
+                    Context.TrackFiles.Add(e.TrackFile);
+
                     if (TrackFile.Exists(e.TrackFile) || !e.TrackFile.Track.IsDownloadable)
                     {
                         e.Status = TrackStatus.DownloadSkipped;
@@ -34,31 +36,43 @@ namespace Athame.Core.Download
                         continue;
                     }
 
-                    await DownloadArtworkAsync();
-                    await DownloadTrackAsync();
+                    e.Status = TrackStatus.DownloadingArtwork;
+                    OnTrackDownloadProgressChanged(e);
+                    await DownloadArtworkAsync(e.TrackFile);
+
+                    e.Status = TrackStatus.DownloadingTrack;
+                    var progress = new Progress<ProgressInfo>(info =>
+                    {
+                        e.PercentCompleted = info.PercentCompleted;
+                        OnTrackDownloadProgressChanged(e);
+                    });
+                    await MediaService.GetDownloader().DownloadAsync(e.TrackFile, progress);
+                    
+                    e.Status = TrackStatus.DownloadCompleted;
+                    OnTrackDownloadCompleted(e);
+                }
+                catch (OperationCanceledException ope)
+                {
+                    Log.Error(ope, "{Service}: Track download stopped {Track}", MediaService.Name, track.Title);
+                    e.Status = TrackStatus.DownloadFailed;
+                    OnTrackDownloadCompleted(e);
+                    return;
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex, "{Service}: Track download failed.", MediaService.Name);
                     e.Status = TrackStatus.DownloadFailed;
-                    Log.Error(ex, "");
+                    OnTrackDownloadCompleted(e);
                 }
-
-                OnTrackDownloadCompleted(e);
             }
         }
 
-        private void InitializeOperation()
-        {
-            Context.CreatePath(e.TrackFile);
-            Context.TrackFiles.Add(e.TrackFile);
-        }
+        public void Stop()
+            => MediaService.GetDownloader().Cancel();
 
-        private async Task DownloadArtworkAsync()
+        private async Task DownloadArtworkAsync(TrackFile trackFile)
         {
-            e.Status = TrackStatus.DownloadingArtwork;
-            OnTrackDownloadProgressChanged(e);
-
-            var media = e.TrackFile.Track.Album;
+            var media = trackFile.Track.Album;
             if (!ImageCache.Instance.HasImage(media)) // Download artwork if it's not cached
             {
                 try
@@ -71,26 +85,6 @@ namespace Athame.Core.Download
                     ImageCache.Instance.AddNull(media);
                     Log.Warning(ex, "{Service}: Exception occurred when download album artwork.", MediaService.Name);
                 }
-            }
-        }
-
-        private async Task DownloadTrackAsync()
-        {
-            e.Status = TrackStatus.DownloadingTrack;
-            try
-            {
-                var progress = new Progress<ProgressInfo>(info =>
-                {
-                    e.PercentCompleted = info.PercentCompleted;
-                    OnTrackDownloadProgressChanged(e);
-                });
-                await MediaService.GetDownloader().DownloadAsync(e.TrackFile, progress);
-                e.Status = TrackStatus.DownloadCompleted;
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "{Service}: Track download failed.", MediaService.Name);
-                e.Status = TrackStatus.DownloadFailed;
             }
         }
 

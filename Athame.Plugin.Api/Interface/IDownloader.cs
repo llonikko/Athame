@@ -7,5 +7,6 @@ namespace Athame.Plugin.Api.Interface
     public interface IDownloader
     {
         Task DownloadAsync(IDownloadable file, IProgress<ProgressInfo> progress);
+        void Cancel();
     }
 }

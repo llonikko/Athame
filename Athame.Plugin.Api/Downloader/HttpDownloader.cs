@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Athame.Plugin.Api.Downloader
@@ -26,10 +27,10 @@ namespace Athame.Plugin.Api.Downloader
         public Task<byte[]> DownloadImageDataAsync(string uri)
             => http.GetByteArrayAsync(uri);
 
-        public Task DownloadFileAsync(string uri, string destination, IProgress<ProgressInfo> progress) 
-            => DownloadFileAsync(new Uri(uri), destination, progress);
+        public Task DownloadFileAsync(string uri, string destination, IProgress<ProgressInfo> progress, CancellationToken ct) 
+            => DownloadFileAsync(new Uri(uri), destination, progress, ct);
 
-        public async Task DownloadFileAsync(Uri uri, string destination, IProgress<ProgressInfo> progress)
+        public async Task DownloadFileAsync(Uri uri, string destination, IProgress<ProgressInfo> progress, CancellationToken ct)
         {
             var response = await http.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -37,7 +38,7 @@ namespace Athame.Plugin.Api.Downloader
             Initialize(response);
 
             using var content = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
-            await DownloadBytesAsync(content, destination, progress).ConfigureAwait(false);
+            await DownloadBytesAsync(content, destination, progress, ct).ConfigureAwait(false);
             UpdateProgress(progress);
         }
 
@@ -51,21 +52,21 @@ namespace Athame.Plugin.Api.Downloader
             }
         }
 
-        private async Task DownloadBytesAsync(Stream content, string destination, IProgress<ProgressInfo> progress)
+        private async Task DownloadBytesAsync(Stream content, string destination, IProgress<ProgressInfo> progress, CancellationToken ct)
         {
             byte[] buffer = new byte[DefaultDownloadBufferLength];
             using var file = File.OpenWrite(destination);
 
             while (true)
             {
-                var bytesRead = await content.ReadAsync(new Memory<byte>(buffer)).ConfigureAwait(false);
+                var bytesRead = await content.ReadAsync(new Memory<byte>(buffer), ct).ConfigureAwait(false);
                 if (bytesRead == 0)
                 {
                     break;
                 }
                 UpdateProgress(bytesRead, progress);
 
-                await file.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead)).ConfigureAwait(false);
+                await file.WriteAsync(new ReadOnlyMemory<byte>(buffer, 0, bytesRead), ct).ConfigureAwait(false);
             }
         }
 

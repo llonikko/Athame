@@ -1,5 +1,6 @@
 using Athame.Plugin.Api.Interface;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Athame.Plugin.Api.Downloader
@@ -10,6 +11,7 @@ namespace Athame.Plugin.Api.Downloader
     public class TrackDownloader : IDownloader
     {
         protected readonly HttpDownloader downloader;
+        protected CancellationTokenSource cancellationSource;
 
         public TrackDownloader(HttpDownloader downloader)
         {
@@ -18,7 +20,19 @@ namespace Athame.Plugin.Api.Downloader
 
         public virtual async Task DownloadAsync(IDownloadable file, IProgress<ProgressInfo> progress)
         {
-            await downloader.DownloadFileAsync(file.DownloadUri, file.FullPath, progress).ConfigureAwait(false);
+            cancellationSource = new CancellationTokenSource();
+
+            await downloader
+                .DownloadFileAsync(file.DownloadUri, file.FullPath, progress, cancellationSource.Token)
+                .ConfigureAwait(false);
+            
+            cancellationSource.Dispose();
+        }
+
+        public virtual void Cancel()
+        {
+            cancellationSource.Cancel();
+            cancellationSource.Dispose();
         }
     }
 }
