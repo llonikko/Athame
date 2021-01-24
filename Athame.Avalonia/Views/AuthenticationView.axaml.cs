@@ -6,7 +6,6 @@ using Avalonia.ReactiveUI;
 using AvaloniaProgressRing;
 using ReactiveUI;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 namespace Athame.Avalonia.Views
 {
